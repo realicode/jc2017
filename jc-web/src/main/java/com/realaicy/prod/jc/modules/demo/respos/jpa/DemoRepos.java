@@ -12,8 +12,20 @@ import java.util.List;
  */
 public interface DemoRepos extends BaseJPARepository<DemoEntity, BigInteger> {
 
+    /**
+     * Find by username demo entity.
+     *
+     * @param username the username
+     * @return the demo entity
+     */
     DemoEntity findByUsername(String username);
 
+    /**
+     * Find top 10 by username containing list.
+     *
+     * @param username the username
+     * @return the list
+     */
     List<DemoEntity> findTop10ByUsernameContaining(String username);
 
 }
