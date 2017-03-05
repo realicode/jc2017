@@ -1,8 +1,6 @@
 package com.realaicy.prod.jc.modules.medicinedb;
 
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
-import com.realaicy.prod.jc.modules.auditdb.model.AuditCheckItem;
-import com.realaicy.prod.jc.modules.auditdb.model.vo.AuditCheckItemVO;
 
 import java.math.BigInteger;
 import java.util.List;

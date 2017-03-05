@@ -2,7 +2,6 @@ package com.realaicy.prod.jc.modules.medicinedb;
 
 
 import com.realaicy.prod.jc.lib.core.service.impl.DefaultBaseServiceImpl;
-import com.realaicy.prod.jc.modules.system.repos.UserRepos;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
