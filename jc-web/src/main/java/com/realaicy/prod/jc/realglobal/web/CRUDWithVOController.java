@@ -147,11 +147,15 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         }
         try {
             V vo = voClass.newInstance();
-            BeanUtils.copyProperties(service.findOne(id), vo);
+            M po = service.findOne(id);
+            BeanUtils.copyProperties(po, vo);
+            extendShow(po,vo);
+            model.addAttribute("realmodel",vo);
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        model.addAttribute("realmodel", service.findOne(id));
+//        model.addAttribute("realmodel", service.findOne(id));
+
         model.addAttribute("realUpdateID", id);
         return editEntityUrl;
     }
@@ -174,12 +178,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
         final BaseSpecificationsBuilder<M> builder = new BaseSpecificationsBuilder<>();
         final String operationSetExper = Joiner.on("|").join(SearchOperation.SIMPLE_OPERATION_SET);
-        final Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(\\w+?)(\\p{Punct}?),");
+        final Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)((\\p{L}|\\p{N})+?)(\\p{Punct}?),");
+
         final Matcher matcher = pattern.matcher(search + ",");
         while (matcher.find()) {
-            builder.with(matcher.group(1), matcher.group(2),
-                    matcher.group(StaticParams.REALNUM.N4), matcher.group(StaticParams.REALNUM.N3),
-                    matcher.group(StaticParams.REALNUM.N5));
+            builder.with(matcher.group(StaticParams.REALNUM.N1), matcher.group(StaticParams.REALNUM.N2),
+                    (p.matcher(matcher.group(StaticParams.REALNUM.N4)).replaceAll("").trim()),
+                    matcher.group(StaticParams.REALNUM.N3),
+                    "*");
         }
         final Specification<M> spec = builder.build();
         return service.findAll(spec);
@@ -339,6 +345,9 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     }
 
     protected void extendSave(M po, V realmodel) {
+    }
+
+    protected void extendShow(M po, V realmodel) {
     }
 
 

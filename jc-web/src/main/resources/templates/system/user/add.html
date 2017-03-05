@@ -80,6 +80,37 @@
         </fieldset>
         <fieldset>
             <div class="row">
+                <section class="col col-2">
+                    请选择所属机构
+                </section>
+
+                <section class="col col-2">
+                    <label class="select">
+                        <select   id="area" ></select>
+                    </label>
+                </section>
+                <section class=" col col-2">
+                    <label class="select">
+                    <select id="cmbProvince"></select>
+                        <select id="cmbCity" style="display: none"></select>
+                        <select id="cmbArea" style="display: none"></select>
+                </label>
+                </section>
+                <section class=" col col-6">
+                    <label class="select">
+                        <select   id="sel_orgName" name="orgID" ></select>
+                    </label>
+                    <input id="real_region" name="real_region" type="hidden" th:value="${realmodel.orgRegion}">
+                    <input id="real_province" name="real_province" type="hidden" th:value="${realmodel.orgProvince}">
+                    <input id="real_orgname" name="real_orgname" type="hidden" th:value="${realmodel.orgName}">
+                    <input id="real_orgid" name="real_orgid" type="hidden" th:value="${realmodel.orgID}">
+
+                </section>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="row">
                 <section class="col col-4">
                     <label for="portrait" class="input input-file">
                         <div class="button"><input type="file" name="portrait" id="portrait">
@@ -125,6 +156,51 @@
     $(document).ready(function () {
 
     });
+    
+    function laodOrg() {
+
+        console.log("laodOrg");
+        $("#sel_orgName").empty();
+        $.ajax({
+            url:'/system/org/spec',
+            type:'GET', //GET
+            async:true,    //或false,是否异步
+            data:{
+                search:'province:' +$("#cmbProvince").val()
+            },
+            timeout:5000,    //超时时间
+            dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+            beforeSend:function(xhr){
+                console.log(xhr)
+                console.log('发送前')
+            },
+            success:function(data,textStatus,jqXHR){
+                $.each(data, function(i, n){
+                   // console.info( data[i].name );
+                    $("#sel_orgName").append("<option value="+data[i].id+" >"+ data[i].name +"</option>");
+
+                });
+
+                console.log("#real_orgname2222:"+$("#real_orgname").val());
+                console.log("#real_orgid2222:"+$("#real_orgid").val());
+
+                $("#sel_orgName").val($("#real_orgid").val());
+
+//                console.log(data[0].name);
+//                console.log(data);
+//                console.log(textStatus)
+//                console.log(jqXHR)
+            },
+            error:function(xhr,textStatus){
+                console.log('错误')
+                console.log(xhr)
+                console.log(textStatus)
+            },
+            complete:function(){
+                console.log('结束')
+            }
+        })
+    }
 
     function uploadPortrait() {
         console.log("In uploadPortrait()");
@@ -259,12 +335,18 @@
 
     var pagefunction = function () {
         console.log("add pagefunction");
+        addressInit('area','cmbProvince','cmbCity','cmbArea','华北地区', '北京', '市辖区', '东城区');
+
         // 手机号码验证
         jQuery.validator.addMethod("isMobile", function(value, element) {
             var length = value.length;
             var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
             return this.optional(element) || (length == 11 && mobile.test(value));
         }, "请正确填写您的手机号码");
+
+        $("#portrait").on("change", uploadPortrait);
+
+        $("#cmbProvince").on("change", laodOrg);
 
 
         if ($("#updateflag").val() == "new") {
@@ -275,10 +357,22 @@
             $("#username").attr("disabled", true);
             $("#password").attr("disabled", true);
             $("#passwordConfirm").attr("disabled", true);
+
+            console.log("real_region: " +$("#real_region").val());
+            console.log("real_orgname: " +$("#real_orgname").val());
+
+            $("#area").val($("#real_region").val());
+            $("#area").trigger("change");
+            $("#cmbProvince").val($("#real_province").val());
+            $("#cmbProvince").trigger("change");
+            $("#sel_orgName").val($("#real_orgid").val());
         }
-        $("#portrait").on("change", uploadPortrait);
+
+
     };
-    pagefunction();
+//    pagefunction();
+    loadScript("realaicy/js/geo.js", pagefunction);
+
     //loadScript("smartadmin/js/plugin/jquery-form/jquery-form.min.js", pagefunction);
 
 </script>

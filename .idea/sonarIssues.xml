@@ -3,12 +3,107 @@
   <component name="issues">
     <option name="index">
       <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-parent/pom.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/pom.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/Org.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/User.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/vo/OrgVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/vo/UserVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/repos/OrgRepos.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/service/OrgService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/service/impl/DefaultOrgService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/web/OrgController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/web/UserController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/config/StaticParams.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/web/CRUDWithVOController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realaicy/js/geo.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/org/add.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/org/page.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/user/add.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/user/page.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/repos/OrgReposTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/repos/UserReposTest.java">
           <value>
             <set />
           </value>

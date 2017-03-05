@@ -1,4 +1,4 @@
-<title>用户</title>
+<title>组织机构</title>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
       href="../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
@@ -10,7 +10,7 @@
         <i class="fa-fw fa fa-home"></i>
         系统管理
         <span>>
-				用户管理
+				机构管理
 			</span>
     </div>
 </div>
@@ -22,20 +22,17 @@
             <strong>操作成功!</strong> <span id="realalertinfo"></span>
         </div>
         <div class="row realheight">
-            <article id="article_real_entity" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin" hidden="hidden"
-            >
-                <div class="jarviswidget jarviswidget-color-darken widget-realaicy" id="real_entity_user"
+            <article id="article_real_entity" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin" hidden="hidden">
+                <div class="jarviswidget jarviswidget-color-darken widget-realaicy" id="real_entity"
                      data-widget-editbutton="false"
                      data-widget-collapsed="false"
                      data-widget-deletebutton="false"
                      data-widget-fullscreenbutton="false">
-
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>新增 || 修改 || 查询用户 —— 控制面板</h2>
+                        <h2>新增 || 修改 || 查询机构 —— 控制面板</h2>
                     </header>
                     <div id="realeditdiv">
-
                     </div>
                 </div>
             </article>
@@ -47,7 +44,7 @@
                              data-widget-editbutton="false">
                             <header>
                                 <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                <h2>用户列表</h2>
+                                <h2>机构列表</h2>
                             </header>
                             <div style="min-height: 100%">
                                 <div class="jarviswidget-editbox">
@@ -60,18 +57,19 @@
                                             <th>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_username' class="form-control"
-                                                       placeholder="过滤用户名"/>
+                                                <select   id='real_filter_region' class="form-control">
+                                                </select>
+
                                             </th>
                                             <th>
-                                                <input type="text" id="real_filter_nickname" class="form-control"
-                                                       placeholder="过滤昵称"/>
+                                                <select name=""  id='real_filter_province' class="form-control">
+                                                </select>
+                                                <select id="cmbCity" style="display: none"></select>
+                                                <select id="cmbArea" style="display: none"></select>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_password' class="form-control"
-                                                       placeholder="过滤角色"/>
-                                            </th>
-                                            <th>
+                                                <input type="text" id='real_filter_name' class="form-control"
+                                                       placeholder="过滤机构名称"/>
                                             </th>
                                             <th>
                                             </th>
@@ -83,14 +81,20 @@
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
                                                     class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                用户名称
+                                                所属区域
                                             </th>
-                                            <th class="realaicy_table_header">昵称</th>
-                                            <th class="realaicy_table_header">所属机构</th>
-                                            <th data-hide="phone" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>用户角色
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                所属省份
                                             </th>
-                                            <th class="realaicy_table_header">创建时间</th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                机构名称
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                联系人姓名
+                                            </th>
                                             <th class="realaicy_table_header">操作按钮</th>
                                         </tr>
                                         </thead>
@@ -109,61 +113,31 @@
 <script type="text/javascript">
     pageSetUp();
 
-    var realOrgID = "";
-
-    function realdel() {
-        var rows_selected = $('#dt_basic_real').DataTable().column(0).checkboxes.selected();
-        if (rows_selected.length <= 0 || rows_selected.length > 1) {
-            var msg;
-            if (rows_selected.length <= 0)
-                msg = "请选择一个待删除的用户";
-            else
-                msg = "请求操作不支持多选，请选择一个并且只选择一个待删除的用户！";
-            realalert(msg);
-        } else {
-            BootstrapDialog.show({
-                title: '系统提示信息',
-                message: '请确认是否删除选定数据.',
-                buttons: [{
-                    label: '确认删除',
-                    action: function (dialog) {
-                        dialog.close();
-                        $("#updateflag").attr("value", 'deldel');
-                        $.each(rows_selected, function (index, rowId) {
-                            console.log("id: " + rowId);
-                            $.ajax({
-                                url: '/system/user/del/' + rowId,
-                                type: 'GET',
-                                success: function (response) {
-                                    if (response.substring(0, 2) == "ok") {
-                                        real_g_success("——删除用户成功！");
-                                    }
-                                    else {
-                                        real_g_fail(response);
-                                    }
-                                }
-                            });
-                        });
-                    }
-                }, {
-                    label: '取消',
-                    action: function (dialogItself) {
-                        dialogItself.close();
-                    }
-                }]
-            });
-        }
-    }
-
     var pagefunction = function () {
 
+        addressInit('real_filter_region','real_filter_province','cmbCity','cmbArea');
+
+        $("#real_filter_region").prepend("<option value='*'>——全部区域——</option>");
+        $("#real_filter_region").val("*");
+
+        $("#real_filter_province").empty();
+        $("#real_filter_province").prepend("<option value='*'>——全部省市——</option>");
+        $("#real_filter_province").val("*");
+
+
+        $("#realbtn-search").on("click", function () {
+            console.log("cccccccccccccccccccccc");
+        });
         var realtable = $('#dt_basic_real').DataTable(
                 {
-                    scrollX: true,
+                    sScrollX: true,
+//                    sScrollY: "300px",
                     scrollCollapse: true,
+                    bcrollCollapse: true,
                     "pagingType": "full_numbers",
                     "searching": true,
                     "language": realaicy_g_var_tableopt_lang,
+                    // "dom": 'rt<"bottom"iflp<"clear">>',
                     "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
                     "t" +
                     "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
@@ -173,10 +147,9 @@
                             text: '<i class="glyphicon glyphicon-plus"></i> 新增',
                             className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
                             action: function (e, dt, node, config) {
-                                //$("#real_entity_user").removeClass("jarviswidget-collapsed");
-                                if ( $("#real_entity_user").hasClass("jarviswidget-collapsed"))
-                                $("#real_entity_user a.jarviswidget-toggle-btn").trigger("click");
-                                realloadpage("/system/user/new");
+                                if ( $("#real_entity").hasClass("jarviswidget-collapsed"))
+                                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                                realloadpage("/system/org/new");
                             }
                         },
                         {
@@ -187,15 +160,14 @@
                                 if (rows_selected.length <= 0 || rows_selected.length > 1) {
                                     var msg;
                                     if (rows_selected.length <= 0)
-                                        msg = "请选择一个待修改的用户";
+                                        msg = "请选择一个待修改的机构";
                                     else
-                                        msg = "请求操作不支持多选，请选择一个并且只选择一个待修改的用户！";
+                                        msg = "请求操作不支持多选，请选择一个并且只选择一个待修改机构！";
                                     realalert(msg);
                                 } else {
+
                                     $.each(rows_selected, function (index, rowId) {
-                                        if ( $("#real_entity_user").hasClass("jarviswidget-collapsed"))
-                                            $("#real_entity_user a.jarviswidget-toggle-btn").trigger("click");
-                                        realloadpage("/system/user/show/" + rowId);
+                                        realloadpage("/system/org/show/" + rowId);
                                     });
                                 }
                             }
@@ -204,8 +176,7 @@
                             text: '<i  class="fa fa-trash-o"></i> 删除',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
-                                real_g_del("用户", '/system/user/del/');
-                                //realdel();
+                                real_g_del("机构", '/system/org/del/');
                             }
                         },
                         {
@@ -226,21 +197,25 @@
                             text: '自助复杂查询',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
-                                realloadpage("/system/user/search");
+                                realloadpage("/system/org/search");
                             }
                         },
                         {
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
+                                $("#real_filter_region").val("*");
+                                $("#real_filter_name").val("");
+                                $("#real_filter_province").empty();
+                                $("#real_filter_province").prepend("<option value='*'>——全部省市——</option>");
+                                $("#real_filter_province").val("*");
                                 realtable.draw();
                             }
                         },
                         'excel'
                     ],
-
                     ajax: {
-                        url: "/system/user/list4dt",
+                        url: "/system/org/list4dt",
                         type: "POST",
                         'beforeSend': function (request) {
                             var token = $("meta[name='_csrf']").attr("content");
@@ -248,21 +223,33 @@
                             request.setRequestHeader(header, token);
                         },
                         "data": function (d) {
+                            // d.custom = $('#myInput').val();
+                            // etc
                             delete d.columns;
                             var searchString = "";
-                            var search_username = $("#real_filter_username").val();
-                            var search_nickname = $("#real_filter_nickname").val();
-                            if (search_username != undefined && search_username != "") {
-                                searchString += "username:*";
-                                searchString += search_username;
+
+                            var search_province = $("#real_filter_province").val();
+                            var search_region = $("#real_filter_region").val();
+                            var search_name = $("#real_filter_name").val();
+
+
+
+                            if (search_region != undefined && search_region != "") {
+                                searchString += "region:";
+                                searchString += search_region;
+                            }
+                            if (search_province != undefined && search_province != "") {
+                                searchString += ",province:";
+                                searchString += search_province;
+                            }
+                            if (search_name != undefined && search_name != "") {
+                                searchString += ",name:*";
+                                searchString += search_name;
                                 searchString += "*";
                             }
-                            if (search_nickname != undefined && search_nickname != "") {
-                                searchString += ",nickname:*";
-                                searchString += search_nickname;
-                                searchString += "*";
-                            }
-                                d.search = searchString;
+
+                            d.search = searchString;
+                            console.log("search: "+ d.search);
 
                         },
                         error: function (xhr, status, error) {
@@ -275,14 +262,14 @@
                     serverSide: true,
                     columns: [
                         {"data": "id","width":"20px"},
-                        {"data": "username","width":"10%"},
-                        {"data": "nickname","width":"10%"},
-                        {"data": "org.name","width":"20%"},
-                        {"data": "rolenames"},
-                        {"data": "createTime","width":"10%"},
+                        {"data": "region","width":"10%"},
+                        {"data": "province","width":"10%"},
+                        {"data": "name"},
+                        {"data": "contactName","width":"10%"},
+
                         {
                             "data": null,
-                            "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>分配角色</a>",
+                            "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>",
                             "width":"20%"
                         }
                     ],
@@ -290,28 +277,37 @@
                         {
                             searchable: false,
                             orderable: false,
+//                                className: 'select-checkbox',
                             targets: 0,
                             'checkboxes': {
                                 'selectRow': false
                             }
-                        },
-                        {
-                            targets: 4,
-                            render: function (data, type, row) {
-                                return data;
-                            }
                         }],
                     select: {
                         style: 'multi'
+//                            selector: ':not(:last-child)'
                     },
                     "order": [[1, 'asc']]
                 });
 
         $('#dt_basic_real').on('click', '.btn-intable-realaicy', function () {
-            if ( $("#real_entity_user").hasClass("jarviswidget-collapsed"))
-                $("#real_entity_user a.jarviswidget-toggle-btn").trigger("click");
-            realloadpage("/system/user/user2role/" + realtable.row($(this).parents('tr')).data().id);
+            //var data = realtable.row($(this).parents('tr')).data();
+            //console.log("data: " + data.id);
+            realalert("功能实现敬请期待");
         });
+
+        $("#real_filter_region").on("change", function () {
+            $("#real_filter_province").prepend("<option value='*'>——全部省市——</option>");
+            $("#real_filter_province").val("*");
+            realtable.draw();
+        });
+        $("#real_filter_province").on("change", function () {
+            realtable.draw();
+        });
+
     };
-    pagefunction();
+
+    loadScript("realaicy/js/geo.js", pagefunction);
+
+
 </script>

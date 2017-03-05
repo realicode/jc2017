@@ -5,13 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Set;
 
@@ -22,6 +16,9 @@ import java.util.Set;
 @Table(name = "jc_sys_user")
 public class User extends CommonDeletableEntity<BigInteger> {
 
+    @ManyToOne()
+    @JoinColumn(name = "ORG_ID")
+    public Org org;
     /**
      * 用户名称
      */
@@ -70,16 +67,27 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "USERTYPE")
     private short usertype;
+    /**
+     * 用户角色
+     */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "jc_sys_user_role", joinColumns = @JoinColumn(name = "USERID"),
             inverseJoinColumns = @JoinColumn(name = "ROLEID"))
     @JsonIgnore
     private Set<Role> roles;
     /**
-     * 用户类型
+     * 用户角色名字
      */
     @Column(name = "ROLENAMES")
     private String rolenames;
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org org) {
+        this.org = org;
+    }
 
     public String getMobile() {
         return mobile;

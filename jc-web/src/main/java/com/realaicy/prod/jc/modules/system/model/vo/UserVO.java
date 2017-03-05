@@ -41,6 +41,23 @@ public class UserVO extends BaseVO<BigInteger> {
     @NotEmpty
     private String mobile;
     /**
+     * 所属机构名称
+     */
+    private String orgName;
+    /**
+     * 所属机构ID
+     */
+    @NotEmpty
+    private String orgID;
+    /**
+     * 所属机构ID
+     */
+    private String orgRegion;
+    /**
+     * 所属机构ID
+     */
+    private String orgProvince;
+    /**
      * 用户头像
      */
     private String portraitUrl;
@@ -48,6 +65,38 @@ public class UserVO extends BaseVO<BigInteger> {
      * 用户性别
      */
     private char sex;
+
+    public String getOrgRegion() {
+        return orgRegion;
+    }
+
+    public void setOrgRegion(String orgRegion) {
+        this.orgRegion = orgRegion;
+    }
+
+    public String getOrgProvince() {
+        return orgProvince;
+    }
+
+    public void setOrgProvince(String orgProvince) {
+        this.orgProvince = orgProvince;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getOrgID() {
+        return orgID;
+    }
+
+    public void setOrgID(String orgID) {
+        this.orgID = orgID;
+    }
 
     public String getMobile() {
         return mobile;

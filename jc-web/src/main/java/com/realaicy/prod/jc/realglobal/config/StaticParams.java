@@ -5,6 +5,11 @@ package com.realaicy.prod.jc.realglobal.config;
  * 常量
  */
 public class StaticParams {
+
+    public static final class  GEO {
+        public static final String[] REGION = {"华北","华东","华南","华中","东北","西南","西北"};
+    }
+
     public static final class PATHREGX {
         public static final String NOAUTH = "/smartadmin/noauth/**";
         public static final String CSS = "/smartadmin/css/**";

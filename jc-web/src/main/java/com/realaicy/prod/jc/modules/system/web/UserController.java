@@ -2,6 +2,7 @@ package com.realaicy.prod.jc.modules.system.web;
 
 import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
+import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.model.UserSec;
@@ -9,6 +10,7 @@ import com.realaicy.prod.jc.modules.system.model.vo.User2RoleS2VO;
 import com.realaicy.prod.jc.modules.system.model.vo.User2RoleVO;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
+import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
@@ -46,6 +48,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
 
     private UserService userService;
+    private OrgService orgService;
 
     private RoleService roleService;
     private static final  String[] NAMEDIC = {"username", "password", "nickname", "createTime"};
@@ -61,13 +64,14 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     @Autowired
     public UserController(UserService userService, RoleService roleService,
-                          PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos) {
+                          PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos,OrgService orgService) {
         super(userService, "user", NAMEDIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, User.class, UserVO.class, EDIT_BIND_WHITE_LIST);
         this.userService = userService;
         this.roleService = roleService;
         this.bcryptEncoder = bcryptEncoder;
         this.userSecRepos = userSecRepos;
+        this.orgService = orgService;
     }
 
     private final PasswordEncoder bcryptEncoder;
@@ -96,6 +100,15 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         model.addAttribute("userid", userid);
         model.addAttribute("user2roles2", binder.toJson(productVOS2Node(user.getRoles())));
         return USER_TO_ROLE_URL;
+    }
+
+    @Override
+    protected void extendShow(User po, UserVO realmodel) {
+        realmodel.setOrgRegion(po.getOrg().getRegion());
+        realmodel.setOrgProvince(po.getOrg().getProvince());
+        realmodel.setOrgName(po.getOrg().getName());
+        realmodel.setOrgID(po.getOrg().getId().toString());
+
     }
 
     @RequestMapping(value = "/u2rsave", method = RequestMethod.POST)
@@ -192,6 +205,12 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         //userSecRepos.save(userSec);
         realmodel.setId(userSecRepos.save(userSec).getId());
 //        realmodel.setOrgCascadeID(getOrgService().findOne(realmodel.getOrgID()).getCascadeID());
+    }
+
+    @Override
+    protected void extendSave(User po, UserVO realmodel) {
+        Org org = orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID())));
+        po.setOrg(org);
     }
 
     @Override
