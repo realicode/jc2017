@@ -1,0 +1,221 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" style="height: 100%">
+<head>
+    <meta charset="utf-8"/>
+    <title>SmartJC 智慧稽查服务平台</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/bootstrap.css}"
+          href="../static/smartadmin/css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/font-awesome.min.css}"
+          href="../static/smartadmin/css/font-awesome.min.css"/>
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen"
+          th:href="@{/smartadmin/css/smartadmin-production-plugins.min.css}"
+          href="../static/smartadmin/css/smartadmin-production-plugins.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/smartadmin-production.css}"
+          href="../static/smartadmin/css/smartadmin-production.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/smartadmin-skins.min.css}"
+          href="../static/smartadmin/css/smartadmin-skins.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/demo.css}"
+          href="../static/smartadmin/css/demo.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/realaicy.css}"
+          href="../static/smartadmin/css/realaicy.css"/>
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" th:href="@{/smartadmin/img/favicon/fav1.ico}"
+          href="../static/smartadmin/img/favicon/fav1.ico" type="image/x-icon"/>
+    <link rel="icon" th:href="@{/smartadmin/img/favicon/fav1.ico}"
+          href="../static/smartadmin/img/favicon/fav1.ico" type="image/x-icon"/>
+</head>
+<body class="smart-style-0 desktop-detected fixed-navigation fixed-header fixed-page-footer fixed-ribbon"
+      style="min-height: 99%;height: 99%">
+<header id="header">
+    <div id="logo-group" style="width: 220px;">
+        <span id="logo" style="padding: 0;margin: 0;height: 100%;font-size: 16px">
+            <img th:src="@{/realaicy/img/logo.png}" style="height: 50px;width:50px;padding-top: 4px"
+                 src="../static/realaicy/img/logo.png" alt="智慧稽查"/>
+        智慧稽查</span>
+
+    </div>
+    <div class="pull-right">
+        <div id="hide-menu" class="btn-header pull-right">
+            <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i
+                    class="fa fa-reorder"></i></a> </span>
+        </div>
+        <div id="logout" class="btn-header transparent pull-right">
+            <span> <a href="login.html" title="注销:" data-action="userLogout"
+                      data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i
+                    class="fa fa-sign-out"></i></a> </span>
+        </div>
+        <form action="#ajax/search.html" class="header-search pull-right">
+            <input id="search-fld" type="text" name="param" placeholder="快速模糊信息查询">
+            <button type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+            <a href="javascript:void(0);" id="cancel-search-js" title="Cancel Search"><i class="fa fa-times"></i></a>
+        </form>
+        <div id="fullscreen" class="btn-header transparent pull-right">
+            <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i
+                    class="fa fa-arrows-alt"></i></a> </span>
+        </div>
+    </div>
+</header>
+<aside id="left-panel">
+    <div class="login-info">
+				<span> <!-- User image size is adjusted inside CSS, it should stay as is -->
+					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
+                         <img th:src="@{/smartadmin/img/avatars/a1.jpg}"
+                              src="../static/smartadmin/img/avatars/a1.jpg" alt="me" class="online"/>
+                        <span th:text="${usernickname} "></span>
+						<i class="fa fa-angle-down"></i>
+					</a>
+				</span>
+    </div>
+    <nav>
+        <ul>
+            <li class="" th:each="menu : ${realmenus}">
+                <a href="#"><i th:class="${menu.resIcon}" th:utext="${menu.resIconExt}"></i> <span
+                        class="menu-item-parent" th:text="${menu.name}"></span></a>
+
+                <ul th:if="${not #lists.isEmpty(menu.children)}">
+                    <li class="" th:each="submenu : ${menu.children}">
+                        <a th:href="${submenu.uri}" title="test">
+                            <i th:class="${submenu.resIcon}"></i><span
+                                class="menu-item-parent" th:text="${submenu.name}"></span></a>
+
+                        <ul th:if="${not #lists.isEmpty(submenu.children)}">
+                            <li class="" th:each="subsubmenu : ${submenu.children}">
+                                <a th:href="${subsubmenu.uri}" title="test">
+                                    <i th:class="${subsubmenu.resIcon}"></i><span
+                                        class="menu-item-parent" th:text="${subsubmenu.name}"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <a href="#ajax/difver.html" class="btn btn-primary nav-demo-btn"><i class="fa fa-info-circle"></i> 智慧稽查</a>
+    <span class="minifyme" data-action="minifyMenu"> <i class="fa fa-arrow-circle-left hit"></i> </span>
+</aside>
+<div id="main" role="main" style="height: 99%;min-height: 99%">
+    <div id="ribbon">
+				<span class="ribbon-button-alignment"> 
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="刷新页面"
+                          rel="tooltip" data-placement="bottom"
+                          data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings."
+                          data-html="true"
+                          data-reset-msg="Would you like to RESET all your saved widgets and clear LocalStorage?"><i
+                            class="fa fa-refresh"></i></span>
+				</span>
+        <ol class="breadcrumb"><!-- This is auto generated -->
+        </ol>
+    </div>
+    <div id="content" style="min-height: 99%;height: 99%">
+    </div>
+</div>
+<div class="page-footer">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <span class="txt-color-white">智慧稽查服务平台 <span class="hidden-xs"> - Powered By Realaicy! </span> ©2016</span>
+        </div>
+        <div class="col-xs-6 col-sm-6 text-right hidden-xs">
+            <div class="txt-color-white inline-block">
+                <i class="txt-color-blueLight hidden-mobile">Last account activity <i class="fa fa-clock-o"></i>
+                    <strong></strong> </i>
+                <div class="btn-group dropup">
+                    <button class="btn btn-xs dropdown-toggle bg-color-blue txt-color-white" data-toggle="dropdown">
+                        <i class="fa fa-link"></i> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu pull-right text-left">
+                        <li>
+                            <div class="padding-5">
+                                <p class="txt-color-darken font-sm no-margin">Download Progress</p>
+                                <div class="progress progress-micro no-margin">
+                                    <div class="progress-bar progress-bar-success" style="width: 50%;"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="padding-5">
+                                <p class="txt-color-darken font-sm no-margin">Server Load</p>
+                                <div class="progress progress-micro no-margin">
+                                    <div class="progress-bar progress-bar-success" style="width: 20%;"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="padding-5">
+                                <p class="txt-color-darken font-sm no-margin">Memory Load <span class="text-danger">*critical*</span>
+                                </p>
+                                <div class="progress progress-micro no-margin">
+                                    <div class="progress-bar progress-bar-danger" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <div class="padding-5">
+                                <button class="btn btn-block btn-default">refresh</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/smartadmin/js/libs/jquery-2.1.1.min.js}"
+        src="../static/smartadmin/js/libs/jquery-2.1.1.min.js"></script>
+<script th:src="@{/smartadmin/js/libs/jquery-ui-1.10.3.min.js}"
+        src="../static/smartadmin/js/libs/jquery-ui-1.10.3.min.js"></script>
+<script th:src="@{/smartadmin/js/app.config.js}"
+        src="../static/smartadmin/js/app.config.js"></script>
+<script th:src="@{/smartadmin/js/bootstrap/bootstrap.min.js}"
+        src="../static/smartadmin/js/bootstrap/bootstrap.min.js"></script>
+<script th:src="@{/smartadmin/js/notification/SmartNotification.min.js}"
+        src="../static/smartadmin/js/notification/SmartNotification.min.js"></script>
+<script th:src="@{/smartadmin/js/smartwidgets/jarvis.widget.min.js}"
+        src="../static/smartadmin/js/smartwidgets/jarvis.widget.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/jquery-form/jquery-form.min.js}"
+        src="../static/smartadmin/js/plugin/jquery-form/jquery-form.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js}"
+        src="../static/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/masked-input/jquery.maskedinput.min.js}"
+        src="../static/smartadmin/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+<script th:src="@{/realaicy/js/fancytree/jquery.fancytree-all.min.js}"
+        src="../static/realaicy/js/fancytree/jquery.fancytree-all.min.js"></script>
+<script th:src="@{/realaicy/js/bootstrap-dialog.min.js}"
+        src="../static/realaicy/js/bootstrap-dialog.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.buttons.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/dataTables.buttons.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/buttons.bootstrap.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/buttons.bootstrap.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.checkboxes.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/dataTables.checkboxes.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.colVis.min.js}"
+        src="../static/smartadmin/js/plugin/datatables/dataTables.colVis.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/datatable-responsive/datatables.responsive.min.js}"
+        src="../static/smartadmin/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+<!-- browser msie issue fix -->
+<script th:src="@{/smartadmin/js/plugin/msie-fix/jquery.mb.browser.min.js}"
+        src="../static/smartadmin/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+<!--[if IE 8]>
+<h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
+<![endif]-->
+<script th:src="@{/smartadmin/js/demo.js}"
+        src="../static/smartadmin/js/demo.js"></script>
+<script th:src="@{/smartadmin/js/app.js}"
+        src="../static/smartadmin/js/app.js"></script>
+</body>
+</html>

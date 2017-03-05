@@ -1,0 +1,153 @@
+<div class="jarviswidget-editbox" xmlns:th="http://www.w3.org/1999/xhtml">
+</div>
+<div class="widget-body no-padding">
+    <form id="realroletree" method="post" th:action="@{/system/user/u2rsave}">
+        <fieldset>
+            <legend>
+                分配角色
+            </legend>
+            <div class="form-group">
+                <label>aaaaaa</label>
+                <div>
+                    <select multiple style="width:100%" class="select2" id="roles">
+                    </select>
+                </div>
+                <input id="user2role" name="user2role" type="hidden" th:value="${user2role}">
+                <input id="userid" name="userid" type="hidden" th:value="${userid}">
+                <input id="user2roles2" name="user2roles2" type="hidden" th:value="${user2roles2}">
+
+
+                <div id="tree2"></div>
+            </div>
+        </fieldset>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fa fa-save"></i>
+                        提交数据
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    var realrols = '';
+
+    var reals2roles ='';
+
+    var atemp = '1,2,3,4';
+
+    pageSetUp();
+
+    var pagefunction = function () {
+
+        function contains(arr, obj) {
+            var i = arr.length;
+            while (i--) {
+                if (arr[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+       // var data2 = [{"selected":true,"text":"测试角色1","id":1},{"selected":true,"text":"测试角色2","id":2},{"selected":true,"text":"测试角色3","id":3},{"text":"测试角色4","id":4},{"text":"测试角色5cd","id":5},{"text":"超级管理员","id":6},{"text":"秘书处处长","id":7},{"text":"专家组长","id":37},{"text":"稽查组长","id":39},{"text":"预稽查组长","id":40},{"text":"专家组成员","id":41},{"text":"稽查组成员","id":42},{"text":"预稽查组成员","id":43},{"text":"秘书成员","id":44},{"text":"项目经理","id":65}];
+
+
+        $("#roles").select2({
+            data: JSON.parse($('#user2roles2').val())
+        });
+
+//        $("#roles").on("select2:select", function (e) { console.log("select2:select", e); });
+
+
+
+        var sColors = '1,2,3,37';
+
+        var aColors = sColors.split(',');
+        var arr = [1, 2, 3];
+
+        $("#roles").on("change", function(e) {
+//            console.log("select val: " + $("#roles").val());
+//            console.log("type: " + typeof $("#roles").val());
+//            console.log("select val: " + $("#roles").val().toString());
+//            reals2roles = $("#roles").val().toString();
+//            console.log("reals2roles: " + reals2roles);
+//            console.log("reals2roles type : " + typeof reals2roles);
+//            console.log("reals2roles type : " + typeof reals2roles.split(","));
+//            console.log("arr type : " + typeof arr);
+//
+//            var str = "["+$("#roles").val().toString()+"]";
+//            var arr22 = eval(str);
+//            console.log("arr22 type : " + typeof arr22);
+
+
+            $("#tree2").fancytree("getTree").visit(function(node){
+                console.log("tree node id " + node.data.realid);
+                if(contains(eval("["+$("#roles").val().toString()+"]"), node.data.realid)){
+                    console.log("yes ");
+                    node.setSelected(true);
+                }else {
+                    node.setSelected(false);
+
+                }
+            });
+        });
+
+        var treeData = JSON.parse("[" + $('#user2role').val() + "]");
+       // console.log("treeData:" +$('#user2role').val());
+       // console.log("user2roles2:" +$('#user2roles2').val());
+
+        $("#tree2").fancytree({
+            checkbox: true,
+            selectMode: 2,
+            source: treeData,
+            select: function (event, data) {
+                var selNodes = data.tree.getSelectedNodes();
+                var selKeys = $.map(selNodes, function (node) {
+                    return node.data.realid;
+                });
+                realrols = selKeys.join(",");
+                console.log("realrols: "+realrols);
+                $("#roles").val(realrols.split(",")).trigger("change");
+            }
+
+        });
+
+        $("#realroletree").validate({
+            debug: true,
+            submitHandler: function (form) {
+                var selNodes = $('#tree2').fancytree("getTree").getSelectedNodes();
+                var selKeys = $.map(selNodes, function (node) {
+                    return node.data.realid;
+                });
+                realrols = selKeys.join(",");
+                $.ajax({
+                    url: '/system/user/u2rsave',
+                    type: 'post',
+                    data: {
+                        userid: $('#userid').val(),
+                        user2role: realrols,
+                        _csrf: $("meta[name='_csrf']").attr("content")
+                    },
+                    success: function (response) {
+                        if (response == "ok") {
+                            real_g_success("用户分配角色成功");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            }
+        });
+    };
+    loadScript("realaicy/js/s2/select2.full.min.js", pagefunction);
+//    pagefunction();
+
+</script>

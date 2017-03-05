@@ -15,8 +15,7 @@ public class HelloController {
      * @return the string
      */
     @RequestMapping("/hello")
-    public String index() {
+    public String hello() {
         return "Greetings from Spring Boot! This is 刘旭东!";
     }
-
 }

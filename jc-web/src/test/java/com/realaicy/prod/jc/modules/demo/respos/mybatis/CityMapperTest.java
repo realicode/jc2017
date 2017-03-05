@@ -26,8 +26,8 @@ public class CityMapperTest {
     @Test
     public void findByState() throws Exception {
 
-        System.out.println(cityMapper.findByState("CA").getName());
-        System.out.println(cityMapper.selectAll().size());
+        /*System.out.println(cityMapper.findByState("CA").getName());
+        System.out.println(cityMapper.selectAll().size());*/
     }
 
 }

@@ -1,0 +1,37 @@
+[
+	{"title": "稽查模板一", "expanded": true, "folder": true, "children": [
+		{"title": "各事件发生时间逻辑", "folder": true, "children": [
+			{"title": "受试者用药时间与试验方案要求一致"},
+			{"title": "访视检查时间与试验方案要求一致"},
+			{"title": "疗效评价时间与试验方案要求一致"},
+			{"title": "安全性评价时间与试验方案要求一致"},
+			{"title": "后续随访时间与试验方案要求一致"}
+		]},
+		{"title": "临床实验过程记录的溯源", "folder": true, "children": [
+			{"title": "临床试验的原始记录是否保存完整"},
+			{"title": "电子系统数据是否有修改"},
+			{"title": "CRF记录的临床实验过程及数据与原始记录一致"},
+			{"title": "CRF中的临床检查数据与总结报告是否一致"},
+			{"title": "CRF的不良事件（AE）的记录及判断与原始病历/受试者日记卡/总结报告是否一致性"},
+			{"title": "PC & Video Games"}
+		]},
+		{"title": "Electronics & Computers", "expanded": true, "folder": true, "children": [
+			{"title": "Electronics", "folder": true, "children": [
+				{"title": "Camera & Photo"},
+				{"title": "TV & Home Cinema"},
+				{"title": "Audio & HiFi"},
+				{"title": "Sat Nav & Car Electronics"},
+				{"title": "Phones"},
+				{"title": "Electronic Accessories"}
+			]},
+			{"title": "Computers", "folder": true, "children": [
+				{"title": "Laptops"},
+				{"title": "Tablets"},
+				{"title": "Computer & Accessories"},
+				{"title": "Computer Components"},
+				{"title": "Software"},
+				{"title": "Printers & Ink"}
+			]}
+		]}
+	]}
+]

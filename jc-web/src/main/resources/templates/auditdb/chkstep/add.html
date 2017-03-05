@@ -1,0 +1,142 @@
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+    <form th:object="${realmodel}" method="POST" th:action="@{/auditdb/chkstep/save}"
+          id="realentity" class="smart-form"
+          xmlns:th="http://www.thymeleaf.org">
+        <fieldset>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input class="" type="text" name="name" th:field="*{name}" placeholder="操作步骤名称"
+                               data-rule-required="true" data-msg-required="请输入操作步骤名称">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入操作步骤名称</span></b>
+                        <input id="updateflag" name="updateflag" type="hidden" th:value="${realneworupdate}">
+                        <input id="updateID" name="updateID" type="hidden" th:value="${realUpdateID}">
+                        <input id="pid" name="pid" type="hidden" th:value="${orgID}">
+                    </label>
+                </section>
+            </div>
+
+            <div class="row">
+                <section class="col col-6">
+                    <label class="label">操作步骤详述：</label>
+                    <label class="textarea textarea-resizable">
+                        <textarea rows="3" class="custom-scroll" name="description" th:field="*{description}"
+                                  placeholder="请输入操作步骤详细描述"
+                                  data-rule-required="true" data-msg-required="请输入操作步骤详细描述"></textarea>
+                    </label>
+                </section>
+            </div>
+        </fieldset>
+        <fieldset style="padding-top: 2px">
+            <section class="col col-6">
+                <span id="realerrormsg"></span>
+            </section>
+            <section class="col col-6" align="right" style="padding-top: 6px">
+                <button type="reset" class="btn btn-primary"
+                        style="height: 32px;width: 80px;font-size: 13px;margin-right: 20px">
+                    重置数据
+                </button>
+                <button type="submit" class="btn btn-primary" style="height: 32px;width: 80px">
+                    提交数据
+                </button>
+            </section>
+
+
+        </fieldset>
+    </form>
+</div>
+
+<script type="text/javascript">
+    pageSetUp();
+
+    $("#realentity").validate({
+        debug: true,
+        invalidHandler: function (event, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                var message = errors == 1
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                $("#realerrormsg").html(message);
+            } else {
+                $("div.error").hide();
+            }
+        },
+        errorLabelContainer: "#realerrormsg",
+        wrapper: "li",
+        errorClass: "state-error",
+        validClass: "state-success",
+        highlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().removeClass(errorClass).addClass(validClass);
+        },
+        rules: {
+            name: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            description: {
+                required: true,
+                minlength: 10
+            }
+        },
+        messages: {
+            name: {
+                required: '请输入角色名称',
+                minlength: '请至少输入3个字符',
+                maxlength: '输入超过了20个字符'
+            },
+            description: {
+                required: '请输入操作详细描述',
+                minlength: '请至少输入10个字符'
+            }
+        },
+
+        submitHandler: function (form) {
+            if ($("#updateflag").val() == "new") {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.substring(0, 2) == "ok") {
+                            real_g_success("创建检查项操作步骤成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            } else {
+                console.log("editedit");
+                $("#updateflag").attr("value", 'editedit');
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.substring(0, 2) == "ok") {
+                            real_g_success("修改检查项操作步骤成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+
+    var pagefunction = function () {
+
+    };
+    pagefunction();
+
+</script>

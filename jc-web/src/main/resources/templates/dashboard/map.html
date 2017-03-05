@@ -1,0 +1,299 @@
+<!-- Bread crumb is created dynamically -->
+<!-- row -->
+<div class="row">
+
+    <!-- col -->
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-home"></i>
+            综合看板
+            <span>>
+				项目区域分布图
+			</span>
+        </h1>
+    </div>
+    <!-- end col -->
+
+    <!-- right side of the page with the sparkline graphs -->
+    <!-- col -->
+    <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        <!-- sparks -->
+        <!-- end sparks -->
+    </div>
+    <!-- end col -->
+
+</div>
+<!-- end row -->
+
+<!--
+	The ID "widget-grid" will start to initialize all widgets below 
+	You do not need to use widgets if you dont want to. Simply remove 
+	the <section></section> and you can use wells or panels instead 
+	-->
+
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget" id="wid-id-0">
+                <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+
+                -->
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-comments"></i> </span>
+                    <h2>全国范围分布</h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+                        <input class="form-control" type="text">
+                    </div>
+                    <!-- end widget edit box -->
+
+                    <!-- widget content -->
+                    <div class="widget-body" style="width: 100%;height: 800px" id="realmap">
+
+                        <!-- this is what the user will see -->
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <!-- end row -->
+
+    <!-- row -->
+
+    <div class="row">
+
+        <!-- a blank row to get started -->
+        <div class="col-sm-12">
+            <!-- your contents here -->
+        </div>
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+<script type="text/javascript">
+
+    var myflag = true;
+
+    pageSetUp();
+
+    var pagefunction = function () {
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('realmap'));
+
+        function randomData() {
+            return Math.round(Math.random() * 18);
+        }
+
+        option = {
+            title: {
+                text: '稽查项目全国区域分布图',
+                subtext: '演示数据 纯属虚构',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: ['项目类型A']
+            },
+            visualMap: {
+                min: 0,
+                max: 20,
+                left: 'left',
+                top: 'bottom',
+                text: ['高', '低'],           // 文本，默认为数值文本
+                calculable: true,
+
+                color: ['#006EDD', '#E0FFFF'],
+
+            },
+            toolbox: {
+                show: false,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+
+            series: [
+                {
+                    name: '项目类型A',
+                    type: 'map',
+                    map: 'china',
+                    nameMap: {
+                        '红桥区': ' ',
+                        '河北区': ' ',
+                        '南开区': ' ',
+                        '和平区': ' '
+                    },
+                    roam: true,
+                    label: {
+                        normal: {
+                            show: true
+                        },
+                        emphasis: {
+                            show: true
+                        }
+                    },
+                    data: [
+                        {name: '北京', value: randomData()},
+                        {name: '天津', value: randomData()},
+                        {name: '上海', value: randomData()},
+                        {name: '重庆', value: randomData()},
+                        {name: '河北', value: randomData()},
+                        {name: '河南', value: randomData()},
+                        {name: '云南', value: randomData()},
+                        {name: '辽宁', value: randomData()},
+                        {name: '黑龙江', value: randomData()},
+                        {name: '湖南', value: randomData()},
+                        {name: '安徽', value: randomData()},
+                        {name: '山东', value: randomData()},
+                        {name: '新疆', value: randomData()},
+                        {name: '江苏', value: randomData()},
+                        {name: '浙江', value: randomData()},
+                        {name: '江西', value: randomData()},
+                        {name: '湖北', value: randomData()},
+                        {name: '广西', value: randomData()},
+                        {name: '甘肃', value: randomData()},
+                        {name: '山西', value: randomData()},
+                        {name: '内蒙古', value: randomData()},
+                        {name: '陕西', value: randomData()},
+                        {name: '吉林', value: randomData()},
+                        {name: '福建', value: randomData()},
+                        {name: '贵州', value: randomData()},
+                        {name: '广东', value: randomData()},
+                        {name: '青海', value: randomData()},
+                        {name: '西藏', value: randomData()},
+                        {name: '四川', value: randomData()},
+                        {name: '宁夏', value: randomData()},
+                        {name: '海南', value: randomData()},
+                        {name: '台湾', value: randomData()},
+                        {name: '香港', value: randomData()},
+                        {name: '澳门', value: randomData()},
+                        {name: '南海诸岛', value: 0, itemStyle: {normal: {opacity: 0}}},
+                        {name: '蓟县', value: randomData()},
+                        {name: '宝坻区', value: randomData()},
+                        {name: '武清区', value: randomData()},
+                        {name: '宁河县', value: randomData()},
+                        {name: '北辰区', value: randomData()},
+                        {name: '西青区', value: randomData()},
+                        {name: '静海县', value: randomData()},
+                        {name: '滨海新区', value: randomData()},
+                        {name: '津南区', value: randomData()},
+                        {name: '东丽区', value: randomData()},
+                        {name: '河东区', value: randomData()},
+                        {name: '河西区', value: randomData()},
+                        {name: '河北区', value: randomData()},
+                        {name: '南开区', value: randomData()},
+                        {name: '红桥区', value: randomData()},
+                        {name: '和平区', value: randomData()}
+
+                    ]
+                }
+
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+        myChart.on('dblclick', function (params) {
+
+            console.log(params.name);
+            if (myflag == true) {
+                option.series[0].map = '天津';
+                option.title.text='稽查项目天津地区分布图';
+                myChart.setOption(option, true);
+                myflag = false;
+            } else {
+                option.series[0].map = 'china';
+                option.title.text='稽查项目全国区域分布图';
+                myChart.setOption(option, true);
+                myflag = true;
+            }
+
+
+        });
+    };
+
+    // end pagefunction
+
+    // destroy generated instances
+    // pagedestroy is called automatically before loading a new page
+    // only usable in AJAX version!
+
+    var pagedestroy = function () {
+
+        /*
+         Example below:
+
+         $("#calednar").fullCalendar( 'destroy' );
+         if (debugState){
+         root.console.log("✔ Calendar destroyed");
+         }
+
+         For common instances, such as Jarviswidgets, Google maps, and Datatables, are automatically destroyed through the app.js loadURL mechanic
+
+         */
+    }
+
+    // end destroy
+
+    // run pagefunction
+    //pagefunction();
+
+    loadScript("realaicy/js/echarts/echarts.js", function () {
+        loadScript("realaicy/js/echarts/china.js", function () {
+            loadScript("realaicy/js/echarts/tianjin.js", pagefunction);
+        });
+    });
+
+</script>

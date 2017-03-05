@@ -61,7 +61,7 @@
         <!--<logger name="org.springboot.sample" level="DEBUG"/>-->
         <logger name="com.realaicy.prod.jc" level="DEBUG" additivity="false">
             <appender-ref ref="REAL_CONSOLE"/>
-            <!--<appender-ref ref="FILE"/>-->
+            <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
 

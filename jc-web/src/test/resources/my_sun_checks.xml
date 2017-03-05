@@ -70,8 +70,8 @@
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
-        <module name="JavadocMethod"/>
-        <module name="JavadocType"/>
+        <!--<module name="JavadocMethod"/>-->
+        <!--<module name="JavadocType"/>-->
         <!--<module name="JavadocVariable"/>-->
         <module name="JavadocStyle">
             <!-- Comment的第一句的末尾是否要有一个句号,true必须有,default为true -->
@@ -104,10 +104,10 @@
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
         <module name="LineLength">
-            <property name="max" value="120"/>
+            <property name="max" value="140"/>
         </module>
         <module name="MethodLength"/>
-        <module name="ParameterNumber"/>
+        <!--<module name="ParameterNumber"/>-->   <!-- realaicy -->
 
 
         <!-- Checks for whitespace                               -->

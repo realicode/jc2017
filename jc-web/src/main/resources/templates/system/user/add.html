@@ -1,0 +1,284 @@
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+    <!--/*@thymesVar id="realmodel" type=""*/-->
+    <form th:object="${realmodel}" method="POST" th:action="@{/system/user/save}"
+          id="realentity" class="smart-form"
+          xmlns:th="http://www.thymeleaf.org">
+        <fieldset>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input type="text" name="username" th:field="*{username}" placeholder="用户名称"
+                               data-rule-required="true" data-msg-required="请输入用户名称">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入用户名称</span></b>
+                        <input id="updateflag" name="updateflag" type="hidden" th:value="${realneworupdate}">
+                        <input id="updateID" name="updateID" type="hidden" th:value="${realUpdateID}">
+                    </label>
+                </section>
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
+                        <input type="email" name="email" th:field="*{email}" placeholder="电子邮箱"
+                               data-rule-required="true" data-msg-required="请输入电子邮箱">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入电子邮箱</span></b>
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input type="password" id="password" name="password" th:field="*{password}" placeholder="用户密码"
+                               data-rule-required="true" data-msg-required="用户密码">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入用户密码</span></b>
+                    </label>
+                </section>
+
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-envelope-o"></i>
+                        <input type="text" name="email" th:field="*{nickname}" placeholder="用户昵称"
+                               data-rule-required="true" data-msg-required="用户昵称">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入用户昵称</span></b>
+                    </label>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="确认密码"
+                               data-rule-required="true" data-msg-required="确认密码">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入确认密码</span></b>
+                    </label>
+                </section>
+                <section class="col col-6">
+                    <label class="select">
+                        <select name="sex">
+                            <option value="0" selected="" disabled="">用户性别</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+
+                        </select> <i></i> </label>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input type="text" name="mobile" th:field="*{mobile}" placeholder="手机号码"
+                               data-rule-required="true" data-msg-required="手机号码">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入手机号码</span></b>
+                    </label>
+                </section>
+                <section class="col col-6">
+                </section>
+            </div>
+
+        </fieldset>
+        <fieldset>
+            <div class="row">
+                <section class="col col-4">
+                    <label for="portrait" class="input input-file">
+                        <div class="button"><input type="file" name="portrait" id="portrait">
+                            点击上传
+                        </div>
+                        <input type="text" id="portraitPath" name="portraitPath" placeholder="请上传用户头像" readonly="">
+                        <input type="hidden" id="portraitUrl" name="portraitUrl">
+
+                    </label>
+
+                </section>
+
+                <section class="col col-4">
+                    <img id="touxiangreview" th:src="${(realmodel.portraitUrl != null && !#strings.isEmpty(realmodel.portraitUrl)) ?
+                    realmodel.portraitUrl : 'http://127.0.0.1:32002/tmp/upload/tmp/male.png'}"
+                    />
+                </section>
+                <section class=" col col-4">
+                </section>
+            </div>
+        </fieldset>
+        <fieldset style="padding-top: 2px">
+            <section class="col col-6">
+                <span id="realerrormsg"></span>
+            </section>
+            <section class="col col-6" align="right" style="padding-top: 6px">
+                <button type="reset" class="btn btn-primary"
+                        style="height: 32px;width: 80px;font-size: 13px;margin-right: 20px">
+                    重置数据
+                </button>
+                <button type="submit" class="btn btn-primary" style="height: 32px;width: 80px">
+                    提交数据
+                </button>
+            </section>
+        </fieldset>
+    </form>
+</div>
+
+<script>
+
+    pageSetUp();
+
+    $(document).ready(function () {
+
+    });
+
+    function uploadPortrait() {
+        console.log("In uploadPortrait()");
+        $("#portraitPath").attr("value", $("#portrait").val());
+        $.ajax({
+            'beforeSend': function (request) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                request.setRequestHeader(header, token);
+            },
+            url: "/uploadPortrait",
+            type: "POST",
+            data: new FormData($("#realentity")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                $("#touxiangreview").attr("src", "http://127.0.0.1:32002/tmp/upload/tmp/" + data);
+                $("#portraitUrl").attr("value", "http://127.0.0.1:32002/tmp/upload/tmp/" + data);
+            },
+            error: function () {
+                // Handle upload error
+                // ...
+            }
+        });
+    } // f
+
+    $("#realentity").validate({
+        invalidHandler: function (event, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                var message = errors == 1
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                $("#realerrormsg").html(message);
+            } else {
+                $("div.error").hide();
+            }
+        },
+        errorLabelContainer: "#realerrormsg",
+        wrapper: "li",
+        errorClass: "state-error",
+        validClass: "state-success",
+        highlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().removeClass(errorClass).addClass(validClass);
+        },
+        rules: {
+            username: {
+                required: true
+            },
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 6,
+                maxlength: 20
+            },
+            passwordConfirm: {
+                required: true,
+                minlength: 6,
+                maxlength: 20,
+                equalTo: '#password'
+            },
+            mobile: {
+                required: true,
+                minlength: 11,
+                isMobile : true
+            }
+        },
+        messages: {
+            username: {
+                required: '请输入用户名'
+            },
+            email: {
+                required: '请输入电子邮箱地址',
+                email: '请输入格式正确的电子邮箱地址'
+            },
+            password: {
+                required: '请输入密码'
+            },
+            passwordConfirm: {
+                required: '请再次输入密码',
+                equalTo: '请确认两次密码输入相同'
+            },
+            mobile: {
+                required: '请输入手机号码',
+                minlength : "确认手机不能小于11个字符",
+                isMobile : "请正确填写您的手机号码"
+            }
+
+
+        },
+
+        submitHandler: function (form) {
+            if ($("#updateflag").val() == "new") {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response == "ok") {
+                            real_g_success("创建用户成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            } else {
+                $("#updateflag").attr("value", 'editedit');
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response == "ok") {
+                            real_g_success("修改用户成功！");
+                        }else{
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+    var pagefunction = function () {
+        console.log("add pagefunction");
+        // 手机号码验证
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+            return this.optional(element) || (length == 11 && mobile.test(value));
+        }, "请正确填写您的手机号码");
+
+
+        if ($("#updateflag").val() == "new") {
+            $("#password").attr("disabled", false);
+            $("#passwordConfirm").attr("disabled", false);
+            $("#username").attr("disabled", false);
+        } else {
+            $("#username").attr("disabled", true);
+            $("#password").attr("disabled", true);
+            $("#passwordConfirm").attr("disabled", true);
+        }
+        $("#portrait").on("change", uploadPortrait);
+    };
+    pagefunction();
+    //loadScript("smartadmin/js/plugin/jquery-form/jquery-form.min.js", pagefunction);
+
+</script>
