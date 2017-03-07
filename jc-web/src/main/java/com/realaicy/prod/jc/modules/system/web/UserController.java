@@ -1,8 +1,7 @@
 package com.realaicy.prod.jc.modules.system.web;
 
-import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
-import com.realaicy.prod.jc.lib.core.data.jpa.search.SearchOperation;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
 import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.Role;
@@ -15,30 +14,22 @@ import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
-import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
 
 /**
  * Created by realaicy on 16/7/15.
@@ -49,16 +40,7 @@ import java.util.regex.Pattern;
 @RequestMapping("/system/user")
 public class UserController extends CRUDWithVOController<User, BigInteger, UserVO> {
 
-    private static JsonMapper binder = JsonMapper.nonDefaultMapper();
-
-
-    private UserService userService;
-    private OrgService orgService;
-
-    private RoleService roleService;
     private static final String[] NAMEDIC = {"username", "password", "nickname", "createTime"};
-
-
     @SuppressWarnings("unused")
     private static final List<String> EDIT_BIND_WHITE_LIST = Arrays.asList("username", "password");
     private static final String PAGE_URL = "system/user/page";
@@ -67,21 +49,12 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     private static final String LIST_ENTITY_URL = "system/user/page";
     private static final String SEARCH_ENTITY_URL = "system/user/search";
     private static final String USER_TO_ROLE_URL = "system/user/user2role";
-
-    @Override
-    protected boolean needConvertForListDT() {
-        return  true;
-    }
-
-    @Override
-    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
-        return userService.convertFromPOListToVOList(poList);
-    }
-
-    @Override
-    protected boolean canBeDelete(User entity) {
-        return false;
-    }
+    private static JsonMapper binder = JsonMapper.nonDefaultMapper();
+    private final PasswordEncoder bcryptEncoder;
+    private final UserSecRepos userSecRepos;
+    private UserService userService;
+    private OrgService orgService;
+    private RoleService roleService;
 
     @Autowired
     public UserController(UserService userService, RoleService roleService,
@@ -95,9 +68,37 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         this.orgService = orgService;
     }
 
-    private final PasswordEncoder bcryptEncoder;
+    private static Specification<User> usersByOrgName(String orgName) {
+        return (userRoot, query, cb) -> cb.like(userRoot.get("org").get("name"), orgName);
+    }
 
-    private final UserSecRepos userSecRepos;
+    public static Specification<User> usersByRoleName(final String roleName) {
+        return (userRoot, query, cb) -> {
+
+            Subquery<Role> rolesubQuery = query.subquery(Role.class);
+            Root<Role> roleRoot = rolesubQuery.from(Role.class);
+            Expression<Collection<User>> roleUsers = roleRoot.get("users");
+            rolesubQuery.select(roleRoot);
+            rolesubQuery.where(cb.like(roleRoot.get("name"), roleName), cb.isMember(userRoot, roleUsers));
+            return cb.exists(rolesubQuery);
+
+        };
+    }
+
+    @Override
+    protected boolean needConvertForListDT() {
+        return true;
+    }
+
+    @Override
+    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
+        return userService.convertFromPOListToVOList(poList);
+    }
+
+    @Override
+    protected boolean canBeDelete(User entity) {
+        return false;
+    }
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/list4select", produces = "application/json")
@@ -235,28 +236,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     }
 
     @Override
-    protected Map<String, Object> crossTableSearch(int start, int length, int orderIndex, String orderType,
-                                                   String search, String realsearch) {
-        Map<String, Object> info = new HashMap<>();
-
-
-        final String operationSetExper = Joiner.on("|").join(SearchOperation.SIMPLE_OPERATION_SET);
-        final Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)((\\p{L}|\\p{N})+?)(\\p{Punct}?),");
-        final Matcher matcher = pattern.matcher(realsearch + ",");
-        while (matcher.find()) {
-            System.out.println(matcher.group(StaticParams.REALNUM.N1));
-            System.out.println(matcher.group(StaticParams.REALNUM.N2));
-            System.out.println(matcher.group(StaticParams.REALNUM.N3));
-            System.out.println(matcher.group(StaticParams.REALNUM.N4));
-
-        }
-
-
-
-        return info;
-    }
-
-    @Override
     protected User internalSaveUpdate(UserVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
         User user = userService.findOne(updateID);
         user.setNickname(realmodel.getNickname());
@@ -268,5 +247,18 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     @Override
     protected void extendSave(User po, BigInteger updateID, BigInteger pid) {
 
+    }
+
+    @Override
+    protected Specification<User> getExtSpec(String str) {
+        Map<String, String> map = Splitter.on(",").withKeyValueSeparator("=").split(str);
+        Specification<User> specification =null;
+        if (map.containsKey("orgname")) {
+            specification = usersByOrgName("%" + map.get("orgname") + "%");
+        }
+        if (map.containsKey("rolename")) {
+            specification = Specifications.where(specification).and(usersByRoleName("%" + map.get("rolename") + "%")) ;
+        }
+        return specification;
     }
 }

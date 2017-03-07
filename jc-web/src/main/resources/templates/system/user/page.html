@@ -72,6 +72,8 @@
                                                        placeholder="过滤所属机构"/>
                                             </th>
                                             <th>
+                                                <input type="text" id='real_filter_role' class="form-control"
+                                                       placeholder="过滤角色"/>
                                             </th>
                                             <th>
                                             </th>
@@ -114,8 +116,6 @@
 
 <script type="text/javascript">
     pageSetUp();
-
-    var realOrgID = "";
 
     function realdel() {
         var rows_selected = $('#dt_basic_real').DataTable().column(0).checkboxes.selected();
@@ -239,6 +239,11 @@
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
+                                $("#real_filter_name").val("");
+                                $("#real_filter_nickname").val("");
+                                $("#real_filter_org").val("");
+                                $("#real_filter_role").val("");
+
                                 realtable.draw();
                             }
                         },
@@ -260,7 +265,7 @@
                             var search_username = $("#real_filter_username").val();
                             var search_nickname = $("#real_filter_nickname").val();
                             var search_org = $("#real_filter_org").val();
-
+                            var search_role = $("#real_filter_role").val();
 
                             if (search_username != undefined && search_username != "") {
                                 searchString += "username:*";
@@ -273,12 +278,13 @@
                                 searchString += "*";
                             }
                             if (search_org != undefined && search_org != "") {
-                                realSearchString += "org:*";
-                                realSearchString += search_org;
-                                realSearchString += "*";
+                                realSearchString += "orgname=" + search_org+",";
+                            }
+                            if (search_role != undefined && search_role != "") {
+                                realSearchString += "rolename=" + search_role + ",";
                             }
                                 d.search = searchString;
-                                d.realsearch = realSearchString;
+                                d.realsearch = realSearchString.substring(0,realSearchString.length-1);
                         },
                         error: function (xhr, status, error) {
                             if (xhr.responseText.indexOf("invalid") == 0) {

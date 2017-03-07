@@ -17,16 +17,12 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.Serializable;
@@ -50,7 +46,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     private static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
     private static final String NO_AUTH_STRING = "NOPrivilege";
-    private static String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+    private static String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
     private static Pattern p = Pattern.compile(regEx);
     private final BaseServiceWithVO<M, ID, V> service;
     private final String initFormParam;
@@ -93,9 +89,9 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         return service;
     }
 
-    protected Class<M> getaClass() {
-        return aClass;
-    }
+//    protected Class<M> getaClass() {
+//        return aClass;
+//    }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public String listEntityPage() {
@@ -207,10 +203,6 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             return null;
         }
 
-        if (realsearch != null && !realsearch.equals("")) {
-            return crossTableSearch(start, length, orderIndex, orderType, search, realsearch);
-        }
-
         Map<String, Object> info = new HashMap<>();
 
         Sort sort;
@@ -227,7 +219,6 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
                 start / length, length, sort
         );
         //pageRequest.getSort().and(new Sort(Sort.Direction.ASC));
-
 
         final BaseSpecificationsBuilder<M> builder = new BaseSpecificationsBuilder<>();
         final String operationSetExper = Joiner.on("|").join(SearchOperation.SIMPLE_OPERATION_SET);
@@ -248,14 +239,18 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             builder.with("deleteFlag", ":", false, "", "");
         }
 
-        final Specification<M> spec = builder.build();
+        Specification<M> spec = builder.build();
+
+        if (realsearch != null && !realsearch.equals("")) {
+            spec = Specifications.where(spec).and(getExtSpec(realsearch));
+        }
+
         List<M> poList = service.findAll(spec, pageRequest);
         if (needConvertForListDT()) {
             info.put("data", convertFromPOListToVOList(poList));
         } else {
             info.put("data", poList);
         }
-
 
         info.put("recordsFiltered", service.count(spec));
         info.put("recordsTotal", service.count());
@@ -387,8 +382,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     protected abstract void extendSave(M po, ID updateID, ID pid);
 
-    protected Map<String, Object> crossTableSearch(int start, int length, int orderIndex, String orderType,
-                                                   String search, String realsearch) {
+    protected Specification<M> getExtSpec(String extSearchStr) {
         return null;
     }
 
