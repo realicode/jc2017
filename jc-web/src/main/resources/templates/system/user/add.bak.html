@@ -5,6 +5,62 @@
 
 
     <!-- content -->
+    <p>
+    </p>
+    <hr class="simple">
+
+    <ul id="myTab1" class="nav nav-tabs bordered">
+        <li class="active">
+            <a href="#s1" data-toggle="tab">用户基本信息<span class="badge bg-color-blue txt-color-white">12</span></a>
+        </li>
+        <li>
+            <a href="#s2" data-toggle="tab"><i class="fa fa-fw fa-lg fa-gear"></i>用户所属机构</a>
+        </li>
+        <li>
+            <a href="#s3" data-toggle="tab"><i class="fa fa-fw fa-lg fa-gear"></i>用户所属角色</a>
+        </li>
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">测试预留<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="#s3" data-toggle="tab">@fat</a>
+                </li>
+                <li>
+                    <a href="#s4" data-toggle="tab">@mdo</a>
+                </li>
+            </ul>
+        </li>
+        <li class="pull-right">
+            <a href="javascript:void(0);">
+                <div class="sparkline txt-color-pinkDark text-align-right" data-sparkline-height="18px" data-sparkline-width="90px" data-sparkline-barwidth="7">
+                    5,10,6,7,4,3
+                </div> </a>
+        </li>
+    </ul>
+
+    <div id="myTabContent1" class="tab-content padding-10">
+        <div class="tab-pane fade in active" id="s1">
+            <p>
+                I have six locks on my door all in a row. When I go out, I lock every other one. I figure no matter how long somebody stands there picking the locks, they are always locking three.
+            </p>
+        </div>
+        <div class="tab-pane fade" id="s2">
+            <p>
+                Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee.
+            </p>
+        </div>
+        <div class="tab-pane fade" id="s3">
+            <p>
+                Etsy mixtape wayfarers, ethical wes anderson tofu before they sold out mcsweeney's organic lomo retro fanny pack lo-fi farm-to-table readymade. Messenger bag gentrify pitchfork tattooed craft beer, iphone skateboard locavore carles etsy salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
+            </p>
+        </div>
+        <div class="tab-pane fade" id="s4">
+            <p>
+                Trust fund seitan letterpress, keytar raw denim keffiyeh etsy art party before they sold out master cleanse gluten-free squid scenester freegan cosby sweater. Fanny pack portland seitan DIY, art party locavore wolf cliche high life echo park Austin. Cred vinyl keffiyeh DIY salvia PBR, banh mi before they sold out farm-to-table.
+            </p>
+        </div>
+    </div>
+
     <!-- end content -->
 
 
@@ -12,9 +68,6 @@
     <form th:object="${realmodel}" method="POST" th:action="@{/system/user/save}"
           id="realentity" class="smart-form"
           xmlns:th="http://www.thymeleaf.org">
-        <header>
-            用户基本信息
-        </header>
         <fieldset>
             <div class="row">
                 <section class="col col-6">
@@ -88,9 +141,6 @@
             </div>
 
         </fieldset>
-        <header>
-            用户所属机构
-        </header>
         <fieldset>
             <div class="row">
                 <section class="col col-2">
@@ -104,10 +154,10 @@
                 </section>
                 <section class=" col col-2">
                     <label class="select">
-                        <select id="cmbProvince"></select>
+                    <select id="cmbProvince"></select>
                         <select id="cmbCity" style="display: none"></select>
                         <select id="cmbArea" style="display: none"></select>
-                    </label>
+                </label>
                 </section>
                 <section class=" col col-6">
                     <label class="select">
@@ -121,9 +171,7 @@
                 </section>
             </div>
         </fieldset>
-        <header>
-            用户扩展信息
-        </header>
+
         <fieldset>
             <div class="row">
                 <section class="col col-4">
@@ -171,7 +219,7 @@
     $(document).ready(function () {
 
     });
-
+    
     function laodOrg() {
 
         console.log("laodOrg");
@@ -191,7 +239,7 @@
             },
             success:function(data,textStatus,jqXHR){
                 $.each(data, function(i, n){
-                    // console.info( data[i].name );
+                   // console.info( data[i].name );
                     $("#sel_orgName").append("<option value="+data[i].id+" >"+ data[i].name +"</option>");
 
                 });
@@ -249,8 +297,8 @@
             var errors = validator.numberOfInvalids();
             if (errors) {
                 var message = errors == 1
-                    ? 'You missed 1 field. It has been highlighted'
-                    : 'You missed ' + errors + ' fields. They have been highlighted';
+                        ? 'You missed 1 field. It has been highlighted'
+                        : 'You missed ' + errors + ' fields. They have been highlighted';
                 $("#realerrormsg").html(message);
             } else {
                 $("div.error").hide();
@@ -385,7 +433,7 @@
 
 
     };
-    //    pagefunction();
+//    pagefunction();
     loadScript("realaicy/js/geo.js", pagefunction);
 
     //loadScript("smartadmin/js/plugin/jquery-form/jquery-form.min.js", pagefunction);

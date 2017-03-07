@@ -1,6 +1,8 @@
 package com.realaicy.prod.jc.modules.system.service;
 
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
+import com.realaicy.prod.jc.modules.system.model.Org;
+import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +22,11 @@ public interface UserService extends BaseServiceWithVO<User, BigInteger, UserVO>
 
     List<User> findByUsernameContaining(String username);
 
-    List<User> findByRoleID(BigInteger roleid);
+    Boolean ifHasNoDelUserByRole(Role role);
+
+    Boolean ifHasNoDelUserByOrg(Org org);
+
+    List<UserVO> convertFromPOListToVOList(List<User> poList);
 
 
 }

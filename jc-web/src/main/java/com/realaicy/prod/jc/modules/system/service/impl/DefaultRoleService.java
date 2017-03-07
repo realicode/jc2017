@@ -5,6 +5,8 @@ import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.vo.RoleVO;
 import com.realaicy.prod.jc.modules.system.repos.RoleRepos;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
+import com.realaicy.prod.jc.modules.system.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +22,13 @@ import java.util.List;
 public class DefaultRoleService extends DefaultBaseServiceImpl<Role, BigInteger>
         implements RoleService {
 
+    private final UserService userService;
+
+    @Autowired
+    public DefaultRoleService(UserService service) {
+        this.userService = service;
+    }
+
     @Override
     public Role findByRoleName(String roleName) {
         return ((RoleRepos) baseRepository).findByName(roleName);
@@ -28,6 +37,11 @@ public class DefaultRoleService extends DefaultBaseServiceImpl<Role, BigInteger>
     @Override
     public List<Role> findByDeleteFlag(Boolean deleteFlag) {
         return ((RoleRepos) baseRepository).findByDeleteFlag(deleteFlag);
+    }
+
+    @Override
+    public boolean canBeDelete(Role entity) {
+        return !userService.ifHasNoDelUserByRole(entity);
     }
 
     @Override

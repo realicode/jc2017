@@ -67,7 +67,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     public CRUDWithVOController(BaseServiceWithVO<M, ID, V> service, String initFormParam, String[] nameDic, String pageUrl,
                                 String newEntityUrl, String editEntityUrl, String listUrl, String searchEntityUrl,
-                                Class<M> aClass, Class<V> voClass, List<String> editBindWhiteList) {
+                                Class<M> poClass, Class<V> voClass, List<String> editBindWhiteList) {
         this.service = service;
         this.initFormParam = initFormParam;
         this.nameDic = nameDic;
@@ -76,7 +76,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         this.listUrl = listUrl;
         this.searchEntityUrl = searchEntityUrl;
         this.pageUrl = pageUrl;
-        this.aClass = aClass;
+        this.aClass = poClass;
         this.voClass = voClass;
         this.editBindWhiteList = editBindWhiteList;
     }
@@ -149,8 +149,8 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             V vo = voClass.newInstance();
             M po = service.findOne(id);
             BeanUtils.copyProperties(po, vo);
-            extendShow(po,vo);
-            model.addAttribute("realmodel",vo);
+            extendShow(po, vo);
+            model.addAttribute("realmodel", vo);
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -200,11 +200,15 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             @RequestParam(value = "order[0][column]", defaultValue = "1") int orderIndex,
             @RequestParam(value = "order[0][dir]", defaultValue = "asc") String orderType,
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "orgID", required = false) String orgID
+            @RequestParam(value = "realsearch", required = false) String realsearch
     ) {
 
         if (!checkAuth("r", aClass.getSimpleName())) {
             return null;
+        }
+
+        if (realsearch != null && !realsearch.equals("")) {
+            return crossTableSearch(start, length, orderIndex, orderType, search, realsearch);
         }
 
         Map<String, Object> info = new HashMap<>();
@@ -245,10 +249,25 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         }
 
         final Specification<M> spec = builder.build();
-        info.put("data", service.findAll(spec, pageRequest));
+        List<M> poList = service.findAll(spec, pageRequest);
+        if (needConvertForListDT()) {
+            info.put("data", convertFromPOListToVOList(poList));
+        } else {
+            info.put("data", poList);
+        }
+
+
         info.put("recordsFiltered", service.count(spec));
         info.put("recordsTotal", service.count());
         return info;
+    }
+
+    protected boolean needConvertForListDT() {
+        return false;
+    }
+
+    protected List<V> convertFromPOListToVOList(List<M> poList) {
+        return null;
     }
 
 
@@ -269,14 +288,21 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         }
 
         M entity = service.findOne(id);
-        if (entity instanceof LogicDeletable) {
-            ((LogicDeletable) entity).markDeleted();
-            service.save(entity);
+        if (canBeDelete(entity)) {
+            if (entity instanceof LogicDeletable) {
+                ((LogicDeletable) entity).markDeleted();
+                service.save(entity);
+            } else {
+                service.delete(entity);
+            }
         } else {
-            service.delete(entity);
+            return "业务条件限制，无法删除";
         }
+
         return "ok";
     }
+
+    protected abstract boolean canBeDelete(M entity);
 
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -360,5 +386,11 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     protected abstract M internalSaveUpdate(V realmodel, ID updateID, ID pid) throws SaveNewException;
 
     protected abstract void extendSave(M po, ID updateID, ID pid);
+
+    protected Map<String, Object> crossTableSearch(int start, int length, int orderIndex, String orderType,
+                                                   String search, String realsearch) {
+        return null;
+    }
+
 
 }

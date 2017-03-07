@@ -4,22 +4,13 @@ import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.vo.OrgVO;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
-import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-/**
- * Created by realaicy on 16/7/15.
- * 登录
- */
 
 @Controller
 @RequestMapping("/system/org")
@@ -42,9 +33,10 @@ public class OrgController extends CRUDWithVOController<Org, BigInteger, OrgVO> 
         this.orgService = orgService;
     }
 
-    @ModelAttribute("regionList")
-    public List<String> cityList() {
-        return Arrays.asList(StaticParams.GEO.REGION);
+
+    @Override
+    protected boolean canBeDelete(Org entity) {
+        return orgService.canBeDelete(entity);
     }
 
     @Override

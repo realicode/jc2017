@@ -5,7 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigInteger;
 import java.util.Set;
 
@@ -18,7 +25,7 @@ public class User extends CommonDeletableEntity<BigInteger> {
 
     @ManyToOne()
     @JoinColumn(name = "ORG_ID")
-    public Org org;
+    private Org org;
     /**
      * 用户名称
      */

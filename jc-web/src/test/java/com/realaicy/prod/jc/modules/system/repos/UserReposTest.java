@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -19,6 +21,11 @@ public class UserReposTest {
     @Test
     public void findByUsername() throws Exception {
         assertThat(userRepos.findByUsername("realaicy").getOrg().getName()).isEqualTo("虚拟机构");
+    }
+
+    @Test
+    public void findFirstNoDeletedUserIDByRoleIDNative() throws Exception {
+        assertThat(userRepos.findFirstNoDeletedUserIDByRoleIDNative(BigInteger.valueOf(7L))).isNotNull();
     }
 
 }

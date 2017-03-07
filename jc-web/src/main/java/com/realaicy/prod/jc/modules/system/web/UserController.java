@@ -1,6 +1,8 @@
 package com.realaicy.prod.jc.modules.system.web;
 
+import com.google.common.base.Joiner;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
+import com.realaicy.prod.jc.lib.core.data.jpa.search.SearchOperation;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
 import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.Role;
@@ -13,6 +15,7 @@ import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by realaicy on 16/7/15.
@@ -51,20 +56,36 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     private OrgService orgService;
 
     private RoleService roleService;
-    private static final  String[] NAMEDIC = {"username", "password", "nickname", "createTime"};
-    @SuppressWarnings("unused")
-    private static final  List<String> EDIT_BIND_WHITE_LIST = Arrays.asList("username", "password");
-    private static final  String PAGE_URL = "system/user/page";
-    private static final  String NEW_ENTITY_URL = "system/user/add";
-    private static final  String EDIT_ENTITY_URL = "system/user/add";
-    private static final  String LIST_ENTITY_URL = "system/user/page";
-    private static final  String SEARCH_ENTITY_URL = "system/user/search";
-    private static final  String USER_TO_ROLE_URL = "system/user/user2role";
+    private static final String[] NAMEDIC = {"username", "password", "nickname", "createTime"};
 
+
+    @SuppressWarnings("unused")
+    private static final List<String> EDIT_BIND_WHITE_LIST = Arrays.asList("username", "password");
+    private static final String PAGE_URL = "system/user/page";
+    private static final String NEW_ENTITY_URL = "system/user/add";
+    private static final String EDIT_ENTITY_URL = "system/user/add";
+    private static final String LIST_ENTITY_URL = "system/user/page";
+    private static final String SEARCH_ENTITY_URL = "system/user/search";
+    private static final String USER_TO_ROLE_URL = "system/user/user2role";
+
+    @Override
+    protected boolean needConvertForListDT() {
+        return  true;
+    }
+
+    @Override
+    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
+        return userService.convertFromPOListToVOList(poList);
+    }
+
+    @Override
+    protected boolean canBeDelete(User entity) {
+        return false;
+    }
 
     @Autowired
     public UserController(UserService userService, RoleService roleService,
-                          PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos,OrgService orgService) {
+                          PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos, OrgService orgService) {
         super(userService, "user", NAMEDIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, User.class, UserVO.class, EDIT_BIND_WHITE_LIST);
         this.userService = userService;
@@ -120,7 +141,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
         String roleNames = "";
         user.getRoles().clear();
-        user.setRolenames(roleNames);
+        //user.setRolenames(roleNames);
         userService.save(user);
         if (user2role != null && !Objects.equals(user2role, "")) {
             for (String str : user2role.split(",")) {
@@ -211,6 +232,28 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     protected void extendSave(User po, UserVO realmodel) {
         Org org = orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID())));
         po.setOrg(org);
+    }
+
+    @Override
+    protected Map<String, Object> crossTableSearch(int start, int length, int orderIndex, String orderType,
+                                                   String search, String realsearch) {
+        Map<String, Object> info = new HashMap<>();
+
+
+        final String operationSetExper = Joiner.on("|").join(SearchOperation.SIMPLE_OPERATION_SET);
+        final Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)((\\p{L}|\\p{N})+?)(\\p{Punct}?),");
+        final Matcher matcher = pattern.matcher(realsearch + ",");
+        while (matcher.find()) {
+            System.out.println(matcher.group(StaticParams.REALNUM.N1));
+            System.out.println(matcher.group(StaticParams.REALNUM.N2));
+            System.out.println(matcher.group(StaticParams.REALNUM.N3));
+            System.out.println(matcher.group(StaticParams.REALNUM.N4));
+
+        }
+
+
+
+        return info;
     }
 
     @Override

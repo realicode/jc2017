@@ -16,4 +16,5 @@ public interface RoleRepos extends BaseJPARepository<Role, BigInteger> {
 
     List<Role> findByDeleteFlag(Boolean deleteFlag);
 
+
 }

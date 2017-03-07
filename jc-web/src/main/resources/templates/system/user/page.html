@@ -68,8 +68,12 @@
                                                        placeholder="过滤昵称"/>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_password' class="form-control"
-                                                       placeholder="过滤角色"/>
+                                                <input type="text" id='real_filter_org' class="form-control"
+                                                       placeholder="过滤所属机构"/>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
                                             </th>
                                             <th>
                                             </th>
@@ -83,13 +87,15 @@
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
                                                     class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                用户名称
+                                                用户名
                                             </th>
-                                            <th class="realaicy_table_header">昵称</th>
+                                            <th class="realaicy_table_header">用户昵称</th>
                                             <th class="realaicy_table_header">所属机构</th>
+                                            <th class="realaicy_table_header">用户角色</th>
                                             <th data-hide="phone" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>用户角色
+                                                    class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i>移动电话
                                             </th>
+                                            <th class="realaicy_table_header">电子邮箱</th>
                                             <th class="realaicy_table_header">创建时间</th>
                                             <th class="realaicy_table_header">操作按钮</th>
                                         </tr>
@@ -250,8 +256,12 @@
                         "data": function (d) {
                             delete d.columns;
                             var searchString = "";
+                            var realSearchString = "";
                             var search_username = $("#real_filter_username").val();
                             var search_nickname = $("#real_filter_nickname").val();
+                            var search_org = $("#real_filter_org").val();
+
+
                             if (search_username != undefined && search_username != "") {
                                 searchString += "username:*";
                                 searchString += search_username;
@@ -262,8 +272,13 @@
                                 searchString += search_nickname;
                                 searchString += "*";
                             }
+                            if (search_org != undefined && search_org != "") {
+                                realSearchString += "org:*";
+                                realSearchString += search_org;
+                                realSearchString += "*";
+                            }
                                 d.search = searchString;
-
+                                d.realsearch = realSearchString;
                         },
                         error: function (xhr, status, error) {
                             if (xhr.responseText.indexOf("invalid") == 0) {
@@ -277,8 +292,10 @@
                         {"data": "id","width":"20px"},
                         {"data": "username","width":"10%"},
                         {"data": "nickname","width":"10%"},
-                        {"data": "org.name","width":"20%"},
-                        {"data": "rolenames"},
+                        {"data": "orgName","width":"20%"},
+                        {"data": "roleNames"},
+                        {"data": "mobile"},
+                        {"data": "email"},
                         {"data": "createTime","width":"10%"},
                         {
                             "data": null,

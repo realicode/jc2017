@@ -1,15 +1,19 @@
 package com.realaicy.prod.jc.modules.system.service.impl;
 
 import com.realaicy.prod.jc.lib.core.service.impl.DefaultBaseServiceImpl;
+import com.realaicy.prod.jc.modules.system.model.Org;
+import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 import com.realaicy.prod.jc.modules.system.repos.UserRepos;
 import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,9 +43,37 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
     }
 
     @Override
-    public List<User> findByRoleID(BigInteger roleid) {
+    public Boolean ifHasNoDelUserByRole(Role role) {
+        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByRoleIDNative(role.getId()) != null;
+    }
 
-        return null;
+    @Override
+    public Boolean ifHasNoDelUserByOrg(Org org) {
+        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByOrgIDNative(org.getId()) != null;
+
+    }
+
+    @Override
+    public List<UserVO> convertFromPOListToVOList(List<User> poList) {
+
+        List<UserVO> voList = new ArrayList<>();
+        for (User userPO : poList) {
+            UserVO userVO = new UserVO(userPO);
+            String roleIDs = "";
+            String roleNames = "";
+            for (Role role : userPO.getRoles()) {
+                roleIDs += role.getId();
+                roleIDs += " || ";
+
+                roleNames += role.getName();
+                roleNames += " || ";
+            }
+            userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
+            userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
+            voList.add(userVO);
+        }
+        return voList;
+
     }
 
 

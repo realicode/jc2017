@@ -3,8 +3,6 @@ package com.realaicy.prod.jc.modules.system.model.vo;
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 /**

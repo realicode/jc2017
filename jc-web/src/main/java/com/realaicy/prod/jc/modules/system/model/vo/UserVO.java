@@ -1,9 +1,13 @@
 package com.realaicy.prod.jc.modules.system.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
+import com.realaicy.prod.jc.modules.system.model.User;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 /**
  * Created by realaicy on 2016/10/16.
@@ -11,8 +15,6 @@ import java.math.BigInteger;
  * xxs
  */
 public class UserVO extends BaseVO<BigInteger> {
-
-
     private BigInteger id;
     /**
      * 用户名称
@@ -29,7 +31,6 @@ public class UserVO extends BaseVO<BigInteger> {
      */
     @NotEmpty
     private String password;
-
     /**
      * 用户邮箱地址
      */
@@ -65,6 +66,57 @@ public class UserVO extends BaseVO<BigInteger> {
      * 用户性别
      */
     private char sex;
+    /**
+     * 用户角色名称集合（以，分隔开）
+     */
+    private String roleNames;
+    /**
+     * 用户角色ID集合（以，分隔开）
+     */
+    private String roleIDs;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
+    private Date createTime;
+
+    public UserVO() {
+    }
+
+    public UserVO(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.orgRegion = user.getOrg().getRegion();
+        this.orgProvince = user.getOrg().getProvince();
+        this.orgName = user.getOrg().getName();
+        this.mobile = user.getMobile();
+        this.createTime = user.getCreateTime();
+
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getRoleNames() {
+        return roleNames;
+    }
+
+    public void setRoleNames(String roleNames) {
+        this.roleNames = roleNames;
+    }
+
+    public String getRoleIDs() {
+        return roleIDs;
+    }
+
+    public void setRoleIDs(String roleIDs) {
+        this.roleIDs = roleIDs;
+    }
 
     public String getOrgRegion() {
         return orgRegion;

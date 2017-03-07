@@ -80,6 +80,11 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
 
 
     @Override
+    protected boolean canBeDelete(MedDra entity) {
+        return false;
+    }
+
+    @Override
     protected void internalSaveNew(MedDraVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
 
     }

@@ -47,6 +47,11 @@ public class AuditCheckItemController extends TreeController<AuditCheckItem, Big
     }
 
     @Override
+    protected boolean canBeDelete(AuditCheckItem entity) {
+        return false;
+    }
+
+    @Override
     protected void internalSaveNew(AuditCheckItemVO realmodel, BigInteger updateID, BigInteger pid)
             throws SaveNewException {
     }

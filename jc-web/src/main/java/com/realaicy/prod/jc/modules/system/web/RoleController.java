@@ -40,6 +40,11 @@ public class RoleController extends CRUDWithVOController<Role, BigInteger, RoleV
     }
 
     @Override
+    protected boolean canBeDelete(Role entity) {
+        return roleService.canBeDelete(entity);
+    }
+
+    @Override
     protected void internalSaveNew(RoleVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
 //        if (roleService.findByNameWithInAOrg(realmodel.getName(), realmodel.getOrgID()) != null)
 //            throw new SaveNewException("error角色名称已存在!");

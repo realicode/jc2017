@@ -7,9 +7,9 @@
                 分配角色
             </legend>
             <div class="form-group">
-                <label>aaaaaa</label>
+                <label>已分配角色</label>
                 <div>
-                    <select multiple style="width:100%" class="select2" id="roles">
+                    <select multiple style="width:100%" class="select2" id="roles" name="aaa">
                     </select>
                 </div>
                 <input id="user2role" name="user2role" type="hidden" th:value="${user2role}">
@@ -39,8 +39,6 @@
 
     var reals2roles ='';
 
-    var atemp = '1,2,3,4';
-
     pageSetUp();
 
     var pagefunction = function () {
@@ -55,53 +53,23 @@
             return false;
         }
 
-        // var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
-       // var data2 = [{"selected":true,"text":"测试角色1","id":1},{"selected":true,"text":"测试角色2","id":2},{"selected":true,"text":"测试角色3","id":3},{"text":"测试角色4","id":4},{"text":"测试角色5cd","id":5},{"text":"超级管理员","id":6},{"text":"秘书处处长","id":7},{"text":"专家组长","id":37},{"text":"稽查组长","id":39},{"text":"预稽查组长","id":40},{"text":"专家组成员","id":41},{"text":"稽查组成员","id":42},{"text":"预稽查组成员","id":43},{"text":"秘书成员","id":44},{"text":"项目经理","id":65}];
-
-
         $("#roles").select2({
             data: JSON.parse($('#user2roles2').val())
         });
 
-//        $("#roles").on("select2:select", function (e) { console.log("select2:select", e); });
-
-
-
-        var sColors = '1,2,3,37';
-
-        var aColors = sColors.split(',');
-        var arr = [1, 2, 3];
-
         $("#roles").on("change", function(e) {
-//            console.log("select val: " + $("#roles").val());
-//            console.log("type: " + typeof $("#roles").val());
-//            console.log("select val: " + $("#roles").val().toString());
-//            reals2roles = $("#roles").val().toString();
-//            console.log("reals2roles: " + reals2roles);
-//            console.log("reals2roles type : " + typeof reals2roles);
-//            console.log("reals2roles type : " + typeof reals2roles.split(","));
-//            console.log("arr type : " + typeof arr);
-//
-//            var str = "["+$("#roles").val().toString()+"]";
-//            var arr22 = eval(str);
-//            console.log("arr22 type : " + typeof arr22);
-
-
             $("#tree2").fancytree("getTree").visit(function(node){
-                console.log("tree node id " + node.data.realid);
+//                console.log("tree node id " + node.data.realid);
                 if(contains(eval("["+$("#roles").val().toString()+"]"), node.data.realid)){
-                    console.log("yes ");
+//                    console.log("yes ");
                     node.setSelected(true);
                 }else {
                     node.setSelected(false);
-
                 }
             });
         });
 
         var treeData = JSON.parse("[" + $('#user2role').val() + "]");
-       // console.log("treeData:" +$('#user2role').val());
-       // console.log("user2roles2:" +$('#user2roles2').val());
 
         $("#tree2").fancytree({
             checkbox: true,

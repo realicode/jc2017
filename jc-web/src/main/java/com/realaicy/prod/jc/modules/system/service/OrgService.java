@@ -12,8 +12,10 @@ import java.util.List;
  * Created by realaicy on 16/3/14.
  * xxx
  */
-public interface OrgService extends BaseServiceWithVO<Org, BigInteger,OrgVO> {
+public interface OrgService extends BaseServiceWithVO<Org, BigInteger, OrgVO> {
 
     List<Org> findByRegion(String region);
     List<Org> findByProvince(String province);
+    boolean canBeDelete(Org entity);
+
 }

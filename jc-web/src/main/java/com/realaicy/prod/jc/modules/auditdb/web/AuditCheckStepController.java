@@ -43,6 +43,11 @@ public class AuditCheckStepController extends CRUDWithVOController<AuditCheckSte
     }
 
     @Override
+    protected boolean canBeDelete(AuditCheckStep entity) {
+        return false;
+    }
+
+    @Override
     protected void internalSaveNew(AuditCheckStepVO realmodel,
                                    BigInteger updateID, BigInteger pid) throws SaveNewException {
 

@@ -183,6 +183,7 @@
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
+                                $("#real_filter_name").val("");
                                 realtable.draw();
                             }
                         },
