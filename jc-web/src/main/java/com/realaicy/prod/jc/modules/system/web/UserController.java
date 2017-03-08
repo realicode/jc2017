@@ -22,14 +22,25 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by realaicy on 16/7/15.
@@ -72,7 +83,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         return (userRoot, query, cb) -> cb.like(userRoot.get("org").get("name"), orgName);
     }
 
-    public static Specification<User> usersByRoleName(final String roleName) {
+    private static Specification<User> usersByRoleName(final String roleName) {
         return (userRoot, query, cb) -> {
 
             Subquery<Role> rolesubQuery = query.subquery(Role.class);
@@ -85,19 +96,10 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         };
     }
 
-    @Override
-    protected boolean needConvertForListDT() {
-        return true;
-    }
-
-    @Override
-    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
-        return userService.convertFromPOListToVOList(poList);
-    }
-
-    @Override
-    protected boolean canBeDelete(User entity) {
-        return false;
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/checkusername", produces = "application/json")
+    public Boolean checkUsernameAvailable(@RequestParam(value = "username") String username) {
+        return !userService.checkUsername(username);
     }
 
     @ResponseBody
@@ -124,14 +126,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         return USER_TO_ROLE_URL;
     }
 
-    @Override
-    protected void extendShow(User po, UserVO realmodel) {
-        realmodel.setOrgRegion(po.getOrg().getRegion());
-        realmodel.setOrgProvince(po.getOrg().getProvince());
-        realmodel.setOrgName(po.getOrg().getName());
-        realmodel.setOrgID(po.getOrg().getId().toString());
-
-    }
 
     @RequestMapping(value = "/u2rsave", method = RequestMethod.POST)
     @ResponseBody
@@ -203,6 +197,31 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     }
 
     @Override
+    protected boolean needConvertForListDT() {
+        return true;
+    }
+
+    @Override
+    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
+        return userService.convertFromPOListToVOList(poList);
+    }
+
+    @Override
+    protected boolean canBeDelete(User entity) {
+        return false;
+    }
+
+
+    @Override
+    protected void extendShow(User po, UserVO realmodel) {
+        realmodel.setOrgRegion(po.getOrg().getRegion());
+        realmodel.setOrgProvince(po.getOrg().getProvince());
+        realmodel.setOrgName(po.getOrg().getName());
+        realmodel.setOrgID(po.getOrg().getId().toString());
+
+    }
+
+    @Override
     protected void internalSaveNew(UserVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
 
         if (userService.findByName(realmodel.getUsername()) != null) {
@@ -252,12 +271,12 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     @Override
     protected Specification<User> getExtSpec(String str) {
         Map<String, String> map = Splitter.on(",").withKeyValueSeparator("=").split(str);
-        Specification<User> specification =null;
+        Specification<User> specification = null;
         if (map.containsKey("orgname")) {
             specification = usersByOrgName("%" + map.get("orgname") + "%");
         }
         if (map.containsKey("rolename")) {
-            specification = Specifications.where(specification).and(usersByRoleName("%" + map.get("rolename") + "%")) ;
+            specification = Specifications.where(specification).and(usersByRoleName("%" + map.get("rolename") + "%"));
         }
         return specification;
     }

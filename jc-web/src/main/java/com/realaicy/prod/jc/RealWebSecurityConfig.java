@@ -15,8 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.REALAICY_ALL;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.SB_ALL;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.*;
 
 
 /**
@@ -58,7 +57,7 @@ public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers(SB_ALL, REALAICY_ALL,
+                .antMatchers(SB_ALL, REALAICY_ALL, REALRES, SIGNUP, SIGNUP_CHECKUSERNAME, SIGNUP_SENTMBCODE,
                         StaticParams.PATHREGX.STATIC, StaticParams.PATHREGX.TEMP_TEST, "/runtime/tasks/**").permitAll()//无需访问权限
                 .antMatchers(StaticParams.PATHREGX.AUTHADMIN).hasAuthority(StaticParams.USERROLE.ROLE_ADMIN)//admin角色访问权限
                 .antMatchers(StaticParams.PATHREGX.AUTHUSER).hasAuthority(StaticParams.USERROLE.ROLE_USER)//user角色访问权限

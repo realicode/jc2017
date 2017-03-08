@@ -27,6 +27,11 @@ public interface UserRepos extends BaseJPARepository<User, BigInteger> {
             nativeQuery = true)
     BigInteger findFirstNoDeletedUserIDByOrgIDNative(@Param("orgID") BigInteger orgID);
 
+    @Query(value = "SELECT count(u.ID) FROM jc_sys_user u "
+            + "WHERE u.USERNAME = :username AND u.F_DELETED = 0",
+            nativeQuery = true)
+    Integer checkUsername(@Param("username") String username);
+
     List<User> findTop10ByUsernameContaining(String username);
 
 }

@@ -1,7 +1,6 @@
 package com.realaicy.prod.jc.modules.system.service;
 
 import com.realaicy.prod.jc.lib.core.data.jpa.search.BaseSpecificationsBuilder;
-import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
 import org.junit.Test;
@@ -17,6 +16,8 @@ import javax.persistence.criteria.*;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by realaicy on 2017/3/6.
@@ -37,7 +38,7 @@ public class UserServiceTest {
                 final Subquery<BigInteger> roleSubQuery = query.subquery(BigInteger.class);
                 final Root<Role> roleRoot = roleSubQuery.from(Role.class);
                 final Join<Role, User> roleUserJoin = roleRoot.join("users");
-                roleSubQuery.select(roleUserJoin.<BigInteger> get("id"));
+                roleSubQuery.select(roleUserJoin.<BigInteger>get("id"));
                 roleSubQuery.where(cb.equal(roleRoot.<BigInteger>get("id"), roleID));
                 return cb.in(userRoot.get("id")).value(roleSubQuery);
             }
@@ -51,7 +52,7 @@ public class UserServiceTest {
             Root<Role> roleRoot = rolesubQuery.from(Role.class);
             Expression<Collection<User>> roleUsers = roleRoot.get("users");
             rolesubQuery.select(roleRoot);
-            rolesubQuery.where(cb.like(roleRoot.get("name"),roleName),cb.isMember(userRoot,roleUsers));
+            rolesubQuery.where(cb.like(roleRoot.get("name"), roleName), cb.isMember(userRoot, roleUsers));
             return cb.exists(rolesubQuery);
 
         };
@@ -63,7 +64,7 @@ public class UserServiceTest {
             query.distinct(true);
             Root<Role> roleRoot = query.from(Role.class);
             Expression<Collection<User>> roleUsers = roleRoot.get("users");
-            return cb.and(cb.like(roleRoot.get("name"),roleName),cb.isMember(userRoot,roleUsers));
+            return cb.and(cb.like(roleRoot.get("name"), roleName), cb.isMember(userRoot, roleUsers));
         };
     }
 
@@ -73,7 +74,7 @@ public class UserServiceTest {
             public Predicate toPredicate(final Root<User> userRoot, final CriteriaQuery<?> query,
                                          final CriteriaBuilder cb) {
 
-                return cb.like(userRoot.get("org").get("name"),orgName);
+                return cb.like(userRoot.get("org").get("name"), orgName);
 
             }
         };
@@ -112,6 +113,15 @@ public class UserServiceTest {
 
 
 //        assertThat(userRepos.findByUsername("realaicy").getOrg().getName()).isEqualTo("虚拟机构");
+    }
+
+
+    @Test
+    public void checkUsername() {
+
+        assertThat(userService.checkUsername("realaicy")).isEqualTo(true);
+        assertThat(userService.checkUsername("aaa")).isEqualTo(false);
+
     }
 
 }

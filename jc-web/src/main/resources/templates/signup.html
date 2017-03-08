@@ -1,0 +1,427 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" style="height: 100%">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Oxygen &mdash; Free Website Template, Free HTML5 Template by gettemplates.co</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Free HTML5 Website Template by gettemplates.co"/>
+    <meta name="keywords"
+          content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive"/>
+    <meta name="author" content="gettemplates.co"/>
+
+
+    <!-- <link href='https://fonts.googleapis.com/css?family=Work+Sans:400,300,600,400italic,700' rel='stylesheet' type='text/css'> -->
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realaicy/css/signup/animate.css}"
+          href="../static/realaicy/css/signup/animate.css"/>
+
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/bootstrap.css}"
+          href="../static/smartadmin/css/bootstrap.css"/>
+
+    <!-- Theme style  -->
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realaicy/css/signup/style.css}"
+          href="../static/realaicy/css/signup/style.css"/>
+
+    <style>
+        .real_signup_label_success_temp {
+            background: url("http://127.0.0.1:48080/realaicy/img/signup/checked1.png") fixed center center no-repeat;
+            background-size: auto;
+            /*width: 100%;*/
+        }
+
+        .error{
+            color: #9f302b;
+        }
+    </style>
+
+    <!-- Modernizr JS -->
+    <script th:src="@{/realaicy/js/signup/modernizr-2.6.2.min.js}"
+            src="../static/realaicy/js/signup/modernizr-2.6.2.min.js"></script>
+    <!-- FOR IE9 below -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/realaicy/js/signup/respond.min.js}"
+            src="../static/realaicy/js/signup/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+
+<div class="gtco-loader"></div>
+
+<div id="page">
+
+
+    <div id="gtco-started">
+        <div class="gtco-container">
+            <div class="row animate-box">
+                <div class="col-md-8 col-md-offset-2 text-center gtco-heading">
+                    <h2>请填写注册信息</h2>
+                </div>
+            </div>
+            <div class="row animate-box">
+                <form class="form-inline" id="real_signup">
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="text" class="form-control" id="username" name="username"
+                                       placeholder="请输入用户名" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="password" class="form-control" id="passwd" name="passwd"
+                                       placeholder="请输入密码" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-3">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="password" class="form-control" id="passwdconfirm" name="passwdconfirm"
+                                       placeholder="请再次输入密码" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-3">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="text" class="form-control" id="mobile" name="mobile"
+                                       placeholder="请输入手机号码" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-3">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 col-sm-4 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="text" class="form-control" id="mobilecode" name="mobilecode"
+                                       placeholder="请输入手机收到的验证码" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <button type="button" id="sendmobilecode" class="realbtn"
+                                    style="float:right;border: none;display: none">发送验证码</button>
+                        </div>
+                        <div class="col-md-2 col-sm-2">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <div class="form-group">
+                                <!--<label for="username">请输入用户名</label>-->
+                                <input type="email" class="form-control" id="email" name="email"
+                                       placeholder="请输入电子邮箱" onfocus="real_tip(this.id)">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-3">
+                            <div style="display:inline;">
+                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="col-md-6 col-sm-6 col-md-offset-3">
+                            <button type="submit" class="btn btn-default btn-block">提交注册</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer id="gtco-footer" role="contentinfo">
+        <div class="gtco-container">
+            <div id="realerrormsg">
+                aaaaa
+            </div>
+
+            <div class="row copyright">
+                <div class="col-md-12">
+                    <p class="pull-left">
+                        <small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small>
+                        <small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a>
+                            Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a></small>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+
+
+<!-- jQuery -->
+<script th:src="@{/smartadmin/js/libs/jquery-2.1.1.min.js}"
+        src="../static/smartadmin/js/libs/jquery-2.1.1.min.js"></script>
+<script th:src="@{/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js}"
+        src="../static/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+<!-- Bootstrap -->
+<script th:src="@{/smartadmin/js/bootstrap/bootstrap.min.js}"
+        src="../static/smartadmin/js/bootstrap/bootstrap.min.js"></script>
+<!-- Waypoints -->
+<script th:src="@{/realaicy/js/signup/jquery.waypoints.min.js}"
+        src="../static/realaicy/js/signup/jquery.waypoints.min.js"></script>
+
+<!-- layer -->
+<script th:src="@{/realres/lib/layer/layer.js}"
+        src="../static/realres/lib/layer/layer.js"></script>
+
+<!-- Main -->
+<script th:src="@{/realaicy/js/signup/main.js}"
+        src="../static/realaicy/js/signup/main.js"></script>
+
+<script>
+    function real_tip(id) {
+        var msg ='';
+        var iftip=false;
+        if(id=='username'){
+            msg= '请输入5-20位以字母开始，由字母、数字组成的用户名';
+            iftip = true;
+        }else if(id=='passwd'){
+            msg= '请输入8位以上由数字、字母组成的密码';
+            iftip = true;
+        }else if(id=='passconfirm'){
+            msg= '请输入8位以上由数字、字母组成的密码';
+            iftip = true;
+        }else if(id=='mobile'){
+            msg= '暂不接受虚拟运营商号码';
+            iftip = true;
+        }
+        else if(id=='mobilecode'){
+            msg= '连续发送间隔为5分钟';
+            iftip = true;
+        }
+        if(iftip == true){
+            layer.tips(msg, '#'+id, {
+                tips: [4, '#78BA32']
+            });
+        }
+
+    }
+    $(document).ready(function () {
+
+
+        // 手机号码验证
+        jQuery.validator.addMethod("isMobile", function(value, element) {
+            var length = value.length;
+            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+            return this.optional(element) || (length == 11 && mobile.test(value));
+        }, "请正确填写您的手机号码");
+
+        // 用户名验证
+        jQuery.validator.addMethod("isUsername", function(value, element) {
+            var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
+            return this.optional(element) || (username.test(value));
+        }, "请正确填写您的用户名");
+        // 密码验证
+        jQuery.validator.addMethod("isPasswd", function(value, element) {
+            var username = /([a-zA-Z0-9]){8,20}$/;
+            return this.optional(element) || (username.test(value));
+        }, "密码只能由8-20位数字或字母组成");
+        // 验证码验证
+        jQuery.validator.addMethod("ismobilecode", function(value, element) {
+            var username = /([0-9]){6,6}$/;
+            return this.optional(element) || (username.test(value));
+        }, "请正确输入6位数字验证码");
+
+        $('#sendmobilecode').bind('click', function() {
+            console.log("sendmobilecode");
+            $.ajax({
+                url:'/sms/signup/sentcode',
+                type:'GET', //GET
+                async:true,    //或false,是否异步
+                data : {
+                    mobilenum: function() {
+                        return $("#mobile").val();
+                    }
+
+                },
+                success:function(data,textStatus,jqXHR){
+                   console.log(JSON.stringify(data));
+                },
+                error:function(xhr,textStatus){
+                    console.log('错误');
+                    console.log(xhr);
+                    console.log(textStatus)
+                },
+                complete:function(){
+                    console.log('结束')
+                }
+            })
+
+        });
+
+        $("#real_signup").validate({
+
+            errorPlacement: function (error, element) {
+                //layer.tips(error, element);
+//                console.log("element:" + JSON.stringify(element));
+//                console.log($(element).attr("id"));
+                if($(element).attr("id")=="mobilecode"){
+                    error.appendTo(element.parent().parent().next().next());
+                }else {
+                    error.appendTo(element.parent().parent().next());
+                }
+
+//                $( element )
+//                    .closest( "form" )
+//                    .find( "label[for='" + element.attr( "id" ) + "']" )
+//                    .append( error );
+//                error.appendTo(element.parent());
+            },
+            highlight: function (element, errorClass) {
+                console.log($(element).attr("id"));
+
+                if($(element).attr("id")=="mobile"){
+                    $('#sendmobilecode').hide();
+                    $(element).parent().parent().siblings('div').children(":first").children(":first").hide();
+                }else if($(element).attr("id")=="mobilecode"){
+                    $(element).parent().parent().siblings('div').next().children(":first").hide();
+
+                }else{
+                    $(element).parent().parent().siblings('div').children(":first").children(":first").hide();
+                }
+//                $(element).addClass('aaa');
+            },
+            success: function (label) {
+//                console.log($(label).attr("id"));
+                // set &nbsp; as text for IE
+                label.html("&nbsp;");
+//                $(label).siblings('div').children(":first").addClass('aaa');
+                $(label).siblings('div').children(":first").show();
+                if($(label).attr("id")=="mobile-error"){
+                    $('#sendmobilecode').show();
+                }
+
+            },
+            rules: {
+                username: {
+                    required: true,
+                    isUsername:true,
+                    remote : {
+                        url : "/system/user/checkusername",
+                        type : "get",
+                        cache:false,
+                        dataType : "json",
+                        data : {
+                            username: function() {
+                                return $("#username").val();
+                            }
+
+                        }
+                    }
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                passwd: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20,
+                    isPasswd:true
+                },
+                passwdconfirm: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20,
+                    equalTo: '#passwd'
+                },
+                mobile: {
+                    required: true,
+                    minlength: 11,
+                    isMobile: true
+                },
+                mobilecode: {
+                    required: true,
+                    ismobilecode:true
+                }
+            },
+            messages: {
+                username: {
+                    required: '请输入用户名',
+                    isUsername:'请正确填写您的用户名',
+                    remote: "用户名已经存在"
+                },
+                email: {
+                    required: '请输入电子邮箱地址',
+                    email: '请输入格式正确的电子邮箱地址'
+                },
+                passwd: {
+                    required: '请输入密码',
+                    minlength: "密码不能少于8位"
+                },
+                passwdconfirm: {
+                    required: '请再次输入密码',
+                    minlength: "密码不能少于8位",
+                    equalTo: '请确认两次密码输入相同'
+                },
+                mobile: {
+                    required: '请输入手机号码',
+                    minlength: "确认手机不能小于11个字符",
+                    isMobile: "请正确填写您的手机号码"
+                },
+                mobilecode: {
+                    required: '请输入手机验证码',
+                }
+            },
+
+            submitHandler: function (form) {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response == "ok") {
+                            real_g_success("创建用户成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            }
+        });
+
+    });
+</script>
+
+
+</body>
+</html>
+

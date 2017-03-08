@@ -16,4 +16,10 @@ public class LoginController {
     public String initLoginPage() {
         return "login";
     }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String initSignUpPage() {
+        return "signup";
+    }
+
 }

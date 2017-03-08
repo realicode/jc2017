@@ -76,6 +76,11 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
 
     }
 
+    @Override
+    public Boolean checkUsername(String username) {
+        return ((UserRepos) baseRepository).checkUsername(username) >= 1;
+    }
+
 
     @Override
     public void saveFromVO(User po, UserVO vo) {

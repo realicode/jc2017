@@ -28,5 +28,8 @@ public interface UserService extends BaseServiceWithVO<User, BigInteger, UserVO>
 
     List<UserVO> convertFromPOListToVOList(List<User> poList);
 
+    Boolean checkUsername(String username);
+
+
 
 }

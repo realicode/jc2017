@@ -14,12 +14,19 @@ public class StaticParams {
         public static final String JS = "/smartadmin/js/**";
         public static final String SB_ALL = "/smartadmin/**";
         public static final String REALAICY_ALL = "/realaicy/**";
+        public static final String REALRES = "/realres/**";
         public static final String IMG = "/smartadmin/img/**";
         public static final String FONT = "/smartadmin/fonts/**";
         public static final String STATIC = "/static/**";
         public static final String AUTHADMIN = "/smartadmin/admin/**";
         public static final String AUTHUSER = "/smartadmin/user/**";
         public static final String TEMP_TEST = "/g/realerror/**";
+        public static final String SIGNUP = "/signup";
+        public static final String SIGNUP_CHECKUSERNAME = "/system/user/checkusername";
+        public static final String SIGNUP_SENTMBCODE = "/sms/signup/sentcode";
+
+
+
     }
 
     public static final class REALCACHE {
@@ -29,7 +36,16 @@ public class StaticParams {
         public static final int DEFAULTSIZE = 1000;
     }
 
-    public static final class REALNUM {
+    public static final class SMS {
+        public static final int MAX_SENTCODE_PER_MOBILE_INONEDAY = 5;
+        public static final int MAX_SENTCODE_PER_IP_INONEDAY = 5;
+        public static final int MAX_MIN_BETWEEN_SENTANDRECIVE = 15;
+
+
+    }
+
+
+        public static final class REALNUM {
         public static final int  N1 = 1;
         public static final int  N2 = 2;
         public static final int  N3 = 3;
@@ -39,6 +55,8 @@ public class StaticParams {
         public static final int N20 = 20;
         public static final int  N10 = 10;
         public static final int  N200 = 200;
+        public static final int  SMSCODE_N = 999999;
+
     }
 
     public static final class USERROLE {
