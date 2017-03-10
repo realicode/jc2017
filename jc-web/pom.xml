@@ -130,6 +130,18 @@
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <!-- 微信企业号 -->
+        <dependency>
+            <groupId>com.foxinmy</groupId>
+            <artifactId>weixin4j-qy</artifactId>
+            <version>1.7.4</version>
+        </dependency>
 
         <!--test-->
         <dependency>

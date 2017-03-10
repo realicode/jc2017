@@ -24,12 +24,23 @@ public class StaticParams {
         public static final String SIGNUP = "/signup";
         public static final String SIGNUP_CHECKUSERNAME = "/system/user/checkusername";
         public static final String SIGNUP_SENTMBCODE = "/sms/signup/sentcode";
+        public static final String WX_TEST = "/wx/test";
+        public static final String WX_TEST2 = "/wx/t2";
+
+        public static final String WX_TEST3 = "/temptest/**";
 
 
 
     }
 
     public static final class REALCACHE {
+        public static final String DEFAULTTOTALBYTES = "100M";
+        public static final String DEFAULTBYTES = "10M";
+
+        public static final int DEFAULTSIZE = 1000;
+    }
+
+    public static final class WS {
         public static final String DEFAULTTOTALBYTES = "100M";
         public static final String DEFAULTBYTES = "10M";
 
