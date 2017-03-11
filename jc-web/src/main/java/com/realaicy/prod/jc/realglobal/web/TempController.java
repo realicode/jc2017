@@ -1,15 +1,16 @@
 package com.realaicy.prod.jc.realglobal.web;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * The type Hello controller.
  */
-@RestController
+@Controller
 @RequestMapping("/temptest")
 public class TempController {
 
@@ -18,17 +19,33 @@ public class TempController {
      *
      * @return the string
      */
-    @ResponseBody
     @RequestMapping("/todolist")
-    public String todo(HttpServletRequest request) {
+    public String todo(HttpServletRequest request, Model model) {
 
         String code = request.getParameter("code");   //
         String state = request.getParameter("state");   //
         System.out.println(code);
+        model.addAttribute("realcode", code);
 
-        return "todolist 我的代办事项";
+        return "wx/todo";
     }
 
+
+    /**
+     * Index string.
+     *
+     * @return the string
+     */
+    @RequestMapping("/xc")
+    public String xingcheng(HttpServletRequest request, Model model) {
+
+        String code = request.getParameter("code");   //
+        String state = request.getParameter("state");   //
+        System.out.println(code);
+        model.addAttribute("realcode", code);
+
+        return "wx/todo";
+    }
 
     @ResponseBody
     @RequestMapping("/msg")

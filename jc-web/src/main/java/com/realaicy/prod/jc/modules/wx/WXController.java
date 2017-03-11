@@ -3,15 +3,8 @@ package com.realaicy.prod.jc.modules.wx;
 import com.realaicy.prod.jc.modules.wx.lib.AesException;
 import com.realaicy.prod.jc.modules.wx.lib.WXBizMsgCrypt;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
 
 /**
  * The type Hello controller.
@@ -89,17 +82,17 @@ public class WXController {
             String sMsg = wxcpt.decryptMsg(sMsgSignature, sTimeStamp, sNonce, postData);
             System.out.println("after decrypt msg: " + sMsg);
             // : 解析出明文xml标签的内容进行处理
-            // For example:
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            StringReader sr = new StringReader(sMsg);
-            InputSource is = new InputSource(sr);
-            Document document = db.parse(is);
-
-            Element root = document.getDocumentElement();
-            NodeList nodelist1 = root.getElementsByTagName("Content");
-            String content = nodelist1.item(0).getTextContent();
-            System.out.println("Content：" + content);
+//            // For example:
+//            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder db = dbf.newDocumentBuilder();
+//            StringReader sr = new StringReader(sMsg);
+//            InputSource is = new InputSource(sr);
+//            Document document = db.parse(is);
+//
+//            Element root = document.getDocumentElement();
+//            NodeList nodelist1 = root.getElementsByTagName("Content");
+//            String content = nodelist1.item(0).getTextContent();
+//            System.out.println("Content：" + content);
 
         } catch (Exception e) {
             // TODO
