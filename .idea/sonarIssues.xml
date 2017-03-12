@@ -38,6 +38,66 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/model/APPLY.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/model/Application.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/model/ApplicationVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/repos/ApplicationRepos.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/service/ApplicationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/apply/service/impl/DefaultApplicationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/Application.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/ApplicationVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/repos/ApplicationRepos.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/service/ApplicationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/service/impl/DefaultApplicationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/web/ApplicationController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/Org.java">
           <value>
             <set />
@@ -178,12 +238,27 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/global/errorpage/NOPrivilege.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/index.html">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/login.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/page.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/page.html">
           <value>
             <set />
           </value>
@@ -209,6 +284,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/user/page.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/pj/service/ApplicationServiceTest.java">
           <value>
             <set />
           </value>

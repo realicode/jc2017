@@ -244,7 +244,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             builder.with("deleteFlag", ":", false, "", "");
         }
 
+        if (needAddSpec()){
+            addSpec(builder);
+        }
         Specification<M> spec = builder.build();
+
+        if (needAddSpec()){
+            spec = Specifications.where(spec).and(addSpec());
+        }
 
         if (realsearch != null && !realsearch.equals("")) {
             spec = Specifications.where(spec).and(getExtSpec(realsearch));
@@ -388,6 +395,16 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     protected abstract void extendSave(M po, ID updateID, ID pid);
 
     protected Specification<M> getExtSpec(String extSearchStr) {
+        return null;
+    }
+
+    protected boolean needAddSpec() {
+        return false;
+    }
+
+    protected void addSpec(BaseSpecificationsBuilder<M> mBaseSpecificationsBuilder) {
+    }
+    protected Specification<M> addSpec() {
         return null;
     }
 

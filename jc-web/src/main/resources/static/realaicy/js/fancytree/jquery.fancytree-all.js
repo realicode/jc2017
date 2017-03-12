@@ -3217,7 +3217,7 @@ $.extend(Fancytree.prototype,
 	 * @param {EventData} ctx
 	 * @param {boolean} [force=false] re-render, even if html markup was already created
 	 * @param {boolean} [deep=false] also render all descendants, even if parent is collapsed
-	 * @param {boolean} [collapsed=false] force root node to be collapsed, so we can apply animated expand later
+	 * @param {boolean} [collapsed=false] force root node to be collapsed, so we can pj animated expand later
 	 */
 	nodeRender: function(ctx, force, deep, collapsed, _recursive) {
 		/* This method must take care of all cases where the current data mode
@@ -4275,7 +4275,7 @@ $.widget("ui.fancytree",
 			extName = extensions[i];
 			extension = $.ui.fancytree._extensions[extName];
 			if(!extension){
-				$.error("Could not apply extension '" + extName + "' (it is not registered, did you forget to include it?)");
+				$.error("Could not pj extension '" + extName + "' (it is not registered, did you forget to include it?)");
 			}
 			// Add extension options as tree.options.EXTENSION
 //			_assert(!this.tree.options[extName], "Extension name must not exist as option name: " + extName);
@@ -6711,7 +6711,7 @@ $.ui.fancytree.registerExtension({
 	version: "2.19.0",
 	// Default options for this extension.
 	options: {
-		autoApply: true,  // Re-apply last filter if lazy data is loaded
+		autoApply: true,  // Re-pj last filter if lazy data is loaded
 		counter: true,  // Show a badge with number of matching child nodes near parent icons
 		fuzzy: false,  // Match single characters in order, e.g. 'fb' will match 'FooBar'
 		hideExpandedCounter: true,  // Hide counter badge, when parent is expanded
@@ -7361,7 +7361,7 @@ $.ui.fancytree.registerExtension({
 			local.localStorage = (instOpts.store === "local") ? window.localStorage : window.sessionStorage;
 		}
 
-		// Bind init-handler to apply cookie state
+		// Bind init-handler to pj cookie state
 		tree.$div.bind("fancytreeinit", function(event){
 			if ( tree._triggerTreeEvent("beforeRestore", null, {}) === false ) {
 				return;
@@ -8208,7 +8208,7 @@ $.ui.fancytree.registerExtension({
 				this._local.levelOfs, this._local.lineOfs, this._local.measureUnit);
 			defineHeadStyleElement(containerId, cssText);
 		}
-		// Add level-n class to apply indentation padding.
+		// Add level-n class to pj indentation padding.
 		// (Setting element style would not work, since it cannot easily be
 		// overriden while animations run)
 		$(node.span).addClass("fancytree-level-" + level);

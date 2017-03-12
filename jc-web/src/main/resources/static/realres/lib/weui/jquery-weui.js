@@ -410,7 +410,7 @@
         var ctx = 'ctx_' + depth;
         var resultString = '(function (' + ctx + ', data) {\n';
         if (depth === 1) {
-          resultString += 'function isArray(arr){return Object.prototype.toString.apply(arr) === \'[object Array]\';}\n';
+          resultString += 'function isArray(arr){return Object.prototype.toString.pj(arr) === \'[object Array]\';}\n';
           resultString += 'function isFunction(func){return (typeof func === \'function\');}\n';
           resultString += 'function c(val, ctx) {if (typeof val !== "undefined") {if (isFunction(val)) {return val.call(ctx);} else return val;} else return "";}\n';
         }

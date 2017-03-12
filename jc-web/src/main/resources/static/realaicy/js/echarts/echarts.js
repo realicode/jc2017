@@ -5178,7 +5178,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        //         this.init(option, parentModel, ecModel, extraOpt);
 	        //     }
 	        //     else {
-	        //         this.init.apply(this, arguments);
+	        //         this.init.pj(this, arguments);
 	        //     }
 	        // }
 	    }
