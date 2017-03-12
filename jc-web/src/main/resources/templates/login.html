@@ -3,12 +3,15 @@
 <head>
     <meta charset='utf-8'>
 
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/login/a.css}"
+   <!-- <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/login/a.css}"
           href="../static/realres/css/login/a.css">
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/login/b.css}"
           href="../static/realres/css/login/b.css">
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/login/c.css}"
-          href="../static/realres/css/login/c.css">
+          href="../static/realres/css/login/c.css">-->
+
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/login/d.css}"
+          href="../static/realres/css/login/d.css">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
@@ -20,16 +23,6 @@
         /*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
         html {
             font-family: sans-serif;
-            -ms-text-size-adjust: 100%;
-            -webkit-text-size-adjust: 100%
-        }
-
-        body {
-            margin: 0
-        }
-
-        article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
-            display: block
         }
     </style>
 
@@ -97,7 +90,76 @@
     </div>
 </div>
 
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
 
+<script>
+
+    $(document).ready(function () {
+
+//        console.log(""+window.location.search);
+        if(window.location.search.indexOf("error")>=0) {
+            layer.alert('登录失败！', {
+                skin: 'layui-layer-lan'
+                ,closeBtn: 0
+                ,anim: 4 //动画类型
+            });
+        }
+
+        // 用户名验证
+        jQuery.validator.addMethod("isUsername", function(value, element) {
+            var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
+            return this.optional(element) || (username.test(value));
+        }, "请正确填写您的用户名");
+        // 密码验证
+        jQuery.validator.addMethod("isPasswd", function(value, element) {
+            var username = /([a-zA-Z0-9]){8,20}$/;
+            return this.optional(element) || (username.test(value));
+        }, "密码只能由8-20位数字或字母组成");
+
+        $("#real_signup").validate({
+
+            errorPlacement: function (error, element) {
+                if($(element).attr("id")=="mobilecode"){
+                    error.appendTo(element.parent().parent().next().next());
+                }else {
+                    error.appendTo(element.parent().parent().next());
+                }
+            },
+            highlight: function (element, errorClass) {
+            },
+            success: function (label) {
+            },
+            rules: {
+                username: {
+                    required: true,
+                    isUsername:true
+                },
+                password: {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 20,
+                    isPasswd:true
+                }
+            },
+            messages: {
+                username: {
+                    required: '请输入用户名',
+                    isUsername:'请正确填写您的用户名',
+                    remote: "用户名已经存在"
+                },
+                password: {
+                    required: '请输入密码',
+                    minlength: "密码不能少于8位"
+                }
+            }
+        });
+
+    });
+
+
+</script>
 </body>
 </html>
 

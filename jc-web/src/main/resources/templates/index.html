@@ -8,22 +8,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/bootstrap.css}"
-          href="../static/smartadmin/css/bootstrap.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/font-awesome.min.css}"
-          href="../static/smartadmin/css/font-awesome.min.css"/>
+    <!--<link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/bootstrap.css}"-->
+          <!--href="../static/smartadmin/css/bootstrap.css"/>-->
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/font-awesome.min.css}"-->
+          <!--href="../static/smartadmin/css/font-awesome.min.css"/>-->
+
     <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
     <link rel="stylesheet" type="text/css" media="screen"
-          th:href="@{/smartadmin/css/smartadmin-production-plugins.min.css}"
-          href="../static/smartadmin/css/smartadmin-production-plugins.min.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/smartadmin-production.css}"
-          href="../static/smartadmin/css/smartadmin-production.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/smartadmin-skins.min.css}"
-          href="../static/smartadmin/css/smartadmin-skins.min.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/demo.css}"
-          href="../static/smartadmin/css/demo.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/smartadmin/css/realaicy.css}"
-          href="../static/smartadmin/css/realaicy.css"/>
+          th:href="@{realres/lib/sa/css/smartadmin-production-plugins.min.css}"
+          href="../static/realres/lib/sa/css/smartadmin-production-plugins.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/smartadmin-production.css}"
+          href="../static/realres/lib/sa/css/smartadmin-production.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/smartadmin-skins.min.css}"
+          href="../static/realres/lib/sa/css/smartadmin-skins.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/demo.css}"
+          href="../static/realres/lib/sa/css/demo.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/realaicy.css}"
+          href="../static/realres/lib/sa/css/realaicy.css"/>
     <!-- #FAVICONS -->
     <link rel="shortcut icon" th:href="@{/smartadmin/img/favicon/fav1.ico}"
           href="../static/smartadmin/img/favicon/fav1.ico" type="image/x-icon"/>
@@ -171,51 +174,61 @@
     </div>
 </div>
 
-<script th:src="@{/smartadmin/js/libs/jquery-2.1.1.min.js}"
-        src="../static/smartadmin/js/libs/jquery-2.1.1.min.js"></script>
-<script th:src="@{/smartadmin/js/libs/jquery-ui-1.10.3.min.js}"
-        src="../static/smartadmin/js/libs/jquery-ui-1.10.3.min.js"></script>
-<script th:src="@{/smartadmin/js/app.config.js}"
-        src="../static/smartadmin/js/app.config.js"></script>
-<script th:src="@{/smartadmin/js/bootstrap/bootstrap.min.js}"
-        src="../static/smartadmin/js/bootstrap/bootstrap.min.js"></script>
-<script th:src="@{/smartadmin/js/notification/SmartNotification.min.js}"
-        src="../static/smartadmin/js/notification/SmartNotification.min.js"></script>
-<script th:src="@{/smartadmin/js/smartwidgets/jarvis.widget.min.js}"
-        src="../static/smartadmin/js/smartwidgets/jarvis.widget.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/jquery-form/jquery-form.min.js}"
-        src="../static/smartadmin/js/plugin/jquery-form/jquery-form.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js}"
-        src="../static/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/masked-input/jquery.maskedinput.min.js}"
-        src="../static/smartadmin/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
-<script th:src="@{/realaicy/js/fancytree/jquery.fancytree-all.min.js}"
-        src="../static/realaicy/js/fancytree/jquery.fancytree-all.min.js"></script>
-<script th:src="@{/realaicy/js/bootstrap-dialog.min.js}"
-        src="../static/realaicy/js/bootstrap-dialog.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.buttons.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/dataTables.buttons.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/buttons.bootstrap.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/buttons.bootstrap.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.checkboxes.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/dataTables.checkboxes.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.colVis.min.js}"
-        src="../static/smartadmin/js/plugin/datatables/dataTables.colVis.min.js"></script>
-<script th:src="@{/smartadmin/js/plugin/datatable-responsive/datatables.responsive.min.js}"
-        src="../static/smartadmin/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+<!--<script th:src="@{/smartadmin/js/libs/jquery-2.1.1.min.js}"-->
+        <!--src="../static/smartadmin/js/libs/jquery-2.1.1.min.js"></script>-->
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+
+<!--<script th:src="@{/smartadmin/js/libs/jquery-ui-1.10.3.min.js}"-->
+        <!--src="../static/smartadmin/js/libs/jquery-ui-1.10.3.min.js"></script>-->
+<script src="//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/app.config.js}"
+        src="../static/realres/lib/sa/js/app.config.js"></script>
+<!--<script th:src="@{/smartadmin/js/bootstrap/bootstrap.min.js}"-->
+        <!--src="../static/smartadmin/js/bootstrap/bootstrap.min.js"></script>-->
+<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script th:src="@{/realres/lib/sa/js/notification/SmartNotification.min.js}"
+        src="../static/realres/lib/sa/js/notification/SmartNotification.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/smartwidgets/jarvis.widget.min.js}"
+        src="../static/realres/lib/sa/js/smartwidgets/jarvis.widget.min.js"></script>
+<script src="//cdn.bootcss.com/jquery.form/3.51/jquery.form.min.js"></script>
+<!--<script th:src="@{/smartadmin/js/plugin/jquery-form/jquery-form.min.js}"-->
+        <!--src="../static/smartadmin/js/plugin/jquery-form/jquery-form.min.js"></script>-->
+<!--<script th:src="@{/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js}"-->
+        <!--src="../static/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js"></script>-->
+<script src="//cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/masked-input/jquery.maskedinput.min.js}"
+        src="../static/realres/lib/sa/js/masked-input/jquery.maskedinput.min.js"></script>
+<!--<script th:src="@{/realaicy/js/fancytree/jquery.fancytree-all.min.js}"-->
+        <!--src="../static/realaicy/js/fancytree/jquery.fancytree-all.min.js"></script>-->
+<script src="//cdn.bootcss.com/jquery.fancytree/2.21.0/jquery.fancytree-all.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/other/bootstrap-dialog.min.js}"
+        src="../static/realres/lib/sa/js/other/bootstrap-dialog.min.js"></script>
+<!--<script th:src="@{/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js}"-->
+        <!--src="../static/smartadmin/js/plugin/datatables/jquery.dataTables_10.12.min.js"></script>-->
+<script src="//cdn.bootcss.com/datatables/1.10.12/js/jquery.dataTables.min.js"></script>
+<!--<script th:src="@{/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js}"-->
+        <!--src="../static/smartadmin/js/plugin/datatables/dataTables.bootstrap.min.js"></script>-->
+<script src="//cdn.bootcss.com/datatables/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/datatables/dataTables.buttons.min.js}"
+        src="../static/realres/lib/sa/js/datatables/dataTables.buttons.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/datatables/buttons.bootstrap.min.js}"
+        src="../static/realres/lib/sa/js/datatables/buttons.bootstrap.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/datatables/dataTables.checkboxes.min.js}"
+        src="../static/realres/lib/sa/js/datatables/dataTables.checkboxes.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/datatables/dataTables.colVis.min.js}"
+        src="../static/realres/lib/sa/js/datatables/dataTables.colVis.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/datatables/datatables.responsive.min.js}"
+        src="../static/realres/lib/sa/js/datatables/datatables.responsive.min.js"></script>
 <!-- browser msie issue fix -->
-<script th:src="@{/smartadmin/js/plugin/msie-fix/jquery.mb.browser.min.js}"
-        src="../static/smartadmin/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+<script th:src="@{/realres/lib/sa/js/msie-fix/jquery.mb.browser.min.js}"
+        src="../static/realres/lib/sa/js/msie-fix/jquery.mb.browser.min.js"></script>
 <!--[if IE 8]>
 <h1>Your browser is out of date, please update your browser by going to www.microsoft.com/download</h1>
 <![endif]-->
-<script th:src="@{/smartadmin/js/demo.js}"
-        src="../static/smartadmin/js/demo.js"></script>
-<script th:src="@{/smartadmin/js/app.js}"
-        src="../static/smartadmin/js/app.js"></script>
+<script th:src="@{/realres/lib/sa/js/demo.js}"
+        src="../static/realres/lib/sa/js/demo.js"></script>
+<script th:src="@{/realres/lib/sa/js/app.js}"
+        src="../static/realres/lib/sa/js/app.js"></script>
 </body>
 </html>

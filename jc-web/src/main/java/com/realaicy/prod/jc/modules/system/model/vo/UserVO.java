@@ -3,9 +3,12 @@ package com.realaicy.prod.jc.modules.system.model.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
 import com.realaicy.prod.jc.modules.system.model.User;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.util.Date;
 
@@ -20,26 +23,31 @@ public class UserVO extends BaseVO<BigInteger> {
      * 用户名称
      */
     @NotEmpty
+    @Size(min=5, max = 20)
     private String username;
     /**
      * 用户昵称
      */
     @NotEmpty
+    @Size(min=2, max = 20)
     private String nickname;
     /**
      * 用户密码(加密后的密文)
      */
     @NotEmpty
+    @Size(min=8, max = 20)
     private String password;
     /**
      * 用户邮箱地址
      */
     @NotEmpty
+    @Email
     private String email;
     /**
      * 用户手机号码
      */
     @NotEmpty
+    @Pattern(regexp = "^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$")
     private String mobile;
     /**
      * 所属机构名称

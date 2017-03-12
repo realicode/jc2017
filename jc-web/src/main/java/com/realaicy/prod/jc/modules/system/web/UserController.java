@@ -14,7 +14,10 @@ import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
+import com.realaicy.prod.jc.uitl.NetUtil;
+import com.realaicy.prod.jc.uitl.RealCacheUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -41,6 +45,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
+import static com.realaicy.prod.jc.uitl.RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE;
 
 /**
  * Created by realaicy on 16/7/15.
@@ -98,8 +104,24 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/checkusername", produces = "application/json")
-    public Boolean checkUsernameAvailable(@RequestParam(value = "username") String username) {
-        return !userService.checkUsername(username);
+    public String checkUsernameAvailable(@RequestParam(value = "username") String username, HttpServletRequest request) {
+        String clientIP = NetUtil.getClientIpAddress(request);
+
+        if (RealCacheUtil.IP_BLACK_LIST.contains(clientIP)) {
+            return "ERROR:超过最大尝试次数";
+        }
+
+        if (IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") == null) {
+            IPADRESS_CANUSEFUNC_TABLE.put(clientIP, "checkusername", 1);
+        } else {
+            IPADRESS_CANUSEFUNC_TABLE.put(clientIP, "checkusername", IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") + 1);
+        }
+
+        if (RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") >= StaticParams.FUNC_MAX.CHECKUSERNAME) {
+            RealCacheUtil.IP_BLACK_LIST.add(clientIP);
+        }
+        return (Boolean.toString(!userService.checkUsername(username)));
+
     }
 
     @ResponseBody
@@ -133,20 +155,27 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
                                  @RequestParam(value = "user2role", required = false) String user2role) {
 
         User user = userService.findOne(userid);
+        UserSec userSec = userSecRepos.findByUsername(user.getUsername());
+
 
         String roleNames = "";
         user.getRoles().clear();
+        userSec.getRoles().clear();
         //user.setRolenames(roleNames);
         userService.save(user);
+        userSecRepos.save(userSec);
         if (user2role != null && !Objects.equals(user2role, "")) {
             for (String str : user2role.split(",")) {
                 Role roleTemp = roleService.findOne(new BigInteger(str));
                 user.getRoles().add(roleService.findOne(new BigInteger(str)));
+                userSec.getRoles().add(roleService.findOne(new BigInteger(str)));
+
                 roleNames += roleTemp.getName();
                 roleNames += ",";
             }
             user.setRolenames(roleNames.substring(0, roleNames.length() - 1));
             userService.save(user);
+            userSecRepos.save(userSec);
         }
 
         return "ok";

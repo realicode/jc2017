@@ -52,7 +52,7 @@ public class UserSec extends CommonDeletableEntity<BigInteger> {
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "jc_sys_user_role", joinColumns = @JoinColumn(name = "USERID"),
+    @JoinTable(name = "jc_sys_usersec_role", joinColumns = @JoinColumn(name = "USERID"),
             inverseJoinColumns = @JoinColumn(name = "ROLEID"))
     @JsonIgnore
     private List<Role> roles;

@@ -22,6 +22,8 @@ public class StaticParams {
         public static final String AUTHUSER = "/smartadmin/user/**";
         public static final String TEMP_TEST = "/g/realerror/**";
         public static final String SIGNUP = "/signup";
+        public static final String REGIS = "/regisuser";
+
         public static final String SIGNUP_CHECKUSERNAME = "/system/user/checkusername";
         public static final String SIGNUP_SENTMBCODE = "/sms/signup/sentcode";
         public static final String WX_TEST = "/wx/test";
@@ -52,6 +54,12 @@ public class StaticParams {
         public static final int MAX_SENTCODE_PER_IP_INONEDAY = 5;
         public static final int MAX_MIN_BETWEEN_SENTANDRECIVE = 15;
 
+
+    }
+    public static final class FUNC_MAX {
+        public static final int CHECKUSERNAME = 10;
+        public static final int CHECKSMSCODE = 5;
+        public static final int REGISUSER = 5;
 
     }
 

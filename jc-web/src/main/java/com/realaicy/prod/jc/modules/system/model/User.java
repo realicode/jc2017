@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.system.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -13,6 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigInteger;
 import java.util.Set;
 
@@ -31,6 +34,7 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "USERNAME")
     @NotEmpty
+    @Size(min=5, max = 20)
     private String username;
     /**
      * 用户密码(加密后的密文)
@@ -43,16 +47,19 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @NotEmpty
     @Column(name = "NICKNAME")
+    @Size(min=2, max = 20)
     private String nickname;
     /**
      * 用户邮箱地址
      */
     @Column(name = "EMAIL")
+    @Email
     private String email;
     /**
      * 用户手机
      */
     @Column(name = "MOBILE")
+    @Pattern(regexp = "^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$")
     private String mobile;
     /**
      * 用户年龄

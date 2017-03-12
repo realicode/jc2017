@@ -20,6 +20,8 @@ public class RealCacheUtil {
     public static final List<String> IP_BLACK_LIST = new ArrayList<>();
     public static final Table<String, LocalDate, Integer> MOBILENUMBER_CANSENT_TABLE = HashBasedTable.create();
     public static final Table<String, LocalDate, Integer> IPADRESS_CANSENT_TABLE = HashBasedTable.create();
+    public static final Table<String, String, Integer> IPADRESS_CANUSEFUNC_TABLE = HashBasedTable.create();
+
 
 //    public static final Map<String, LocalDateTime> MOBILENUMBER_CANSENT_MAP = new HashMap<>();
 //    public static final Map<String, LocalDateTime> IPADRESS_CANSENT_MAP = new HashMap<>();

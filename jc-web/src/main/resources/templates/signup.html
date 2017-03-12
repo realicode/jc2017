@@ -19,15 +19,15 @@
     <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Theme style  -->
-    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realaicy/css/signup/style.css}"
-          href="../static/realaicy/css/signup/style.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/realres/css/signup/signup.css}"
+          href="../static/realres/css/signup/signup.css"/>
 
     <style>
-        .real_signup_label_success_temp {
+        /*.real_signup_label_success_temp {
             background: url("http://127.0.0.1:48080/realaicy/img/signup/checked1.png") fixed center center no-repeat;
             background-size: auto;
-            /*width: 100%;*/
-        }
+            !*width: 100%;*!
+        }*/
 
         .error{
             color: #9f302b;
@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="row">
-                <form class="form-inline" id="real_signup">
+                <form class="form-inline" id="real_signup" th:object="${realmodel}" method="POST" th:action="@{/regisuser}">
                     <div class="col-md-12">
                         <div class="col-md-6 col-sm-6 col-md-offset-3">
                             <div class="form-group">
@@ -72,7 +72,7 @@
                         </div>
                         <div class="col-md-3 col-sm-3">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -80,13 +80,13 @@
                         <div class="col-md-6 col-sm-6 col-md-offset-3">
                             <div class="form-group">
                                 <!--<label for="username">请输入用户名</label>-->
-                                <input type="password" class="form-control" id="passwd" name="passwd"
+                                <input type="password" class="form-control" id="password" name="password"
                                        placeholder="请输入密码" onfocus="real_tip(this.id)">
                             </div>
                         </div>
                         <div class="col-md-3 col-md-3">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-md-3 col-md-3">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                         </div>
                         <div class="col-md-3 col-md-3">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                         </div>
                         <div class="col-md-2 col-sm-2">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -146,7 +146,7 @@
                         </div>
                         <div class="col-md-3 col-md-3">
                             <div style="display:inline;">
-                                <img src="http://127.0.0.1:48080/realaicy/img/signup/checked1.png" style="display: none"/>
+                                <img src="http://localhost:48080/realres/img/signup/checked1.png" style="display: none"/>
                             </div>
                         </div>
                     </div>
@@ -161,25 +161,15 @@
         </div>
     </div>
 
-    <footer id="gtco-footer" role="contentinfo">
-        <div class="gtco-container">
-            <div id="realerrormsg">
-                aaaaa
-            </div>
-
-            <div class="row copyright">
-                <div class="col-md-12">
-                    <p class="pull-left">
-                        <small class="block">&copy; 2016 Free HTML5. All Rights Reserved.</small>
-                        <small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a>
-                            Demo Images: <a href="http://unsplash.co/" target="_blank">Unsplash</a></small>
-                    </p>
-
-                </div>
-            </div>
+    <div class="row copyright">
+        <div class="col-md-12">
+            <p class="pull-left">
+                <small class="block">&copy; 2017 Realaicy. All Rights Reserved.</small>
+            </p>
 
         </div>
-    </footer>
+    </div>
+
 </div>
 
 
@@ -205,10 +195,12 @@
 <script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
 
 <!-- Main -->
-<script th:src="@{/realaicy/js/signup/main.js}"
-        src="../static/realaicy/js/signup/main.js"></script>
+<script th:src="@{/realres/js/signup/main.js}"
+        src="../static/realres/js/signup/main.js"></script>
 
 <script>
+
+    var countdown = 60;
     function real_tip(id) {
         var msg ='';
         var iftip=false;
@@ -236,6 +228,10 @@
         }
 
     }
+
+
+
+
     $(document).ready(function () {
 
 
@@ -262,6 +258,26 @@
             return this.optional(element) || (username.test(value));
         }, "请正确输入6位数字验证码");
 
+
+        function settime() {
+            if (countdown == 0) {
+                countdown = 60;
+                $('#sendmobilecode').attr("disabled", false);
+                $('#sendmobilecode').text("发送验证码");
+
+                return;
+
+            } else {
+                $('#sendmobilecode').attr("disabled", true);
+                $('#sendmobilecode').text(countdown+"秒之后可以发送");
+                countdown--;
+            }
+
+            setTimeout(function() {
+                settime()
+            },1000)
+        }
+
         $('#sendmobilecode').bind('click', function() {
             console.log("sendmobilecode");
             $.ajax({
@@ -275,7 +291,7 @@
 
                 },
                 success:function(data,textStatus,jqXHR){
-                   console.log(JSON.stringify(data));
+                    console.log(JSON.stringify(data));
                 },
                 error:function(xhr,textStatus){
                     console.log('错误');
@@ -285,7 +301,13 @@
                 complete:function(){
                     console.log('结束')
                 }
-            })
+            });
+
+            settime();
+
+//            setInterval(settime,1000);
+
+
 
         });
 
@@ -308,7 +330,7 @@
 //                error.appendTo(element.parent());
             },
             highlight: function (element, errorClass) {
-                console.log($(element).attr("id"));
+//                console.log($(element).attr("id"));
 
                 if($(element).attr("id")=="mobile"){
                     $('#sendmobilecode').hide();
@@ -353,7 +375,7 @@
                     required: true,
                     email: true
                 },
-                passwd: {
+                password: {
                     required: true,
                     minlength: 8,
                     maxlength: 20,
@@ -363,7 +385,7 @@
                     required: true,
                     minlength: 8,
                     maxlength: 20,
-                    equalTo: '#passwd'
+                    equalTo: '#password'
                 },
                 mobile: {
                     required: true,
@@ -385,7 +407,7 @@
                     required: '请输入电子邮箱地址',
                     email: '请输入格式正确的电子邮箱地址'
                 },
-                passwd: {
+                password: {
                     required: '请输入密码',
                     minlength: "密码不能少于8位"
                 },
@@ -411,10 +433,20 @@
                     data: $(form).serialize(),
                     success: function (response) {
                         if (response == "ok") {
-                            real_g_success("创建用户成功！");
+                            console.log("OK");
+                            layer.confirm('注册成功', {
+                                btn: ['登录系统'] //按钮
+                            }, function(){
+                                location.href = "www.baidu.com"
+                            });
                         }
                         else {
-                            real_g_fail(response);
+                            console.log("Err");
+                            layer.alert('注册失败！', {
+                                skin: 'layui-layer-lan'
+                                ,closeBtn: 0
+                                ,anim: 4 //动画类型
+                            });
                         }
                     }
                 });

@@ -78,7 +78,7 @@ public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity
                 .ignoring()
                 // All of Spring Security will ignore the requests
-                .antMatchers("/wx/test"); // APIs use a key
+                .antMatchers("/wx/test", SIGNUP, REGIS); // APIs use a key
     }
 
 

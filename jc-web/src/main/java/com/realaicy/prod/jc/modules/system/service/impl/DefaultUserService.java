@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -68,8 +69,14 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
                 roleNames += role.getName();
                 roleNames += " || ";
             }
-            userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
-            userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
+            if (!Objects.equals(roleIDs, "")){
+                userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
+
+            }
+            if(!Objects.equals(roleNames, "")){
+                userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
+            }
+
             voList.add(userVO);
         }
         return voList;
