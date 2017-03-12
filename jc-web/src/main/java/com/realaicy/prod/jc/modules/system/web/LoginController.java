@@ -70,12 +70,13 @@ public class LoginController {
         String clientIP = NetUtil.getClientIpAddress(request);
 
         if (RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.contains(clientIP, "regisuser")
-                && RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "regisuser") >= StaticParams.FUNC_MAX.REGISUSER) {
+                && RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "regisuser") >= StaticParams.FUNCMAX.REGISUSER) {
             return "Error:重试次数过多";
         }
         if (!RealCacheUtil.SMS_CODE_MAP.containsRow(realmodel.getMobile())
                 || !RealCacheUtil.SMS_CODE_MAP.contains(realmodel.getMobile(), realmodel.getMobilecode())
-                || !RealCacheUtil.SMS_CODE_MAP.get(realmodel.getMobile(), realmodel.getMobilecode()).isAfter(LocalDateTime.now().minusMinutes(10L))) {//验证码不正确
+                || !RealCacheUtil.SMS_CODE_MAP.get(realmodel.getMobile(),
+                realmodel.getMobilecode()).isAfter(LocalDateTime.now().minusMinutes(10L))) { //验证码不正确
 
             realSecurity(clientIP);
             return "Error:手机验证码错误";
@@ -108,7 +109,7 @@ public class LoginController {
         userSec.setUpdateTime(new Date());
         userSec.setNickname(realmodel.getUsername());
 
-       userSecRepos.save(userSec);
+        userSecRepos.save(userSec);
 
         user.setUsername(realmodel.getUsername());
         user.setNickname(realmodel.getUsername());

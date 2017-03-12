@@ -20,7 +20,7 @@ public class UserRegisVO extends BaseVO<BigInteger> {
      */
     @NotEmpty
     @Size(min = 5, max = 20)
-    @Pattern(regexp = "^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$",message = "用户名格式不正确")
+    @Pattern(regexp = "^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$", message = "用户名格式不正确")
     private String username;
 
     /**

@@ -69,11 +69,11 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
                 roleNames += role.getName();
                 roleNames += " || ";
             }
-            if (!Objects.equals(roleIDs, "")){
+            if (!Objects.equals(roleIDs, "")) {
                 userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
 
             }
-            if(!Objects.equals(roleNames, "")){
+            if (!Objects.equals(roleNames, "")) {
                 userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
             }
 

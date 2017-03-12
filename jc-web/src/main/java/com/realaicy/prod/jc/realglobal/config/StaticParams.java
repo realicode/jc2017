@@ -56,7 +56,7 @@ public class StaticParams {
 
 
     }
-    public static final class FUNC_MAX {
+    public static final class FUNCMAX {
         public static final int CHECKUSERNAME = 10;
         public static final int CHECKSMSCODE = 5;
         public static final int REGISUSER = 5;

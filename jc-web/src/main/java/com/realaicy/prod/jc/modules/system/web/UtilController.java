@@ -3,7 +3,6 @@ package com.realaicy.prod.jc.modules.system.web;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.aliyuncs.sms.model.v20160927.SingleSendSmsRequest;
@@ -23,9 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.SMS.MAX_MIN_BETWEEN_SENTANDRECIVE;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.SMS.MAX_SENTCODE_PER_IP_INONEDAY;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.SMS.MAX_SENTCODE_PER_MOBILE_INONEDAY;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.SMS.*;
 
 /**
  * Created by realaicy on 16/7/15.
@@ -79,7 +76,7 @@ public class UtilController {
 
         String code = OtherUtil.getSixRandSMSCode();
 
-        /*SingleSendSmsRequest request = new SingleSendSmsRequest();
+        SingleSendSmsRequest request = new SingleSendSmsRequest();
         try {
             request.setSignName("测试专用");
             request.setTemplateCode("SMS_43085007");
@@ -88,8 +85,8 @@ public class UtilController {
             SingleSendSmsResponse httpResponse = client.getAcsResponse(request);
         } catch (ClientException e) {
             e.printStackTrace();
-            return "Error";
-        }*/
+            return "Error:";
+        }
 
         log.info("IP:{} Sent {} to {}", clientIP, code, mobilenum);
 
@@ -110,7 +107,7 @@ public class UtilController {
             RealCacheUtil.MOBILENUMBER_CANSENT_TABLE.put(mobilenum, nowDate, 1);
         }
 
-        RealCacheUtil.SMS_CODE_MAP.put(mobilenum,code,LocalDateTime.now());
+        RealCacheUtil.SMS_CODE_MAP.put(mobilenum, code, LocalDateTime.now());
 
         return "OK";
     }

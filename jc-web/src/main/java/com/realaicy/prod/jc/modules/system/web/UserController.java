@@ -117,7 +117,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
             IPADRESS_CANUSEFUNC_TABLE.put(clientIP, "checkusername", IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") + 1);
         }
 
-        if (RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") >= StaticParams.FUNC_MAX.CHECKUSERNAME) {
+        if (RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE.get(clientIP, "checkusername") >= StaticParams.FUNCMAX.CHECKUSERNAME) {
             RealCacheUtil.IP_BLACK_LIST.add(clientIP);
         }
         return (Boolean.toString(!userService.checkUsername(username)));

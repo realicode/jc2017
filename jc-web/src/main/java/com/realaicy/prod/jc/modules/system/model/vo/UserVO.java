@@ -23,19 +23,19 @@ public class UserVO extends BaseVO<BigInteger> {
      * 用户名称
      */
     @NotEmpty
-    @Size(min=5, max = 20)
+    @Size(min = 5, max = 20)
     private String username;
     /**
      * 用户昵称
      */
     @NotEmpty
-    @Size(min=2, max = 20)
+    @Size(min = 2, max = 20)
     private String nickname;
     /**
      * 用户密码(加密后的密文)
      */
     @NotEmpty
-    @Size(min=8, max = 20)
+    @Size(min = 8, max = 20)
     private String password;
     /**
      * 用户邮箱地址
