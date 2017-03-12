@@ -3,7 +3,6 @@
 	'use strict';
 
 	var mobileMenuOutsideClick = function() {
-
 		$(document).click(function (e) {
 	    var container = $("#gtco-offcanvas, .js-gtco-nav-toggle");
 	    if (!container.is(e.target) && container.has(e.target).length === 0) {
@@ -14,13 +13,9 @@
     			$('.js-gtco-nav-toggle').removeClass('active');
 				
 	    	}
-	    
-	    	
 	    }
 		});
-
 	};
-
 
 	var offcanvasMenu = function() {
 

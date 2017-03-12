@@ -23,6 +23,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/RealWebMvcConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/Org.java">
           <value>
             <set />
@@ -99,6 +104,31 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realaicy/js/geo.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realaicy/js/signup/main.js">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realres/css/login/a.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realres/css/login/c.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/login.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/signup.html">
           <value>
             <set />
           </value>
