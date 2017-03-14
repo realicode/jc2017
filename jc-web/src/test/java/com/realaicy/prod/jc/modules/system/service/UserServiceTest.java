@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -121,6 +123,23 @@ public class UserServiceTest {
 
         assertThat(userService.checkUsername("realaicy")).isEqualTo(true);
         assertThat(userService.checkUsername("aaa")).isEqualTo(false);
+
+    }
+
+
+    @Test
+    public void getAll(){
+        Sort sort = new Sort(Sort.Direction.ASC, "username");
+        PageRequest pageRequest = new PageRequest(
+                0 / 10, 10, sort
+        );
+        final BaseSpecificationsBuilder<User> builder = new BaseSpecificationsBuilder<>();
+        builder.with("deleteFlag", ":", false, "", "");
+        Specification<User> spec = builder.build();
+//        List<User> poList = userService.findAll();
+
+        userService.findOne(BigInteger.valueOf(124L));
+        System.out.println();
 
     }
 

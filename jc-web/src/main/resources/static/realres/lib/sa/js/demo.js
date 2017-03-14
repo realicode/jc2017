@@ -245,7 +245,10 @@ realaicy_g_var_tableopt_lang = {
     "decimal": "-",
     "thousands": "."
 };
+// realaicy_g_var_dlurl = "http://127.0.0.1:32003/download/file/";
+
+// realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
+
 realaicy_g_var_dlurl = "http://111.30.31.179:32003/download/file/";
-
-
+login_url = "http://111.30.31.179:48080";
 

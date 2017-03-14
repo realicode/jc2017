@@ -1,6 +1,8 @@
 package com.realaicy.prod.jc.common.monitor;
 
 import com.realaicy.prod.jc.common.properties.StudyProperties;
+import com.realaicy.prod.jc.modules.wx.model.RealTK;
+import com.realaicy.prod.jc.uitl.RealCacheUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
+
+import java.time.LocalDateTime;
 
 /**
  * Created by realaicy on 2017/2/12.
@@ -21,7 +26,7 @@ public class StartupInfoCommandLineRunner implements CommandLineRunner {
 
     private ApplicationContext context;
     private StudyProperties studyProperties;
-    private Logger logger =  LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     /**
@@ -65,5 +70,15 @@ public class StartupInfoCommandLineRunner implements CommandLineRunner {
         for (String bn2 : beanNames2) {
             logger.debug("beanname : {}", bn2);
         }
+
+
+        RestTemplate restTemplate = new RestTemplate();
+        RealTK realTK = restTemplate.getForObject(
+                "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wx9605bfbe1e7c2f1e"
+                        + "&corpsecret=nm4gMa4Ri3wQDOttvmxU7TaIILeM7M7SYvNiASmmx5e_Trg6_4g3pTYOxM6A54k2",
+                RealTK.class);
+        System.out.println(realTK.toString());
+        RealCacheUtil.setWxToken(realTK.getAccessToken());
+        RealCacheUtil.setWxTokenExpire(LocalDateTime.now().plusMinutes(110));
     }
 }

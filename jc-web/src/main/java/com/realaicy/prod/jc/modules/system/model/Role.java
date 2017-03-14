@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.modules.system.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class Role extends CommonDeletableEntity<BigInteger> {
 
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<User> users;
     /**
      * 角色所拥有的菜单

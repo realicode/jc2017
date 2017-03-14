@@ -14,21 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/temptest")
 public class TempController {
 
-    /**
-     * Index string.
-     *
-     * @return the string
-     */
-    @RequestMapping("/todolist")
-    public String todo(HttpServletRequest request, Model model) {
-
-        String code = request.getParameter("code");   //
-        String state = request.getParameter("state");   //
-        System.out.println(code);
-        model.addAttribute("realcode", code);
-
-        return "wx/todo";
-    }
 
 
     /**

@@ -49,8 +49,8 @@ import static com.realaicy.prod.jc.lib.core.utils.RealBeanUtils.getNullPropertyN
 public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable<ID>,
         ID extends Serializable, V extends BaseVO<ID>> {
 
-    private static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
-    private static final String NO_AUTH_STRING = "NOPrivilege";
+    protected static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
+    protected static final String NO_AUTH_STRING = "NOPrivilege";
     private static String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
     private static Pattern p = Pattern.compile(regEx);
     private final BaseServiceWithVO<M, ID, V> service;
@@ -201,7 +201,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             @RequestParam(value = "order[0][column]", defaultValue = "1") int orderIndex,
             @RequestParam(value = "order[0][dir]", defaultValue = "asc") String orderType,
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "realsearch", required = false) String realsearch
+            @RequestParam(value = "realsearch", required = false) String realsearch, Model model
     ) {
 
         if (!checkAuth("r", aClass.getSimpleName())) {
@@ -244,12 +244,12 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             builder.with("deleteFlag", ":", false, "", "");
         }
 
-        if (needAddSpec()){
+        if (needAddSpec()) {
             addSpec(builder);
         }
         Specification<M> spec = builder.build();
 
-        if (needAddSpec()){
+        if (needAddSpec()) {
             spec = Specifications.where(spec).and(addSpec());
         }
 
@@ -266,7 +266,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
         info.put("recordsFiltered", service.count(spec));
         info.put("recordsTotal", service.count());
+        
+        addAttrToModel(model);
+        
+        
         return info;
+    }
+
+    protected void addAttrToModel(Model model) {
     }
 
     protected boolean needConvertForListDT() {
@@ -352,6 +359,8 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
+
+            saveNewEntityCallBack();
             return "ok";
 
         } else if (updateflag.equals("editedit")) { //edit
@@ -375,6 +384,10 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             return "ok";
         } // end of edit
         return null;
+    }
+
+    protected void saveNewEntityCallBack() {
+
     }
 
     protected void extendSave(M po, V realmodel) {
@@ -404,6 +417,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     protected void addSpec(BaseSpecificationsBuilder<M> mBaseSpecificationsBuilder) {
     }
+
     protected Specification<M> addSpec() {
         return null;
     }

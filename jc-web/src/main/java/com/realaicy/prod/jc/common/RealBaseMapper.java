@@ -11,6 +11,6 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @since 2015 -09-06 21:53
  */
 public interface RealBaseMapper<T> extends Mapper<T>, MySqlMapper<T> {
-    //TODO
+    //MyWork
     //FIXME 特别注意，该接口不能被扫描到，否则会出错
 }

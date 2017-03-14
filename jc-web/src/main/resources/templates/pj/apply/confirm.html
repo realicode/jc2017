@@ -1,0 +1,211 @@
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+
+    <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/confirm}"
+          id="realentity" class="form-horizontal"
+          xmlns:th="http://www.thymeleaf.org">
+
+        <fieldset>
+            <legend></legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">申请项目名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" disabled="disabled"
+                           th:field="*{name}" name="name" id="name">
+                    <input id="realactiontype" name="realactiontype" type="hidden" th:value="${realactiontype}">
+                    <input id="updateflag" name="updateflag" type="hidden" th:value="${updateflag}">
+                    <input id="applyid" name="applyid" type="hidden" th:value="${applyid}">
+                    <input id="confirmType" name="confirmType" type="hidden" th:value="${confirmType}">
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">申请机构名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" disabled="disabled"
+                           th:field="*{orgName}" name="orgName" id="orgName">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">待稽查试验机构（多中心）</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" disabled="disabled"
+                           th:field="*{trialCenterNames}" name="trialCenterNames" id="trialCenterNames">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">试验方案摘要</label>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" name="trialAbstractName" th:field="*{trialAbstractName}"
+                           placeholder="试验方案摘要"
+                           data-rule-required="true" data-msg-required="试验方案摘要">
+                </div>
+                <div class="col-md-4">
+                    <a id="realdownlaod">下载摘要 </a>
+                    <input class="form-control" placeholder="" type="hidden"
+                           th:field="*{trialAbstractURI}" name="trialAbstractURI" id="trialAbstractURI">
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">项目简述</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" disabled="disabled"
+                           th:field="*{applyDescribe}" name="applyDescribe" id="applyDescribe">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">确认意见</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" placeholder="" rows="4"
+                              th:field="*{confirmRemark}" name="confirmRemark" id="confirmRemark"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">预报价</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text"
+                           th:field="*{quotation}" name="quotation" id="quotation">
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default" type="button">
+                        取消此次确认操作
+                    </button>
+
+                    <button class="btn btn-danger" type="submit" id="nopass" onclick="realclick(this.id)">
+                        <i class="fa fa-save"></i>
+                        不通过
+                    </button>
+
+                    <button class="btn btn-primary" type="submit" id="pass" onclick="realclick(this.id)">
+                        <i class="fa fa-save"></i>
+                        确认通过
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    pageSetUp();
+    
+    function realclick(data) {
+        console.log("ID: " +data);
+        if(data=="pass"){
+            $("#confirmType").val("pass");
+        }else if(data=="nopass"){
+            $("#confirmType").val("nopass");
+        }
+    }
+
+    $("#realentity").validate({
+        debug: true,
+        invalidHandler: function (event, validator) {
+            var errors = validator.numberOfInvalids();
+            if (errors) {
+                var message = errors == 1
+                    ? 'You missed 1 field. It has been highlighted'
+                    : 'You missed ' + errors + ' fields. They have been highlighted';
+                $("#realerrormsg").html(message);
+            } else {
+                $("div.error").hide();
+            }
+        },
+        errorLabelContainer: "#realerrormsg",
+        wrapper: "li",
+        errorClass: "state-error",
+        validClass: "state-success",
+        highlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().addClass(errorClass).removeClass(validClass);
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $(element).parent().parent().removeClass(errorClass).addClass(validClass);
+        },
+        rules: {
+            orgName: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            },
+            trialAbstractName: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
+            }
+
+        },
+        messages: {
+            orgName: {
+                required: '请输入机构名称',
+                minlength: '请至少输入5个字符',
+                maxlength: '输入超过了50个字符'
+            },
+            trialAbstractName: {
+                required: '请输入方案摘要名称',
+                minlength: '请至少输入5个字符',
+                maxlength: '输入超过了50个字符'
+            }
+        },
+
+        submitHandler: function (form) {
+
+            if ($("#realactiontype").val() == "confirm") {
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.substring(0, 2) == "ok") {
+                            real_g_success("确认申请成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+            } else {
+                console.log("editedit");
+                $("#updateflag").attr("value", 'editedit');
+                $.ajax({
+                    url: form.action,
+                    type: form.method,
+                    data: $(form).serialize(),
+                    success: function (response) {
+                        if (response.substring(0, 2) == "ok") {
+                            real_g_success("修改机构成功！");
+                        }
+                        else {
+                            real_g_fail(response);
+                        }
+                    }
+                });
+
+            }
+        }
+    });
+
+    var pagefunction = function () {
+
+    };
+
+    pagefunction();
+
+    $(document).ready(function () {
+        $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+    });
+
+
+</script>

@@ -2,6 +2,7 @@ package com.realaicy.prod.jc.uitl;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.realaicy.prod.jc.modules.wx.model.RealTK;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,11 +22,37 @@ public class RealCacheUtil {
     public static final Table<String, LocalDate, Integer> MOBILENUMBER_CANSENT_TABLE = HashBasedTable.create();
     public static final Table<String, LocalDate, Integer> IPADRESS_CANSENT_TABLE = HashBasedTable.create();
     public static final Table<String, String, Integer> IPADRESS_CANUSEFUNC_TABLE = HashBasedTable.create();
+    public static final Table<String, String, LocalDateTime> SMS_CODE_MAP = HashBasedTable.create();
+    private  static   String wxToken = "";
+    private    static LocalDateTime wxTokenExpire;
+
+    public static String getWxToken() {
+
+        if (LocalDateTime.now().isAfter(RealCacheUtil.getWxTokenExpire())) {
+            RealTK realTK = NetUtil.getRestTemplate().getForObject(
+                    "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wx9605bfbe1e7c2f1e"
+                            + "&corpsecret=nm4gMa4Ri3wQDOttvmxU7TaIILeM7M7SYvNiASmmx5e_Trg6_4g3pTYOxM6A54k2",
+                    RealTK.class);
+            RealCacheUtil.setWxToken(realTK.getAccessToken());
+            RealCacheUtil.setWxTokenExpire(LocalDateTime.now().plusMinutes(110));
+        }
+        return wxToken;
+    }
+
+    public static void setWxToken(String wxToken) {
+        RealCacheUtil.wxToken = wxToken;
+    }
+
+    private static LocalDateTime getWxTokenExpire() {
+        return wxTokenExpire;
+    }
 
 
 //    public static final Map<String, LocalDateTime> MOBILENUMBER_CANSENT_MAP = new HashMap<>();
 //    public static final Map<String, LocalDateTime> IPADRESS_CANSENT_MAP = new HashMap<>();
 
-    public static final Table<String, String, LocalDateTime> SMS_CODE_MAP = HashBasedTable.create();
+    public static void setWxTokenExpire(LocalDateTime wxTokenExpire) {
+        RealCacheUtil.wxTokenExpire = wxTokenExpire;
+    }
 
 }

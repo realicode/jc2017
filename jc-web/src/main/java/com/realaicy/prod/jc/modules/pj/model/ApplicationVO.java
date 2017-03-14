@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.modules.pj.model;
 
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
+import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.math.BigInteger;
@@ -15,7 +16,6 @@ public class ApplicationVO extends BaseVO<BigInteger> {
     /**
      * ID
      */
-    @NotEmpty
     private BigInteger id;
     /**
      * 申请名称
@@ -35,15 +35,35 @@ public class ApplicationVO extends BaseVO<BigInteger> {
     @NotEmpty
     private String trialAbstractName;
     /**
-     * 带稽查试验机构名称
+     * 待稽查试验机构名称
      */
     @NotEmpty
     private String trialCenterNames;
     /**
-     * 申请人
+     * 申请状态
+     */
+    private String applayStatus;
+    /**
+     * 申请的简要描述
      */
     @NotEmpty
+    private String applyDescribe;
+    /**
+     * 申请人
+     */
     private String applicantName;
+    /**
+     * "确认申请"所需的描述
+     */
+    private String confirmRemark;
+    /**
+     * 报价
+     */
+    private Integer quotation;
+    /**
+     * 按钮显示方式
+     */
+    private String btnType;
 
     public ApplicationVO() {
     }
@@ -56,6 +76,52 @@ public class ApplicationVO extends BaseVO<BigInteger> {
         this.trialAbstractName = po.getTrialAbstractName();
         this.trialCenterNames = po.getTrialCenterNames();
         this.applicantName = po.getUser().getNickname();
+        this.applayStatus = String.valueOf(po.getStatus());
+        this.applyDescribe = po.getApplyDescribe();
+        this.confirmRemark = po.getConfirmRemark();
+        if (SpringSecurityUtil.hasPrivilege(Application.class.getSimpleName() + "-ack")) {
+            this.btnType = "2"; //有确认按钮
+        }
+    }
+
+    public String getConfirmRemark() {
+        return confirmRemark;
+    }
+
+    public void setConfirmRemark(String confirmRemark) {
+        this.confirmRemark = confirmRemark;
+    }
+
+    public Integer getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(Integer quotation) {
+        this.quotation = quotation;
+    }
+
+    public String getBtnType() {
+        return btnType;
+    }
+
+    public void setBtnType(String btnType) {
+        this.btnType = btnType;
+    }
+
+    public String getApplayStatus() {
+        return applayStatus;
+    }
+
+    public void setApplayStatus(String applayStatus) {
+        this.applayStatus = applayStatus;
+    }
+
+    public String getApplyDescribe() {
+        return applyDescribe;
+    }
+
+    public void setApplyDescribe(String applyDescribe) {
+        this.applyDescribe = applyDescribe;
     }
 
     public BigInteger getId() {

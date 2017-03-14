@@ -1,56 +1,79 @@
 <div class="jarviswidget-editbox">
 </div>
 <div class="widget-body no-padding">
-    <form th:object="${realmodel}" method="POST" th:action="@{/system/org/save}"
+    <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/save}"
           id="realentity" class="smart-form"
           xmlns:th="http://www.thymeleaf.org">
         <fieldset>
             <div class="row">
                 <section class="col col-6">
-                    <label class="select">
-                        <select   id="area" name="region"></select>
-                        <input type="hidden" id="real_region"  th:value="*{region}">
-                        <!--<select th:field="*{region}" id="area">-->
-                            <!--<option th:each="region:${regionList}" th:value="${region}"-->
-                                    <!--th:text="${region}">哈哈</option>-->
-                        <!--</select>-->
-                    </label>
-
-                </section>
-                <section class="col col-6">
-                    <label class="select">
-                        <select name="province"  id="cmbProvince"></select>
-                    </label>
-                        <select id="cmbCity" style="display: none"></select>
-                        <select id="cmbArea" style="display: none"></select>
-                    <input type="hidden" id="real_province"  th:value="*{province}">
-
-                </section>
-            </div>
-            <div class="row">
-                <section class="col col-6">
                     <label class="input"> <i class="icon-prepend fa fa-user"></i>
-                        <input class="" type="text" name="name" th:field="*{name}" placeholder="机构名称"
-                               data-rule-required="true" data-msg-required="请输入角色名称">
+                        <input class="" type="text" name="name" th:field="*{name}" placeholder="稽查项目名称"
+                               data-rule-required="true" data-msg-required="请输入稽查项目名称">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入机构名称</span></b>
+                                class="tooltip-realaicy">请输入稽查项目名称</span></b>
                         <input id="updateflag" name="updateflag" type="hidden" th:value="${realneworupdate}">
                         <input id="updateID" name="updateID" type="hidden" th:value="${realUpdateID}">
-                        <input id="orgID" name="orgID" type="hidden" th:value="${orgID}">
+                    </label>
+                </section>
+                <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input class="" type="text" name="orgName" th:field="*{orgName}" placeholder="申请方机构名称"
+                               data-rule-required="true" data-msg-required="请输入申请方机构名称">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入申请方机构名称</span></b>
                     </label>
                 </section>
             </div>
             <div class="row">
-                <section class="col col-6">
+            </div>
+            <div class="row">
+                <section class="col col-10">
+                    <div class="form-group" id="reali">
+                        <label id="reall">请输入待稽查机构名称,按回车键添加</label>
+                        <input class="form-control tagsinput" name="orgtags" id="orgtags"
+                               value="" data-role="tagsinput" >
+                    </div>
+                </section>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="row">
+                <section class="col col-5">
                     <label class="input"> <i class="icon-prepend fa fa-user"></i>
-                        <input class="" type="text" name="contactName" th:field="*{contactName}" placeholder="机构负责人姓名"
-                               data-rule-required="true" data-msg-required="机构负责人姓名">
+                        <input class="" type="text" name="trialAbstractName" th:field="*{trialAbstractName}" placeholder="请输入方案摘要名称"
+                               data-rule-required="true" data-msg-required="请输入方案摘要名称">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入机构负责人姓名</span></b>
+                                class="tooltip-realaicy">请输入方案摘要名称</span></b>
+                    </label>
+                </section>
+                <section class="col col-5">
+                    <label for="realfile" class="input input-file">
+                        <div class="button"><input type="file" name="realfile" id="realfile">
+                            点击上传
+                        </div>
+                        <input type="text" id="realfilePath" name="realfilePath" placeholder="请上传文件" readonly="">
+                        <input type="hidden" id="trialAbstractURI" name="trialAbstractURI" th:field="*{trialAbstractURI}">
+                        <input type="hidden" id="trialCenterNames" name="trialCenterNames" th:field="*{trialCenterNames}">
+
+                    </label>
+                </section>
+                <section class=" col col-1">
+                    <span id="filestatus" style="font-size: 15px;line-height: 30px "></span>
+                </section>
+            </div>
+            <div class="row">
+                <section class="col col-10">
+                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input class="" type="text" name="applyDescribe" th:field="*{applyDescribe}" placeholder="请输入项目简要描述"
+                               data-rule-required="true" data-msg-required="请输入项目简要描述">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入项目简要描述</span></b>
                     </label>
                 </section>
             </div>
         </fieldset>
+
         <fieldset style="padding-top: 2px">
             <section class="col col-6">
                 <span id="realerrormsg"></span>
@@ -72,6 +95,43 @@
 
 <script type="text/javascript">
     pageSetUp();
+
+
+    var real_f_fileok = '0';
+    var real_filename;
+
+    function uploadFile() {
+        console.log("In uploadFile()");
+        $("#realfilePath").attr("value", $("#realfile").val());
+        $.ajax({
+            'beforeSend': function (request) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                request.setRequestHeader(header, token);
+            },
+            url: "/uploadFile",
+            type: "POST",
+            data: new FormData($("#realentity")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                console.log(data);
+                $('#filestatus').html("上传成功");
+                real_filename = data;
+                $('#trialAbstractURI').val(data);
+                real_f_fileok = '1';
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                console.log(textStatus);
+                console.log(jqXHR.responseText);
+                $('#filestatus').html("上传失败：" + jqXHR.responseText);
+
+            }
+        });
+    } // f
 
     $("#realentity").validate({
         debug: true,
@@ -97,21 +157,37 @@
             $(element).parent().parent().removeClass(errorClass).addClass(validClass);
         },
         rules: {
-            name: {
+            orgName: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 5,
+                maxlength: 50
+            },
+            trialAbstractName: {
+                required: true,
+                minlength: 5,
+                maxlength: 50
             }
+
         },
         messages: {
-            name: {
+            orgName: {
                 required: '请输入机构名称',
-                minlength: '请至少输入3个字符',
-                maxlength: '输入超过了20个字符'
+                minlength: '请至少输入5个字符',
+                maxlength: '输入超过了50个字符'
+            },
+            trialAbstractName: {
+                required: '请输入方案摘要名称',
+                minlength: '请至少输入5个字符',
+                maxlength: '输入超过了50个字符'
             }
         },
 
         submitHandler: function (form) {
+
+            console.log("a"+$("input").val());
+            console.log("b: "+$("#orgtags").val());
+            $("#trialCenterNames").val($("#orgtags").val());
+
             if ($("#updateflag").val() == "new") {
                 $.ajax({
                     url: form.action,
@@ -119,7 +195,7 @@
                     data: $(form).serialize(),
                     success: function (response) {
                         if (response.substring(0, 2) == "ok") {
-                            real_g_success("创建机构成功！");
+                            real_g_success("创建申请成功！");
                         }
                         else {
                             real_g_fail(response);
@@ -148,24 +224,28 @@
     });
 
     var pagefunction = function () {
-        addressInit('area','cmbProvince','cmbCity','cmbArea','华北地区', '北京', '市辖区', '东城区');
-//        console.log("real_region:" +$("#real_region").val());
-//        console.log("real_province:" +$("#real_province").val());
-        $("#area").val($("#real_region").val());
-        $("#area").trigger("change");
-        $("#cmbProvince").val($("#real_province").val());
-
-        if($("#updateflag").val()=="new"){
-            $("#area").prepend("<option value='*' selected='' disabled=''>——请选择区域——</option>");
-        }
 
 
-//        $("#area").on("change", function () {
-//            $("#real_region").val($("#area").val());
-//            console.log("real_region:" +$("#real_region").val());
-//        });
+        loadScript("realres/lib/sa/js/bootstrap-tags/bootstrap-tagsinput.min.js", function(){
+            $('.tagsinput').tagsinput('refresh');
+
+            $('input').on('itemAdded', function(event) {
+                $('#reall').next().children().removeClass('label');
+                console.log("tags: "+$("input").val());
+//                console.log($("input").tagsinput('items'));
+
+                $('#toBeCheckedOrgs').val($("input").val());
+
+            });
+            $('#reall').next().children().removeClass('label')
+
+        });
+
+        $("#realfile").on("change", uploadFile);
+
     };
 
-    loadScript("realaicy/js/geo.js", pagefunction);
+    pagefunction();
+
 
 </script>

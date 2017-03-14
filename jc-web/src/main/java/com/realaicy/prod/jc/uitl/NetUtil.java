@@ -1,5 +1,7 @@
 package com.realaicy.prod.jc.uitl;
 
+import org.springframework.web.client.RestTemplate;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -7,6 +9,15 @@ import javax.servlet.http.HttpServletRequest;
  * xxx
  */
 public class NetUtil {
+
+    public static RestTemplate getRestTemplate() {
+        return REST_TEMPLATE;
+    }
+
+    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+
+
     private static final String[] IP_HEADER_CANDIDATES = {
             "X-Forwarded-For",
             "Proxy-Client-IP",

@@ -1,22 +1,17 @@
 package com.realaicy.prod.jc.modules.system.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
+import com.realaicy.prod.jc.modules.me.model.MyWork;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,9 +21,7 @@ import java.util.Set;
 @Table(name = "jc_sys_user")
 public class User extends CommonDeletableEntity<BigInteger> {
 
-    @ManyToOne()
-    @JoinColumn(name = "ORG_ID")
-    private Org org;
+
     /**
      * 用户名称
      */
@@ -66,21 +59,32 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "AGE")
     private short age;
+
     /**
-     * 用户年龄
+     * 用户头像地址
      */
     @Column(name = "R_TOUXIANG")
     private String portraitUrl;
+
     /**
      * 用户性别
      */
     @Column(name = "SEX")
     private char sex;
+
     /**
      * 用户类型
      */
     @Column(name = "USERTYPE")
     private short usertype;
+
+    /**
+     * 用户所属机构
+     */
+    @ManyToOne()
+    @JoinColumn(name = "ORG_ID")
+    private Org org;
+
     /**
      * 用户角色
      */
@@ -89,6 +93,14 @@ public class User extends CommonDeletableEntity<BigInteger> {
             inverseJoinColumns = @JoinColumn(name = "ROLEID"))
     @JsonIgnore
     private Set<Role> roles;
+
+    /**
+     * 用户代办事项列表
+     */
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<MyWork> workList = new LinkedList<>();
+
     /**
      * 用户角色名字
      */

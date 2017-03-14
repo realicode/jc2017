@@ -54,8 +54,12 @@ public class WXController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.POST, value = "/t2")
+    @RequestMapping(method = RequestMethod.GET, value = "/t2")
     public String processMsgTest() {
+
+
+
+
             return "ok";
     }
 
@@ -95,7 +99,7 @@ public class WXController {
 //            System.out.println("Content：" + content);
 
         } catch (Exception e) {
-            // TODO
+            // MyWork
             // 解密失败，失败原因请查看异常
             e.printStackTrace();
         }

@@ -30,6 +30,8 @@ public class StaticParams {
         public static final String WX_TEST2 = "/wx/t2";
 
         public static final String WX_TEST3 = "/temptest/**";
+        public static final String WX = "/wx/**";
+
 
 
 
@@ -40,6 +42,10 @@ public class StaticParams {
         public static final String DEFAULTBYTES = "10M";
 
         public static final int DEFAULTSIZE = 1000;
+    }
+
+    public static final class WX {
+        public static final String NEWAPPLYSENTTO = "wym";
     }
 
     public static final class WS {
@@ -62,7 +68,10 @@ public class StaticParams {
         public static final int REGISUSER = 5;
 
     }
+    public static final class FILEUPLOAD {
+        public static final int MAXBYTESPERFILE = 20971520;
 
+    }
 
         public static final class REALNUM {
         public static final int  N1 = 1;

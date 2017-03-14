@@ -55,7 +55,6 @@
 
 
     <logger name="org.springframework.web" level="INFO"/>
-    <logger name="org.springboot.sample" level="TRACE"/>
 
     <springProfile name="develop">
         <!--<logger name="org.springboot.sample" level="DEBUG"/>-->
@@ -64,6 +63,10 @@
             <appender-ref ref="FILE"/>
         </logger>
     </springProfile>
+
+
+
+
 
     <springProfile name="staging">
         <logger name="org.springboot.sample" level="INFO"/>

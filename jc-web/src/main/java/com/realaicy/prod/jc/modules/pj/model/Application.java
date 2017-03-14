@@ -44,9 +44,52 @@ public class Application extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "TRIALCENTERS")
     private String trialCenterNames;
+
+    /**
+     * 申请的简要描述
+     */
+    @NotEmpty
+    @Column(name = "APPLY_DESCRIBE")
+    private String applyDescribe;
+
+    /**
+     * "确认申请"所需的描述
+     */
+    @Column(name = "CONFIRM_REMARK")
+    private String confirmRemark;
+    /**
+     * 报价
+     */
+    @Column(name = "QUOTATION")
+    private Integer quotation;
+
     @ManyToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User user;
+
+    public String getConfirmRemark() {
+        return confirmRemark;
+    }
+
+    public void setConfirmRemark(String confirmRemark) {
+        this.confirmRemark = confirmRemark;
+    }
+
+    public Integer getQuotation() {
+        return quotation;
+    }
+
+    public void setQuotation(Integer quotation) {
+        this.quotation = quotation;
+    }
+
+    public String getApplyDescribe() {
+        return applyDescribe;
+    }
+
+    public void setApplyDescribe(String applyDescribe) {
+        this.applyDescribe = applyDescribe;
+    }
 
     public String getTrialAbstractName() {
         return trialAbstractName;
