@@ -266,13 +266,9 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
         info.put("recordsFiltered", service.count(spec));
         info.put("recordsTotal", service.count());
-        
         addAttrToModel(model);
-        
-        
         return info;
     }
-
     protected void addAttrToModel(Model model) {
     }
 
