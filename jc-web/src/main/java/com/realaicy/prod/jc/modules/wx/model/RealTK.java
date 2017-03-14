@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by realaicy on 2017/3/13.
- *
+ * xxx
  */
 public class RealTK implements Serializable {
 
@@ -14,6 +14,25 @@ public class RealTK implements Serializable {
     private String accessToken;
     @JsonProperty("expires_in")
     private String expires;
+
+    private String errcode = "0";
+    private String errmsg = "";
+
+    public String getErrcode() {
+        return errcode;
+    }
+
+    public void setErrcode(String errcode) {
+        this.errcode = errcode;
+    }
+
+    public String getErrmsg() {
+        return errmsg;
+    }
+
+    public void setErrmsg(String errmsg) {
+        this.errmsg = errmsg;
+    }
 
     public String getAccessToken() {
         return accessToken;

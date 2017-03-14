@@ -1,9 +1,9 @@
 package com.realaicy.prod.jc.realglobal;
 
 import com.realaicy.prod.jc.modules.wx.model.msg.RealMsgContent;
-import com.realaicy.prod.jc.modules.wx.model.msg.RealRes;
+import com.realaicy.prod.jc.modules.wx.model.msg.WxMsgResp;
 import com.realaicy.prod.jc.modules.wx.model.RealTK;
-import com.realaicy.prod.jc.modules.wx.model.msg.Realmsg;
+import com.realaicy.prod.jc.modules.wx.model.msg.WxMsg;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,7 +26,7 @@ public class TempTest {
     @Test
     public void testRealWXPost(){
         RestTemplate restTemplate = new RestTemplate();
-        Realmsg realms = new Realmsg();
+        WxMsg realms = new WxMsg();
         RealMsgContent content= new RealMsgContent();
         content.setContent("测试哈哈哈哈");
         realms.setAgentid(2);
@@ -35,9 +35,9 @@ public class TempTest {
         realms.setText(content);
 
 
-        RealRes realRes = restTemplate.postForObject("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=LPLvQrKhNU1-7EWl511c0b3qI-h9kFIZeC1bGKryaMuUrmP13TBUazUD58Vu1Bbr",
-                realms,RealRes.class );
-        System.out.println(realRes.toString());
+        WxMsgResp wxMsgResp = restTemplate.postForObject("https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=LPLvQrKhNU1-7EWl511c0b3qI-h9kFIZeC1bGKryaMuUrmP13TBUazUD58Vu1Bbr",
+                realms,WxMsgResp.class );
+        System.out.println(wxMsgResp.toString());
     }
 
 }

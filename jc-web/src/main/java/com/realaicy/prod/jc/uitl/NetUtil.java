@@ -10,12 +10,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class NetUtil {
 
-    public static RestTemplate getRestTemplate() {
-        return REST_TEMPLATE;
-    }
-
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
-
 
 
     private static final String[] IP_HEADER_CANDIDATES = {

@@ -6,13 +6,13 @@ import com.realaicy.prod.jc.modules.pj.model.ApplicationVO;
 import com.realaicy.prod.jc.modules.pj.service.ApplicationService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.modules.wx.model.msg.RealMsgContent;
-import com.realaicy.prod.jc.modules.wx.model.msg.RealRes;
-import com.realaicy.prod.jc.modules.wx.model.msg.Realmsg;
+import com.realaicy.prod.jc.modules.wx.model.msg.WxMsgResp;
+import com.realaicy.prod.jc.modules.wx.model.msg.WxMsg;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
-import com.realaicy.prod.jc.uitl.NetUtil;
 import com.realaicy.prod.jc.uitl.RealCacheUtil;
 import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
+import com.realaicy.prod.jc.uitl.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -130,20 +130,8 @@ public class ApplicationController extends CRUDWithVOController<Application, Big
     @Override
     protected void saveNewEntityCallBack() {
         //通知秘书有新申请
-        Realmsg realms = new Realmsg();
-        RealMsgContent content = new RealMsgContent();
-        content.setContent("尊敬的秘书长：有一个新的稽查项目申请，请登录系统查看");
+        WxUtil.sentMsgToUser("尊敬的秘书长：有一个新的稽查项目申请，请登录系统查看",StaticParams.WX.NEWAPPLYSENTTO);
 
-        realms.setAgentid(2);
-        realms.setMsgtype("text");
-        realms.setTouser(StaticParams.WX.NEWAPPLYSENTTO);
-        realms.setText(content);
-
-
-        RealRes realRes = NetUtil.getRestTemplate().postForObject("https://qyapi.weixin.qq.com/cgi-bin/message/send?"
-                        + "access_token=" + RealCacheUtil.getWxToken(),
-                realms, RealRes.class);
-        System.out.println(realRes.toString());
     }
 
     @Override

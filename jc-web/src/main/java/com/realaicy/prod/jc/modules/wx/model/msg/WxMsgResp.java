@@ -7,14 +7,14 @@ import java.io.Serializable;
  *
  * xx
  */
-public class RealRes implements Serializable {
+public class WxMsgResp implements Serializable {
 
     private String invalidparty;
     private String errmsg;
 
     @Override
     public String toString() {
-        return "RealRes{"
+        return "WxMsgResp{"
                 +
                 "invalidparty='"
                 + invalidparty + '\''
