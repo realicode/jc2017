@@ -1,6 +1,6 @@
 package com.realaicy.prod.jc.modules.pj.service;
 
-import com.realaicy.prod.jc.modules.pj.model.Application;
+import com.realaicy.prod.jc.modules.pj.model.Appliance;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,10 +14,10 @@ import java.math.BigInteger;
  * xxx
  */
 public class ApplicationServiceTest {
-    public static Specification<Application> applicaitonByUserID(BigInteger userID) {
-        return new Specification<Application>() {
+    public static Specification<Appliance> applicaitonByUserID(BigInteger userID) {
+        return new Specification<Appliance>() {
             @Override
-            public Predicate toPredicate(final Root<Application> userRoot, final CriteriaQuery<?> query,
+            public Predicate toPredicate(final Root<Appliance> userRoot, final CriteriaQuery<?> query,
                                          final CriteriaBuilder cb) {
 
                 return cb.equal(userRoot.get("user").get("id"), userID);

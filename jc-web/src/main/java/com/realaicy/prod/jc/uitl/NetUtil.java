@@ -1,7 +1,5 @@
 package com.realaicy.prod.jc.uitl;
 
-import org.springframework.web.client.RestTemplate;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**

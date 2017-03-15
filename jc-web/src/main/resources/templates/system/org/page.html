@@ -243,9 +243,8 @@
                                 searchString += search_province;
                             }
                             if (search_name != undefined && search_name != "") {
-                                searchString += ",name:*";
+                                searchString += ",name~";
                                 searchString += search_name;
-                                searchString += "*";
                             }
 
                             d.search = searchString;

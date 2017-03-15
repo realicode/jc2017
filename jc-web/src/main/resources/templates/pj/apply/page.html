@@ -57,14 +57,27 @@
                                             <th>
                                             </th>
                                             <th>
+                                                <select id='real_filter_status' class="form-control">
+                                                    <option value="0">过滤状态</option>
+                                                    <option value="1">待确认</option>
+                                                    <option value="2">已确认待审核</option>
+                                                </select>
                                             </th>
                                             <th>
+                                                <input type="text" id='real_filter_name' class="form-control"
+                                                       placeholder="过滤项目名称"/>
                                             </th>
                                             <th>
+                                                <input type="text" id='real_filter_orgname' class="form-control"
+                                                       placeholder="过滤申请单位"/>
                                             </th>
                                             <th>
+                                                <input type="text" id='real_filter_centername' class="form-control"
+                                                       placeholder="过滤稽查机构"/>
                                             </th>
-                                            <th>
+                                            <th><input type="text" id='real_filter_trialabstractname'
+                                                       class="form-control"
+                                                       placeholder="过滤方案摘要"/>
                                             </th>
                                         </tr>
                                         <tr>
@@ -106,20 +119,20 @@
 </div>
 
 
-
 <div>
-    <input id="real_auth_approve" name="real_auth_approve" type="hidden" th:value="${real_auth_approve}"
-           xmlns:th="http://www.thymeleaf.org">>
+    <input id="auth_approve" name="auth_approve" type="hidden" th:value="${real_auth_approve}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="auth_affirm" name="auth_affirm" type="hidden" th:value="${real_auth_affirm}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
+           xmlns:th="http://www.thymeleaf.org">
 </div>
 
 <script type="text/javascript">
-    pageSetUp();
+    //    pageSetUp();
+    var firstFlag = "true";
 
-    var pagefunction = function () {
-
-        $("#realbtn-search").on("click", function () {
-            console.log("cccccccccccccccccccccc");
-        });
+    $(document).ready(function () {
         var realtable = $('#dt_basic_real').DataTable(
             {
                 sScrollX: true,
@@ -127,7 +140,7 @@
                 scrollCollapse: true,
                 bcrollCollapse: true,
                 "pagingType": "full_numbers",
-                "searching": true,
+                "searching": false,
                 "language": realaicy_g_var_tableopt_lang,
                 // "dom": 'rt<"bottom"iflp<"clear">>',
                 "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
@@ -196,6 +209,14 @@
                         text: '刷新数据',
                         className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                         action: function (e, dt, node, config) {
+
+
+                            $("#real_filter_name").val("");
+                            $("#real_filter_orgname").val("");
+                            $("#real_filter_centername").val("");
+                            $("#real_filter_trialabstractname").val("");
+                            $("#real_filter_status").val("0");
+
                             realtable.draw();
                         }
                     },
@@ -210,10 +231,44 @@
                         request.setRequestHeader(header, token);
                     },
                     "data": function (d) {
-                        // d.custom = $('#myInput').val();
-                        // etc
                         delete d.columns;
                         var searchString = "";
+                        if (firstFlag == "true") {
+                            searchString = $("#firstfilter").val();
+//                            console.log($("#firstfilter").val().split(":")[1]);
+                            $("#real_filter_status").val($("#firstfilter").val().split(":")[1]);
+                            firstFlag = "false";
+                        } else {
+
+                            var search_name = $("#real_filter_name").val();
+                            var search_orgname = $("#real_filter_orgname").val();
+                            var search_centername = $("#real_filter_centername").val();
+                            var search_trialabstractname = $("#real_filter_trialabstractname").val();
+
+
+                            if (search_name != undefined && search_name != "") {
+                                searchString += "name~";
+                                searchString += search_name + ",";
+                            }
+                            if (search_orgname != undefined && search_orgname != "") {
+                                searchString += "orgName~";
+                                searchString += search_orgname + ",";
+                            }
+                            if (search_centername != undefined && search_centername != "") {
+                                searchString += "trialCenterNames~";
+                                searchString += search_centername + ",";
+                            }
+                            if (search_trialabstractname != undefined && search_trialabstractname != "") {
+                                searchString += "trialAbstractName~";
+                                searchString += search_trialabstractname;
+                            }
+                            if ($("#real_filter_status").val() != undefined && $("#real_filter_status").val() !== "0") {
+                                searchString += ",status:";
+                                searchString += $("#real_filter_status").val();
+                            }
+
+
+                        }
 
                         d.search = searchString;
                         console.log("search: " + d.search);
@@ -236,7 +291,7 @@
                                 return "<span class='label label-default'>" + "待确认" + "</span>"
 
                             } else if ((data == 2)) {
-                                return "<span class='label label-primary'>" + "已确认待审批" + "</span>"
+                                return "<span class='label label-primary'>" + "已确认待审核" + "</span>"
                             }
 
                         }
@@ -244,18 +299,18 @@
                     {
                         "data": "name",
                         "width": "10%",
-                        "render": function (data, type, row,meta) {
+                        "render": function (data, type, row, meta) {
 //                            console.log(JSON.stringify(data));
 //                            console.log(JSON.stringify(type));
 //                            console.log(JSON.stringify(row));
 
 
-                            if(data.length > 10){
-                                console.log("row:"+meta.row+"col:"+meta.col);
-                                return '<label id=reallongtextcell'+row.id+' class="real_long_text">'+data.substr( 0, 10 )+'...</label>';
+                            if (data.length > 10) {
+                                console.log("row:" + meta.row + "col:" + meta.col);
+                                return '<label id=reallongtextcell' + row.id + ' class="real_long_text">' + data.substr(0, 10) + '...</label>';
 //                                return '<label class="real_long_text">'+data.substr(0, 10)+'......'+'</label>';
-                            }else {
-                                return "<label>"+data+"</label>";
+                            } else {
+                                return "<label>" + data + "</label>";
                             }
                         }
                     },
@@ -273,14 +328,14 @@
                     {
                         "data": null,
                         "render": function (data, type, row) {
-//                            console.log("data:" + row.btnType);
-                            if (row.applayStatus == 1) {
+
+                            if (row.applayStatus == "1" && $("#auth_affirm").val() == 1) {
                                 return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
-                            } else if(row.applayStatus == 2 && $("#real_auth_approve") == 1){
-                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
-                            }else{
-                                return "";
                             }
+                            if (row.applayStatus == "2" && $("#auth_approve").val() == "1") {
+                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
+                            }
+                            return "";
                         }
 
 //
@@ -306,25 +361,39 @@
                 },
                 "order": [[1, 'asc']]
             });
-
-        $('#dt_basic_real').on('click', '.real-test', function () {
-            var data = realtable.row($(this).parents('tr')).data();
-            console.log("data: " + data.id);
-            realalert("功能实现敬请期待");
-        });
-        $('#dt_basic_real').on('click', '.real_apply_affirm', function () {
-
-            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
-                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-            realloadpage("/pj/apply/confirm?applyid=" + realtable.row($(this).parents('tr')).data().id);
+        $("#realbtn-search").on("click", function () {
+            console.log("cccccccccccccccccccccc");
         });
 
-        $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
-//            console.log(JSON.stringify($()))
-            console.log(realtable.row($(this).parents('tr')).data().id);
-            layer.tips(''+realtable.row($(this).parents('tr')).data().name, '#reallongtextcell'+realtable.row($(this).parents('tr')).data().id);
 
+        $("#real_filter_status").on("change", function () {
+            if(firstFlag=="false"){
+                realtable.draw();
+            }
         });
+    });
+
+    var pagefunction = function () {
+
+
+         $('#dt_basic_real').on('click', '.real-test', function () {
+         var data = realtable.row($(this).parents('tr')).data();
+         console.log("data: " + data.id);
+         realalert("功能实现敬请期待");
+         });
+         $('#dt_basic_real').on('click', '.real_apply_affirm', function () {
+
+         if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+         $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+         realloadpage("/pj/apply/confirm?applyid=" + realtable.row($(this).parents('tr')).data().id);
+         });
+
+         $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
+         //            console.log(JSON.stringify($()))
+         console.log(realtable.row($(this).parents('tr')).data().id);
+         layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
+
+         });
 
     };
 

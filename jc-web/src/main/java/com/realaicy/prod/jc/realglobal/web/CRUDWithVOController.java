@@ -99,9 +99,11 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 //    }
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
-    public String listEntityPage() {
+    public String listEntityPage(Model model) {
         if (checkAuth("r", aClass.getSimpleName())) {
             System.out.println("pageUrl: " + pageUrl);
+
+            addAttrToModel(model);
             return this.pageUrl;
         } else {
             return NO_AUTH_VIEW_NAME;
@@ -201,7 +203,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             @RequestParam(value = "order[0][column]", defaultValue = "1") int orderIndex,
             @RequestParam(value = "order[0][dir]", defaultValue = "asc") String orderType,
             @RequestParam(value = "search", required = false) String search,
-            @RequestParam(value = "realsearch", required = false) String realsearch, Model model
+            @RequestParam(value = "realsearch", required = false) String realsearch
     ) {
 
         if (!checkAuth("r", aClass.getSimpleName())) {
@@ -266,7 +268,6 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
         info.put("recordsFiltered", service.count(spec));
         info.put("recordsTotal", service.count());
-        addAttrToModel(model);
         return info;
     }
     protected void addAttrToModel(Model model) {

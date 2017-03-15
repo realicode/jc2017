@@ -12,7 +12,7 @@ import java.math.BigInteger;
  */
 @Entity
 @Table(name = "jc_pj_application")
-public class Application extends CommonDeletableEntity<BigInteger> {
+public class Appliance extends CommonDeletableEntity<BigInteger> {
 
 
     /**

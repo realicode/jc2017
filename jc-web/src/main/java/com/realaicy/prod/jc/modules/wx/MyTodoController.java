@@ -1,8 +1,6 @@
 package com.realaicy.prod.jc.modules.wx;
 
-import com.realaicy.prod.jc.modules.wx.model.UserInfoResponse;
-import com.realaicy.prod.jc.uitl.NetUtil;
-import com.realaicy.prod.jc.uitl.RealCacheUtil;
+import com.realaicy.prod.jc.uitl.WxUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +26,8 @@ public class MyTodoController {
 //        String state = request.getParameter("state");   //
 //        System.out.println(code);
 
-        UserInfoResponse userInfo = NetUtil.getRestTemplate().getForObject(
-                "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token="
-                        + RealCacheUtil.getWxToken() + "&code=" + code + "&agentid=2",
-                UserInfoResponse.class);
 
-        model.addAttribute("realuser", userInfo.getUserID());
+        model.addAttribute("realuser", WxUtil.getUserInfoFromCode(code).getUserID());
 
         return "wx/todo";
     }

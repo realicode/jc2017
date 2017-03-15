@@ -11,7 +11,7 @@ import java.math.BigInteger;
  * <p>
  * xxs
  */
-public class ApplicationVO extends BaseVO<BigInteger> {
+public class ApplianceVO extends BaseVO<BigInteger> {
 
     /**
      * ID
@@ -65,10 +65,10 @@ public class ApplicationVO extends BaseVO<BigInteger> {
      */
     private String btnType;
 
-    public ApplicationVO() {
+    public ApplianceVO() {
     }
 
-    public ApplicationVO(Application po) {
+    public ApplianceVO(Appliance po) {
         this.id = po.getId();
         this.name = po.getName();
         this.orgName = po.getOrgName();
@@ -79,7 +79,7 @@ public class ApplicationVO extends BaseVO<BigInteger> {
         this.applayStatus = String.valueOf(po.getStatus());
         this.applyDescribe = po.getApplyDescribe();
         this.confirmRemark = po.getConfirmRemark();
-        if (SpringSecurityUtil.hasPrivilege(Application.class.getSimpleName() + "-ack")) {
+        if (SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-ack")) {
             this.btnType = "2"; //有确认按钮
         }
     }

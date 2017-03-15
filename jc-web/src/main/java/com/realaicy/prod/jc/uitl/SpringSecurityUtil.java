@@ -188,11 +188,11 @@ public final class SpringSecurityUtil {
      * @return true if has any role, otherwise false.
      */
     public static boolean hasAnyPrivilege(final String... privileges) {
-        final UserDetails userDetails = SpringSecurityUtil.getCurrentUserDetails();
-        if (userDetails != null) {
+        final RealUserDetails realUserDetails = SpringSecurityUtil.getCurrentRealUserDetails();
+        if (realUserDetails != null) {
             final Set<String> rolesSet = ImmutableSet.copyOf(privileges);
-            for (final GrantedAuthority each : userDetails.getAuthorities()) {
-                if (rolesSet.contains(each.getAuthority())) {
+            for (final String each : realUserDetails.getRealAuthorities()) {
+                if (rolesSet.contains(each)) {
                     return true;
                 }
             }

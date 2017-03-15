@@ -22,7 +22,7 @@ public final class BaseSpecificationsBuilder<T> {
                                                 final Object value, final String prefix, final String suffix) {
         SearchOperation op = SearchOperation.getSimpleOperation(operation.charAt(0));
         if (op != null) {
-            if (op == SearchOperation.EQUALITY) { // the operation may be complex operation
+            /*if (op == SearchOperation.EQUALITY) { // the operation may be complex operation
                 final boolean startWithAsterisk = prefix.contains("*");
                 final boolean endWithAsterisk = suffix.contains("*");
 
@@ -33,7 +33,7 @@ public final class BaseSpecificationsBuilder<T> {
                 } else if (endWithAsterisk) {
                     op = SearchOperation.STARTS_WITH;
                 }
-            }
+            }*/
             params.add(new SpecSearchCriteria(key, op, value));
         }
         return this;

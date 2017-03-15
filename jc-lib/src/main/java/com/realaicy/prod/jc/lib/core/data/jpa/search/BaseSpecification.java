@@ -6,8 +6,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.math.BigInteger;
-import java.util.List;
 
 
 /**
@@ -57,9 +55,9 @@ public class BaseSpecification<T> implements Specification<T> {
             case LESS_THAN:
                 return builder.lessThan(root.get(criteria.getKey()), criteria.getValue().toString());
             case LIKE:
-                return builder.like(root.get(criteria.getKey()), criteria.getValue().toString());
-            case REALAICY_IN:
-                return root.get(criteria.getKey()).in((List<BigInteger>) criteria.getValue());
+                return builder.like(root.get(criteria.getKey()), "%" + criteria.getValue() + "%");
+            case REALAICY_EQ:
+                return builder.equal(root.get(criteria.getKey()), criteria.getValue());
             case STARTS_WITH:
                 return builder.like(root.get(criteria.getKey()), criteria.getValue() + "%");
             case ENDS_WITH:

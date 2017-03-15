@@ -239,7 +239,7 @@
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
-                                $("#real_filter_name").val("");
+                                $("#real_filter_username").val("");
                                 $("#real_filter_nickname").val("");
                                 $("#real_filter_org").val("");
                                 $("#real_filter_role").val("");
@@ -268,14 +268,12 @@
                             var search_role = $("#real_filter_role").val();
 
                             if (search_username != undefined && search_username != "") {
-                                searchString += "username:*";
+                                searchString += "username~";
                                 searchString += search_username;
-                                searchString += "*";
                             }
                             if (search_nickname != undefined && search_nickname != "") {
-                                searchString += ",nickname:*";
+                                searchString += ",nickname~";
                                 searchString += search_nickname;
-                                searchString += "*";
                             }
                             if (search_org != undefined && search_org != "") {
                                 realSearchString += "orgname=" + search_org+",";
@@ -288,7 +286,7 @@
                         },
                         error: function (xhr, status, error) {
                             if (xhr.responseText.indexOf("invalid") == 0) {
-                                location = "http://127.0.0.1:48080/";
+                                location = login_url;
                             }
                         }
                     },

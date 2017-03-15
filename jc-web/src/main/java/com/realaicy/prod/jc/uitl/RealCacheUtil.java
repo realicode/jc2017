@@ -2,13 +2,10 @@ package com.realaicy.prod.jc.uitl;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import com.realaicy.prod.jc.modules.wx.model.RealTK;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by realaicy on 2017/3/8.
@@ -23,6 +20,9 @@ public class RealCacheUtil {
     public static final Table<String, LocalDate, Integer> IPADRESS_CANSENT_TABLE = HashBasedTable.create();
     public static final Table<String, String, Integer> IPADRESS_CANUSEFUNC_TABLE = HashBasedTable.create();
     public static final Table<String, String, LocalDateTime> SMS_CODE_MAP = HashBasedTable.create();
+    public static final Map<String, String> EVENT_ACTION = new HashMap<>();
+
+
 
 
 }

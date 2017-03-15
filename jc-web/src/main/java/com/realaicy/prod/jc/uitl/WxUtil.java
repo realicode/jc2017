@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.uitl;
 
 import com.realaicy.prod.jc.modules.wx.model.RealTK;
+import com.realaicy.prod.jc.modules.wx.model.UserInfoResponse;
 import com.realaicy.prod.jc.modules.wx.model.msg.RealMsgContent;
 import com.realaicy.prod.jc.modules.wx.model.msg.WxMsgResp;
 import com.realaicy.prod.jc.modules.wx.model.msg.WxMsg;
@@ -17,10 +18,17 @@ public class WxUtil {
 
     private static final String SENTMSGURI = "https://qyapi.weixin.qq.com/cgi-bin/message/send?";
 
+    private static final String GETUSERINFOURI =
+            "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo?access_token=";
+
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private static String wxToken = "";
     private static LocalDateTime wxTokenExpire;
+
+    public static void setWxTokenExpire(LocalDateTime wxTokenExpire) {
+        WxUtil.wxTokenExpire = wxTokenExpire;
+    }
 
     public static String getWxToken() {
 
@@ -37,6 +45,17 @@ public class WxUtil {
         }
         return wxToken;
     }
+
+    public static void setWxToken(String wxToken) {
+        WxUtil.wxToken = wxToken;
+    }
+
+    public static UserInfoResponse getUserInfoFromCode(String code) {
+        return WxUtil.getRestTemplate().getForObject(
+                GETUSERINFOURI + WxUtil.getWxToken() + "&code=" + code + "&agentid=2",
+                UserInfoResponse.class);
+    }
+
 
     public static RestTemplate getRestTemplate() {
         return REST_TEMPLATE;

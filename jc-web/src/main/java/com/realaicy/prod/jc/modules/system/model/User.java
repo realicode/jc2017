@@ -65,26 +65,27 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "R_TOUXIANG")
     private String portraitUrl;
-
+    /**
+     * 用户头像地址
+     */
+    @Column(name = "WX_USERID")
+    private String wxUserID;
     /**
      * 用户性别
      */
     @Column(name = "SEX")
     private char sex;
-
     /**
      * 用户类型
      */
     @Column(name = "USERTYPE")
     private short usertype;
-
     /**
      * 用户所属机构
      */
     @ManyToOne()
     @JoinColumn(name = "ORG_ID")
     private Org org;
-
     /**
      * 用户角色
      */
@@ -93,19 +94,25 @@ public class User extends CommonDeletableEntity<BigInteger> {
             inverseJoinColumns = @JoinColumn(name = "ROLEID"))
     @JsonIgnore
     private Set<Role> roles;
-
     /**
      * 用户代办事项列表
      */
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<MyWork> workList = new LinkedList<>();
-
     /**
      * 用户角色名字
      */
     @Column(name = "ROLENAMES")
     private String rolenames;
+
+    public String getWxUserID() {
+        return wxUserID;
+    }
+
+    public void setWxUserID(String wxUserID) {
+        this.wxUserID = wxUserID;
+    }
 
     public Org getOrg() {
         return org;
