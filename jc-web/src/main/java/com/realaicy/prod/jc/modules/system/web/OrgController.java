@@ -21,6 +21,7 @@ public class OrgController extends CRUDWithVOController<Org, BigInteger, OrgVO> 
     private static final List<String> BINDING_WHITE_LIST = Collections.singletonList("");
     private static final String PAGE_URL = "system/org/page";
     private static final String NEW_ENTITY_URL = "system/org/add";
+    private static final String SHOW_ENTITY_URL = "system/org/detail";
     private static final String EDIT_ENTITY_URL = "system/org/add";
     private static final String LIST_ENTITY_URL = "system/org/page";
     private static final String SEARCH_ENTITY_URL = "system/org/search";
@@ -28,7 +29,7 @@ public class OrgController extends CRUDWithVOController<Org, BigInteger, OrgVO> 
 
     @Autowired
     public OrgController(OrgService orgService) {
-        super(orgService, "org", NAME_DIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(orgService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, Org.class, OrgVO.class, BINDING_WHITE_LIST);
         this.orgService = orgService;
     }

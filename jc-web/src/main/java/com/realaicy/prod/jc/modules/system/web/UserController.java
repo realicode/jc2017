@@ -61,6 +61,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     @SuppressWarnings("unused")
     private static final List<String> EDIT_BIND_WHITE_LIST = Arrays.asList("username", "password");
     private static final String PAGE_URL = "system/user/page";
+    private static final String SHOW_ENTITY_URL = "system/user/detail";
     private static final String NEW_ENTITY_URL = "system/user/add";
     private static final String EDIT_ENTITY_URL = "system/user/add";
     private static final String LIST_ENTITY_URL = "system/user/page";
@@ -76,7 +77,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     @Autowired
     public UserController(UserService userService, RoleService roleService,
                           PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos, OrgService orgService) {
-        super(userService, "user", NAMEDIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(userService, "user", NAMEDIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, User.class, UserVO.class, EDIT_BIND_WHITE_LIST);
         this.userService = userService;
         this.roleService = roleService;

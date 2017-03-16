@@ -33,6 +33,7 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
     private static final  String[] NAME_DIC = {"name"};
     private static final  List<String> BINDING_WHITE_LIST = Collections.singletonList("name");
     private static final  String PAGE_URL = "medicinedb/meddra/page";
+    private static final String SHOW_ENTITY_URL = "medicinedb/meddra/detail";
     private static final  String NEW_ENTITY_URL = "medicinedb/meddra/add";
     private static final  String EDIT_ENTITY_URL = "medicinedb/meddra/add";
     private static final  String LIST_ENTITY_URL = "medicinedb/meddra/page";
@@ -44,7 +45,7 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
 
     @Autowired
     public MedDraController(MedDraService medDraService) {
-        super(medDraService, "org", NAME_DIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(medDraService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, MedDra.class, MedDraVO.class, BINDING_WHITE_LIST);
     }
 
@@ -56,7 +57,7 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
 
         log.info("listTree: id:" + id);
 
-        if (!checkAuth("c", MedDra.class.getSimpleName())) {
+        if (!checkCRUDAuth("c", MedDra.class.getSimpleName())) {
             return getNoAuthString();
         }
 

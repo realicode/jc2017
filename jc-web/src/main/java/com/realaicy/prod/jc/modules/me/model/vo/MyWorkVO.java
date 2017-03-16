@@ -1,65 +1,87 @@
-package com.realaicy.prod.jc.modules.me.model;
+package com.realaicy.prod.jc.modules.me.model.vo;
 
 
-import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
-import com.realaicy.prod.jc.modules.system.model.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
+import com.realaicy.prod.jc.modules.me.model.MyWork;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
 
 /**
- * 代办
+ * 我的工作VO
  */
-@Entity
-@Table(name = "jc_m_me_work")
-public class MyWork extends CommonDeletableEntity<BigInteger> {
+public class MyWorkVO extends BaseVO<BigInteger> {
 
+    /**
+     * ID
+     */
+    private BigInteger id;
     /**
      * 名称
      */
-    @Column(name = "WORKNAME")
     private String name;
     /**
      * 标题
      */
-    @Column(name = "MAINTITLE")
     private String mainTitle;
     /**
      * 副标题
      */
-    @Column(name = "SUBTITLE")
     private String subTitle;
-
     /**
      * 工作类型
      */
-    @Column(name = "WORKTYPE")
     private String workType;
-
     /**
      * 紧急程度
      */
-    @Column(name = "WORKLEVEL")
     private Short workLevel;
-
     /**
      * 最后截止日期
      */
-    @Column(name = "DEADLINE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy年MM月dd日", timezone = "Asia/Shanghai")
     private Date deadline;
-
     /**
      * 处理日期
      */
-    @Column(name = "PROCESSDATE")
     private Date processDate;
     /**
-     * 所属用户
+     * 工作状态
      */
-    @ManyToOne()
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    private Short workStatus;
+
+    public MyWorkVO() {
+    }
+
+    public MyWorkVO(MyWork po) {
+        this.id = po.getId();
+        this.name = po.getName();
+        this.mainTitle = po.getMainTitle();
+        this.subTitle = po.getSubTitle();
+        this.deadline = po.getDeadline();
+        this.workStatus = po.getStatus();
+        this.workLevel = po.getWorkLevel();
+
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
+    public Short getWorkStatus() {
+        return workStatus;
+    }
+
+    public void setWorkStatus(Short workStatus) {
+        this.workStatus = workStatus;
+    }
 
     public String getName() {
         return name;
@@ -117,11 +139,5 @@ public class MyWork extends CommonDeletableEntity<BigInteger> {
         this.processDate = processDate;
     }
 
-    public User getUser() {
-        return user;
-    }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

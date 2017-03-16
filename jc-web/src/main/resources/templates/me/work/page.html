@@ -1,0 +1,407 @@
+<title>组织机构</title>
+<link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
+      th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
+      href="../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
+<link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
+      th:href="@{/realaicy/css/bootstrap-dialog.min.css}"
+      href="../../../static/realaicy/css/bootstrap-dialog.min.css"/>
+<div class="row no-margin no-padding" style="height: 40px">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4 no-margin no-padding" style="height: 40px;font-size: 16px">
+        <i class="fa-fw fa fa-home"></i>
+        我的工作台
+        <span>>
+				我的待办工作
+			</span>
+    </div>
+</div>
+<div class="row realheight">
+    <section id="widget-grid" class="realheight">
+        <div class="alert alert-success  collapse alert-dismissible" role="alert" id="realalert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <strong>操作成功!</strong> <span id="realalertinfo"></span>
+        </div>
+        <div class="row realheight">
+            <article id="article_real_entity" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin" hidden="hidden">
+                <div class="jarviswidget jarviswidget-color-darken widget-realaicy" id="real_entity"
+                     data-widget-editbutton="false"
+                     data-widget-collapsed="false"
+                     data-widget-deletebutton="false"
+                     data-widget-fullscreenbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>待办工作处理 —— 控制面板</h2>
+                    </header>
+                    <div id="realeditdiv">
+                    </div>
+                </div>
+            </article>
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 realheight">
+                <div class="realheight">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin"
+                         style="min-height: 100%;padding-bottom: 30px;padding-left: 1px;padding-right: 1px">
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-real0" style="min-height: 100%"
+                             data-widget-editbutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                <h2>我的代办工作列表</h2>
+                            </header>
+                            <div style="min-height: 100%">
+                                <div class="jarviswidget-editbox">
+                                </div>
+                                <div class="widget-body no-padding" style="min-height: 100%">
+                                    <table id="dt_basic_real" class="table table-striped table-bordered table-hover"
+                                           style="min-height: 100%">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                            </th>
+                                            <th>
+                                                <select id='real_filter_status' class="form-control">
+                                                    <option value="0">过滤状态</option>
+                                                    <option value="1">待确认</option>
+                                                    <option value="2">已确认待审核</option>
+                                                </select>
+                                            </th>
+                                            <th>
+                                                <input type="text" id='real_filter_name' class="form-control"
+                                                       placeholder="过滤项目名称"/>
+                                            </th>
+                                            <th>
+                                                <input type="text" id='real_filter_orgname' class="form-control"
+                                                       placeholder="过滤申请单位"/>
+                                            </th>
+                                            <th>
+                                                <input type="text" id='real_filter_centername' class="form-control"
+                                                       placeholder="过滤稽查机构"/>
+                                            </th>
+                                            <th><input type="text" id='real_filter_trialabstractname'
+                                                       class="form-control"
+                                                       placeholder="过滤方案摘要"/>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                优先级
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                工作状态
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                工作标题
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                最后可执行日期
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                处理日期
+                                            </th>
+                                            <th class="realaicy_table_header">操作按钮</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+
+
+<div>
+    <input id="auth_approve" name="auth_approve" type="hidden" th:value="${real_auth_approve}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="auth_affirm" name="auth_affirm" type="hidden" th:value="${real_auth_affirm}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
+           xmlns:th="http://www.thymeleaf.org">
+</div>
+
+<script type="text/javascript">
+    //    pageSetUp();
+    var firstFlag = "true";
+
+    $(document).ready(function () {
+        var realtable = $('#dt_basic_real').DataTable(
+            {
+                sScrollX: true,
+//                    sScrollY: "300px",
+                scrollCollapse: true,
+                bcrollCollapse: true,
+                "pagingType": "full_numbers",
+                "searching": false,
+                "language": realaicy_g_var_tableopt_lang,
+                // "dom": 'rt<"bottom"iflp<"clear">>',
+                "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
+                "t" +
+                "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+                "autoWidth": true,
+                buttons: [
+                    {
+                        text: '<i class="glyphicon glyphicon-plus"></i> 新增',
+                        className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                            realloadpage("/pj/apply/new");
+                        }
+                    },
+                    {
+                        text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
+                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            var rows_selected = realtable.column(0).checkboxes.selected();
+                            if (rows_selected.length <= 0 || rows_selected.length > 1) {
+                                var msg;
+                                if (rows_selected.length <= 0)
+                                    msg = "请选择一个待修改的申请";
+                                else
+                                    msg = "请求操作不支持多选，请选择一个并且只选择一个待修改申请！";
+                                realalert(msg);
+                            } else {
+
+                                $.each(rows_selected, function (index, rowId) {
+                                    realloadpage("/pj/apply/edit/" + rowId);
+                                });
+                            }
+                        }
+                    },
+                    {
+                        text: '<i  class="fa fa-trash-o"></i> 删除',
+                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            real_g_del("申请", '/pj/apply/del/');
+                        }
+                    },
+                    {
+                        text: '<i  class="fa fa-trash-o"></i> 批量删除',
+                        className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            realalert("功能实现敬请期待。。。。。。");
+                        }
+                    },
+                    {
+                        text: '快速查询',
+                        className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            realtable.draw();
+                        }
+                    },
+                    {
+                        text: '自助复杂查询',
+                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                        action: function (e, dt, node, config) {
+                            realloadpage("/pj/apply/search");
+                        }
+                    },
+                    {
+                        text: '刷新数据',
+                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                        action: function (e, dt, node, config) {
+
+
+                            $("#real_filter_name").val("");
+                            $("#real_filter_orgname").val("");
+                            $("#real_filter_centername").val("");
+                            $("#real_filter_trialabstractname").val("");
+                            $("#real_filter_status").val("0");
+
+                            realtable.draw();
+                        }
+                    },
+                    'excel'
+                ],
+                ajax: {
+                    url: "/me/work/list4dt",
+                    type: "POST",
+                    'beforeSend': function (request) {
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        request.setRequestHeader(header, token);
+                    },
+                    "data": function (d) {
+                        delete d.columns;
+                        var searchString = "";
+                        if (firstFlag == "true") {
+                            searchString = $("#firstfilter").val();
+//                            console.log($("#firstfilter").val().split(":")[1]);
+                            $("#real_filter_status").val($("#firstfilter").val().split(":")[1]);
+                            firstFlag = "false";
+                        } else {
+
+                            var search_name = $("#real_filter_name").val();
+                            var search_orgname = $("#real_filter_orgname").val();
+                            var search_centername = $("#real_filter_centername").val();
+                            var search_trialabstractname = $("#real_filter_trialabstractname").val();
+
+
+                            if (search_name != undefined && search_name != "") {
+                                searchString += "name~";
+                                searchString += search_name + ",";
+                            }
+                            if (search_orgname != undefined && search_orgname != "") {
+                                searchString += "orgName~";
+                                searchString += search_orgname + ",";
+                            }
+                            if (search_centername != undefined && search_centername != "") {
+                                searchString += "trialCenterNames~";
+                                searchString += search_centername + ",";
+                            }
+                            if (search_trialabstractname != undefined && search_trialabstractname != "") {
+                                searchString += "trialAbstractName~";
+                                searchString += search_trialabstractname;
+                            }
+                            if ($("#real_filter_status").val() != undefined && $("#real_filter_status").val() !== "0") {
+                                searchString += ",status:";
+                                searchString += $("#real_filter_status").val();
+                            }
+
+
+                        }
+
+                        d.search = searchString;
+                        console.log("search: " + d.search);
+
+                    },
+                    error: function (xhr, status, error) {
+                        if (xhr.responseText.indexOf("invalid") == 0) {
+                            location = login_url;
+                        }
+                    }
+                },
+                processing: true,
+                serverSide: true,
+                columns: [
+                    {"data": "id", "width": "20px"},
+                    {
+                        "data": "workLevel", "width": "6%",
+                        "render": function (data, type, row) {
+                            if (data == 5) {
+                                return "<span class='label label-default'>" + "普通" + "</span>"
+
+                            } else if ((data == 2)) {
+                                return "<span class='label label-primary'>" + "紧急" + "</span>"
+                            }
+
+                        }
+                    },
+                    {
+                        "data": "workStatus",
+                        "width": "10%",
+                        "render": function (data, type, row, meta) {
+                            if (data == 1) {
+                                return "<span class='label real_label_todo_notstart'>" + "未开始" + "</span>"
+
+                            } else if ((data == 2)) {
+                                return "<span class='label label-primary'>" + "紧急" + "</span>"
+                            }
+                        }
+                    },
+                    {"data": "mainTitle"},
+                    {"data": "deadline", "width": "10%"},
+                    {
+                        "data": "processDate", "width": "10%",
+                        "render": function (data, type, row) {
+//                        console.log(JSON.stringify(row));
+//                            console.log(row.trialAbstractURI);
+                            return data;
+                        }
+                    },
+
+                    {
+                        "data": null,
+                        "render": function (data, type, row) {
+
+                            if (row.applyStatus == "1" && $("#auth_affirm").val() == 1) {
+                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
+                            }
+                            if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
+                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
+                            }
+                            return "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>";
+                        }
+
+//
+//                            return "<a class='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + data + "</a>"
+                        ,
+//                        "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>",
+                        "width": "10%"
+                    }
+                ],
+                columnDefs: [
+                    {
+                        searchable: false,
+                        orderable: false,
+//                                className: 'select-checkbox',
+                        targets: 0,
+                        'checkboxes': {
+                            'selectRow': false
+                        }
+                    },
+                    {'className': 'real_dt_center', 'targets': 1},
+                    {'className': 'real_dt_center', 'targets': 2},
+                    {'className': 'real_dt_center', 'targets': 4}],
+
+                select: {
+                    style: 'multi'
+//                            selector: ':not(:last-child)'
+                },
+                "order": [[1, 'asc']]
+            });
+        $("#realbtn-search").on("click", function () {
+            console.log("cccccccccccccccccccccc");
+        });
+
+
+        $("#real_filter_status").on("change", function () {
+            if (firstFlag == "false") {
+                realtable.draw();
+            }
+        });
+
+            $('#dt_basic_real').on('click', '.real-test', function () {
+                var data = realtable.row($(this).parents('tr')).data();
+                console.log("data: " + data.id);
+
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                realloadpage("/pj/apply/new");
+//                $('nav ul li.open').css('border','10px solid red');
+//                realalert("功能实现敬请期待")ss
+
+            });
+
+
+            $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
+                //            console.log(JSON.stringify($()))
+                console.log(realtable.row($(this).parents('tr')).data().id);
+                layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
+
+            });
+
+    }//end of ready
+    );
+
+    var pagefunction = function () {
+
+
+
+
+    };
+
+    //    loadScript("realaicy/js/geo.js", pagefunction);
+    pagefunction();
+
+
+</script>

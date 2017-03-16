@@ -55,9 +55,9 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
     }
 
     public TreeController(BaseServiceWithVO<M, ID, V> service, String initFormParam, String[] nameDic, String pageUrl,
-                          String newEntityUrl, String editEntityUrl, String listUrl, String searchEntityUrl,
-                          Class<M> aClass, Class<V> voClass, List<String> editBindWhiteList) {
-        super(service, initFormParam, nameDic, pageUrl, newEntityUrl, editEntityUrl,
+                          String showEntityUrl, String newEntityUrl, String editEntityUrl, String listUrl,
+                          String searchEntityUrl, Class<M> aClass, Class<V> voClass, List<String> editBindWhiteList) {
+        super(service, initFormParam, nameDic, pageUrl, showEntityUrl, newEntityUrl, editEntityUrl,
                 listUrl, searchEntityUrl, aClass, voClass, editBindWhiteList);
         this.service = service;
         this.newEntityUrl = newEntityUrl;
@@ -77,7 +77,7 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
                            @RequestParam(value = "pid", required = false) final ID pid,
                            @RequestParam(value = "pname", required = false) final String pname) {
 
-        if (!checkAuth("c", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("c", aClass.getSimpleName())) {
             return getNoAuthViewName();
         }
 
@@ -100,7 +100,7 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
 
         log.info("listTree: id:" + id);
 
-        if (!checkAuth("c", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("c", aClass.getSimpleName())) {
             return getNoAuthString();
         }
 

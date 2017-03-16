@@ -249,6 +249,25 @@ realaicy_g_var_tableopt_lang = {
 
 // realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
 
+
+// 用户名验证
+jQuery.validator.addMethod("isUsername", function(value, element) {
+    var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
+    return this.optional(element) || (username.test(value));
+}, "请正确填写您的用户名");
+
+jQuery.validator.addMethod("isADLine", function(value, element) {
+    var realvalue = /^\w+$/;
+    return this.optional(element) || (realvalue.test(value));
+}, "请不要填写非法字符，只能输入英文字母、数字、下划线");
+
+jQuery.validator.addMethod("isADCLine", function(value, element) {
+    var realvalue = /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/;
+    return this.optional(element) || (realvalue.test(value));
+}, "请不要填写非法字符，只能输入中文（不包含生僻字）、英文字母、数字、下划线");
+
+
+/[\w\u4e00-\u9fa5]/
 realaicy_g_var_dlurl = "http://111.30.31.179:32003/download/file/";
 login_url = "http://111.30.31.179:48080";
 

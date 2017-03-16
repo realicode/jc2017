@@ -30,6 +30,7 @@ public class AuditCheckStepController extends CRUDWithVOController<AuditCheckSte
     private static final  String[] NAME_DIC = {"stepNo"};
     private static final  List<String> BINDING_WHITE_LIST = Collections.singletonList("name");
     private static final  String PAGE_URL = "auditdb/chkstep/page";
+    private static final String SHOW_ENTITY_URL = "auditdb/chkstep/detail";
     private static final  String NEW_ENTITY_URL = "auditdb/chkstep/add";
     private static final  String EDIT_ENTITY_URL = "auditdb/chkstep/add";
     private static final  String LIST_ENTITY_URL = "auditdb/chkstep/page";
@@ -37,8 +38,9 @@ public class AuditCheckStepController extends CRUDWithVOController<AuditCheckSte
 
     @Autowired
     public AuditCheckStepController(AuditCheckStepService auditCheckStepService) {
-        super(auditCheckStepService, "org", NAME_DIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
-                LIST_ENTITY_URL, SEARCH_ENTITY_URL, AuditCheckStep.class, AuditCheckStepVO.class, BINDING_WHITE_LIST);
+        super(auditCheckStepService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
+                NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
+                AuditCheckStep.class, AuditCheckStepVO.class, BINDING_WHITE_LIST);
         this.auditCheckStepService = auditCheckStepService;
     }
 

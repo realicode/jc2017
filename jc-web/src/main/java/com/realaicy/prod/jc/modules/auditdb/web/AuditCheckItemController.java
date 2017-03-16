@@ -30,6 +30,7 @@ public class AuditCheckItemController extends TreeController<AuditCheckItem, Big
     private static final  String[] NAME_DIC = {"name"};
     private static final  List<String> BINDING_WHITE_LIST = Collections.singletonList("name");
     private static final  String PAGE_URL = "auditdb/chkitem/page";
+    private static final  String SHOW_ENTITY_URL = "auditdb/chkitem/detail";
     private static final  String NEW_ENTITY_URL = "auditdb/chkitem/add";
     private static final  String EDIT_ENTITY_URL = "auditdb/chkitem/add";
     private static final  String LIST_ENTITY_URL = "auditdb/chkitem/page";
@@ -37,8 +38,9 @@ public class AuditCheckItemController extends TreeController<AuditCheckItem, Big
 
     @Autowired
     public AuditCheckItemController(AuditCheckItemService auditCheckItemService) {
-        super(auditCheckItemService, "org", NAME_DIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
-                LIST_ENTITY_URL, SEARCH_ENTITY_URL, AuditCheckItem.class, AuditCheckItemVO.class, BINDING_WHITE_LIST);
+        super(auditCheckItemService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
+                NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
+                AuditCheckItem.class, AuditCheckItemVO.class, BINDING_WHITE_LIST);
     }
 
     @Override

@@ -31,8 +31,8 @@
                 <section class="col col-10">
                     <div class="form-group" id="reali">
                         <label id="reall">请输入待稽查机构名称,按回车键添加</label>
-                        <input class="form-control tagsinput" name="orgtags" id="orgtags"
-                               value="" data-role="tagsinput" >
+                        <input type="text" class="form-control tagsinput" name="orgtags" id="orgtags"
+                               value="" data-role="tagsinput">
                     </div>
                 </section>
             </div>
@@ -41,7 +41,8 @@
             <div class="row">
                 <section class="col col-5">
                     <label class="input"> <i class="icon-prepend fa fa-user"></i>
-                        <input class="" type="text" name="trialAbstractName" th:field="*{trialAbstractName}" placeholder="请输入方案摘要名称"
+                        <input class="" type="text" name="trialAbstractName" th:field="*{trialAbstractName}"
+                               placeholder="请输入方案摘要名称"
                                data-rule-required="true" data-msg-required="请输入方案摘要名称">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
                                 class="tooltip-realaicy">请输入方案摘要名称</span></b>
@@ -53,8 +54,10 @@
                             点击上传
                         </div>
                         <input type="text" id="realfilePath" name="realfilePath" placeholder="请上传文件" readonly="">
-                        <input type="hidden" id="trialAbstractURI" name="trialAbstractURI" th:field="*{trialAbstractURI}">
-                        <input type="hidden" id="trialCenterNames" name="trialCenterNames" th:field="*{trialCenterNames}">
+                        <input type="hidden" id="trialAbstractURI" name="trialAbstractURI"
+                               th:field="*{trialAbstractURI}">
+                        <input type="hidden" id="trialCenterNames" name="trialCenterNames"
+                               th:field="*{trialCenterNames}">
 
                     </label>
                 </section>
@@ -64,12 +67,21 @@
             </div>
             <div class="row">
                 <section class="col col-10">
-                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
-                        <input class="" type="text" name="applyDescribe" th:field="*{applyDescribe}" placeholder="请输入项目简要描述"
-                               data-rule-required="true" data-msg-required="请输入项目简要描述">
+
+                    <label class="textarea"> <i class="icon-append fa fa-comment"></i>
+                        <textarea rows="5" name="applyDescribe" th:field="*{applyDescribe}" placeholder="请输入项目简要描述"
+                                  data-msg-required="请输入项目简要描述"></textarea>
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
                                 class="tooltip-realaicy">请输入项目简要描述</span></b>
                     </label>
+
+                    <!--<label class="input"> <i class="icon-prepend fa fa-user"></i>
+                        <input class="" type="text" name="applyDescribe" th:field="*{applyDescribe}"
+                               placeholder="请输入项目简要描述"
+                               data-rule-required="true" data-msg-required="请输入项目简要描述">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入项目简要描述</span></b>
+                    </label>-->
                 </section>
             </div>
         </fieldset>
@@ -139,8 +151,8 @@
             var errors = validator.numberOfInvalids();
             if (errors) {
                 var message = errors == 1
-                        ? 'You missed 1 field. It has been highlighted'
-                        : 'You missed ' + errors + ' fields. They have been highlighted';
+                    ? 'You missed 1 field. It has been highlighted'
+                    : 'You missed ' + errors + ' fields. They have been highlighted';
                 $("#realerrormsg").html(message);
             } else {
                 $("div.error").hide();
@@ -157,35 +169,42 @@
             $(element).parent().parent().removeClass(errorClass).addClass(validClass);
         },
         rules: {
+            name: {
+                required: true,
+                minlength: 5,
+                maxlength: 200,
+                isADCLine: true
+            },
             orgName: {
                 required: true,
                 minlength: 5,
-                maxlength: 50
-            },
-            trialAbstractName: {
-                required: true,
-                minlength: 5,
-                maxlength: 50
-            }
+                maxlength: 200,
+                isADCLine: true
 
-        },
-        messages: {
-            orgName: {
-                required: '请输入机构名称',
-                minlength: '请至少输入5个字符',
-                maxlength: '输入超过了50个字符'
             },
             trialAbstractName: {
-                required: '请输入方案摘要名称',
-                minlength: '请至少输入5个字符',
-                maxlength: '输入超过了50个字符'
+                required: true,
+                minlength: 5,
+                maxlength: 200,
+                isADCLine: true
+            },
+            orgtags: {
+                required: true,
+                minlength: 5,
+                maxlength: 500,
+                isADCLine: true
+            },
+            applyDescribe: {
+                required: true,
+                minlength: 5,
+                maxlength: 500
             }
         },
 
         submitHandler: function (form) {
 
-            console.log("a"+$("input").val());
-            console.log("b: "+$("#orgtags").val());
+            console.log("a" + $("input").val());
+            console.log("b: " + $("#orgtags").val());
             $("#trialCenterNames").val($("#orgtags").val());
 
             if ($("#updateflag").val() == "new") {
@@ -226,12 +245,12 @@
     var pagefunction = function () {
 
 
-        loadScript("realres/lib/sa/js/bootstrap-tags/bootstrap-tagsinput.min.js", function(){
+        loadScript("realres/lib/sa/js/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
             $('.tagsinput').tagsinput('refresh');
 
-            $('input').on('itemAdded', function(event) {
+            $('input').on('itemAdded', function (event) {
                 $('#reall').next().children().removeClass('label');
-                console.log("tags: "+$("input").val());
+                console.log("tags: " + $("input").val());
 //                console.log($("input").tagsinput('items'));
 
                 $('#toBeCheckedOrgs').val($("input").val());

@@ -51,21 +51,60 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
     @NotEmpty
     @Column(name = "APPLY_DESCRIBE")
     private String applyDescribe;
-
     /**
-     * "确认申请"所需的描述
+     * 确认人
+     */
+    @ManyToOne()
+    @JoinColumn(name = "CONFIRM_USERID")
+    private User confirmor;
+    /**
+     * "确认人"评论
      */
     @Column(name = "CONFIRM_REMARK")
     private String confirmRemark;
+    /**
+     * 审批人
+     */
+    @ManyToOne()
+    @JoinColumn(name = "APPROVE_USERID")
+    private User approver;
+    /**
+     * "审批人"评论
+     */
+    @Column(name = "APPROVE_REMARK")
+    private String approveRemark;
     /**
      * 报价
      */
     @Column(name = "QUOTATION")
     private Integer quotation;
-
     @ManyToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User user;
+
+    public User getApprover() {
+        return approver;
+    }
+
+    public void setApprover(User approver) {
+        this.approver = approver;
+    }
+
+    public String getApproveRemark() {
+        return approveRemark;
+    }
+
+    public void setApproveRemark(String approveRemark) {
+        this.approveRemark = approveRemark;
+    }
+
+    public User getConfirmor() {
+        return confirmor;
+    }
+
+    public void setConfirmor(User confirmor) {
+        this.confirmor = confirmor;
+    }
 
     public String getConfirmRemark() {
         return confirmRemark;

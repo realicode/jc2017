@@ -14,4 +14,5 @@ public class OtherUtil {
     public static String  getSixRandSMSCode() {
         return String.valueOf(1 + (int) (Math.random() * StaticParams.REALNUM.SMSCODE_N));
     }
+
 }

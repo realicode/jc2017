@@ -1,6 +1,6 @@
 package com.realaicy.prod.jc.realglobal;
 
-import com.realaicy.prod.jc.modules.system.model.vo.UserRegisVO;
+import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class ValidatorTest {
     private static Validator validator;
 
     @BeforeClass
-    public static void setUp(){
+    public static void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
@@ -27,12 +27,29 @@ public class ValidatorTest {
     @Test
     public void checkRegisUserVO() {
 
+        ApplianceVO applianceVO = new ApplianceVO();
+        Set<ConstraintViolation<ApplianceVO>> constraintViolationSet = validator.validate(applianceVO);
 
-        UserRegisVO userRegisVO = new UserRegisVO();
-        Set<ConstraintViolation<UserRegisVO>> constraintViolationSet =   validator.validate(userRegisVO);
-        userRegisVO.setUsername("a1234");
-        constraintViolationSet =   validator.validate(userRegisVO);
-        System.out.println();
+//        applianceVO.setName("");
+//        constraintViolationSet = validator.validate(applianceVO);
+//        System.out.println("1" + constraintViolationSet.toString());
+//
+//        applianceVO.setName("111");
+//        constraintViolationSet = validator.validate(applianceVO);
+//        System.out.println("2" + constraintViolationSet.toString());
+
+        applianceVO.setName("a11111");
+        constraintViolationSet = validator.validate(applianceVO);
+        System.out.println("3" + constraintViolationSet.toString());
+        applianceVO.setName("a=11111");
+        constraintViolationSet = validator.validate(applianceVO);
+        System.out.println("4" + constraintViolationSet.toString());
+
+//        UserRegisVO userRegisVO = new UserRegisVO();
+//        Set<ConstraintViolation<UserRegisVO>> constraintViolationSet =   validator.validate(userRegisVO);
+//        userRegisVO.setUsername("a1234");
+//        constraintViolationSet =   validator.validate(userRegisVO);
+//        System.out.println();
 
     }
 

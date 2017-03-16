@@ -37,9 +37,6 @@ public class ApplianceCreatedListener {
             if (ea.getEventAction().equals("WX")) {
                 wxservice.dowork(ea, SpringSecurityUtil.getNameOfCurrentPrincipal());
             }
-
         }
-
-
     }
 }

@@ -26,6 +26,7 @@ public class RoleController extends CRUDWithVOController<Role, BigInteger, RoleV
     private static final String[] NAME_DIC = {"name"};
     private static final List<String> BINDING_WHITE_LIST = Collections.singletonList("");
     private static final String PAGE_URL = "system/role/page";
+    private static final String SHOW_ENTITY_URL = "system/role/detail";
     private static final String NEW_ENTITY_URL = "system/role/add";
     private static final String EDIT_ENTITY_URL = "system/role/add";
     private static final String LIST_ENTITY_URL = "system/role/page";
@@ -34,7 +35,7 @@ public class RoleController extends CRUDWithVOController<Role, BigInteger, RoleV
 
     @Autowired
     public RoleController(RoleService roleService) {
-        super(roleService, "role", NAME_DIC, PAGE_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(roleService, "role", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, Role.class, RoleVO.class, BINDING_WHITE_LIST);
         this.roleService = roleService;
     }

@@ -201,6 +201,32 @@ public final class SpringSecurityUtil {
         return false;
     }
 
+
+    /**
+     * Check if current user has any role of specified.
+     *
+     * @param privileges the array of roles.
+     * @return true if has any role, otherwise false.
+     */
+    public static boolean hasAnyPrivilegeWithFuncByRealaicy(String prefix, final String... privileges) {
+
+        final RealUserDetails realUserDetails = SpringSecurityUtil.getCurrentRealUserDetails();
+
+        if (realUserDetails != null) {
+            if (realUserDetails.getRealAuthorities().contains("superadmin")
+                    || realUserDetails.getRealAuthorities().contains(prefix + "-f")) {
+                return true;
+            }
+            for (String str : privileges) {
+                if (realUserDetails.getRealAuthorities().contains(prefix + "-" + str)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     // auth
 
 

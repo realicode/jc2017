@@ -51,12 +51,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     protected static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
     protected static final String NO_AUTH_STRING = "NOPrivilege";
+
     private static String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
     private static Pattern p = Pattern.compile(regEx);
     private final BaseServiceWithVO<M, ID, V> service;
     private final String initFormParam;
     private final String[] nameDic;
     private final String pageUrl;
+    private final String showEntityUrl;
     private final String newEntityUrl;
     private final String editEntityUrl;
     @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -67,16 +69,18 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     private final List<String> editBindWhiteList;
 
     public CRUDWithVOController(BaseServiceWithVO<M, ID, V> service, String initFormParam, String[] nameDic, String pageUrl,
-                                String newEntityUrl, String editEntityUrl, String listUrl, String searchEntityUrl,
+                                String showEntityUrl, String newEntityUrl, String editEntityUrl, String listUrl, String searchEntityUrl,
                                 Class<M> poClass, Class<V> voClass, List<String> editBindWhiteList) {
         this.service = service;
         this.initFormParam = initFormParam;
         this.nameDic = nameDic;
+        this.pageUrl = pageUrl;
+        this.showEntityUrl = showEntityUrl;
         this.newEntityUrl = newEntityUrl;
         this.editEntityUrl = editEntityUrl;
         this.listUrl = listUrl;
         this.searchEntityUrl = searchEntityUrl;
-        this.pageUrl = pageUrl;
+
         this.aClass = poClass;
         this.voClass = voClass;
         this.editBindWhiteList = editBindWhiteList;
@@ -100,7 +104,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public String listEntityPage(Model model) {
-        if (checkAuth("r", aClass.getSimpleName())) {
+        if (checkCRUDAuth("r", aClass.getSimpleName())) {
             System.out.println("pageUrl: " + pageUrl);
 
             addAttrToModel(model);
@@ -114,7 +118,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     public String newModel(Model model,
                            @RequestParam(value = "pid", required = false) ID pid,
                            @RequestParam(value = "pname", required = false) String pname) {
-        if (!checkAuth("c", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("c", aClass.getSimpleName())) {
             return NO_AUTH_VIEW_NAME;
         }
         try {
@@ -128,7 +132,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     @RequestMapping(value = "/new/{orgID}", method = RequestMethod.GET)
     public String newModel(@PathVariable("orgID") final BigInteger orgID, Model model) {
-        if (!checkAuth("c", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("c", aClass.getSimpleName())) {
             return NO_AUTH_VIEW_NAME;
         }
 
@@ -143,9 +147,30 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         return newEntityUrl;
     }
 
+
     @RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
     public String showModel(@PathVariable("id") final ID id, Model model) {
-        if (!checkAuth("r", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("r", aClass.getSimpleName())) {
+            return NO_AUTH_VIEW_NAME;
+        }
+        try {
+            V vo = voClass.newInstance();
+            M po = service.findOne(id);
+            BeanUtils.copyProperties(po, vo);
+            extendShow(po, vo);
+            model.addAttribute("realmodel", vo);
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+//        model.addAttribute("realmodel", service.findOne(id));
+
+        model.addAttribute("realUpdateID", id);
+        return editEntityUrl;
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    public String showModel4Edit(@PathVariable("id") final ID id, Model model) {
+        if (!checkCRUDAuth("u", aClass.getSimpleName())) {
             return NO_AUTH_VIEW_NAME;
         }
         try {
@@ -165,7 +190,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search() {
-        if (!checkAuth("s", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("s", aClass.getSimpleName())) {
             return NO_AUTH_VIEW_NAME;
         }
         return searchEntityUrl;
@@ -175,7 +200,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     @RequestMapping(method = RequestMethod.GET, value = "/spec")
     public List<M> findAllBySpecification(@RequestParam(value = "search", required = false) final String search) {
 
-        if (!checkAuth("s", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("s", aClass.getSimpleName())) {
             return null;
         }
 
@@ -206,7 +231,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             @RequestParam(value = "realsearch", required = false) String realsearch
     ) {
 
-        if (!checkAuth("r", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("r", aClass.getSimpleName())) {
             return null;
         }
 
@@ -270,6 +295,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         info.put("recordsTotal", service.count());
         return info;
     }
+
     protected void addAttrToModel(Model model) {
     }
 
@@ -294,7 +320,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     @CacheEvict(cacheResolver = "runtimeCacheResolver", allEntries = true)
     public String delModel(@PathVariable("id") final ID id) {
 
-        if (!checkAuth("d", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("d", aClass.getSimpleName())) {
             return NO_AUTH_STRING;
         }
 
@@ -325,7 +351,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
                             @RequestParam(value = "updateID", required = false) ID updateID,
                             @RequestParam(value = "pid", required = false) ID pid) {
 
-        if (!checkAuth("c", aClass.getSimpleName())) {
+        if (!checkCRUDAuth("c", aClass.getSimpleName())) {
             return NO_AUTH_STRING;
         }
 
@@ -394,9 +420,10 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     }
 
 
-    protected boolean checkAuth(String reqAuthString, String objType) {
+    protected boolean checkCRUDAuth(String reqAuthString, String objType) {
         return SpringSecurityUtil.hasPrivilege(objType + "-" + "a") || SpringSecurityUtil.hasPrivilege(objType + "-" + reqAuthString);
     }
+
 
     protected abstract void internalSaveNew(V realmodel, ID updateID, ID pid) throws SaveNewException;
 

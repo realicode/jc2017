@@ -259,3 +259,22 @@ div.dataTables_wrapper span.select-item {
 }
 
 
+.real_label_todo_notstart{
+    background-color: #C0392B;
+}
+.real_dt_center{
+    text-align: center;
+}
+
+.real_legend {
+    margin-left: 4px;
+    color: #0c7cd5
+}
+
+.real_linktodetail{
+    cursor:pointer;
+}
+
+
+
+/*----------------*/
