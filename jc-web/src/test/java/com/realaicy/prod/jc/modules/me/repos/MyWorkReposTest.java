@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
+
+
 
 /**
  * Created by realaicy on 2017/3/15.
@@ -14,12 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class MyTodoReposTest {
+public class MyWorkReposTest {
     @Autowired
-    MyTodoRepos myTodoRepos;
+    MyWorkRepos myWorkRepos;
 
     @Test
     public void testfind(){
+
+        assertThat(myWorkRepos.countByUserUsername("wym")).isEqualTo(1);
 
     }
 

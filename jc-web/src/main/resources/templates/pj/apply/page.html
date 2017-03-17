@@ -130,11 +130,14 @@
 </div>
 
 <script type="text/javascript">
-    //    pageSetUp();
+
     var firstFlag = "true";
 
     $(document).ready(function () {
-            var realtable = $('#dt_basic_real').DataTable(
+
+
+
+        var realtable = $('#dt_basic_real').DataTable(
                 {
                     sScrollX: true,
 //                    sScrollY: "300px",
@@ -171,7 +174,6 @@
                                         msg = "请求操作不支持多选，请选择一个并且只选择一个待修改申请！";
                                     realalert(msg);
                                 } else {
-
                                     $.each(rows_selected, function (index, rowId) {
                                         realloadpage("/pj/apply/edit/" + rowId);
                                     });
@@ -279,6 +281,11 @@
                             if (xhr.responseText.indexOf("invalid") == 0) {
                                 location = login_url;
                             }
+                        },
+                        complete: function(){
+                            $("[rel=popover-hover]").popover({ trigger: "hover" });
+//                            $("[rel=popover]").popover();
+
                         }
                     },
                     processing: true,
@@ -311,9 +318,13 @@
                                 if (data.length > 10) {
 //                                    console.log("row:" + meta.row + "col:" + meta.col);
 //                                    href="javascript:void(0)" onclick="fn()"
-                                    return '<a href="javascript:void(0)" id=reallongtextcell' + row.id + ' class="real_long_text,real_linktodetail">' + data.substr(0, 10) + '...</a>';
+//                                <a href="javascript:void(0);" class="btn btn-default btn-lg" rel="popover-hover" data-placement="top" data-original-title="Popover activated on hover" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."><strong>On</strong> <i>Hover</i></a>
+
+
+                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="'+data+'" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
                                 } else {
-                                    return '<a class="real_linktodetail">' + data + '</a>';
+//                                    return '<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover" class="real_linktodetail">' + data + '</a>';
+                                    return '<a href="javascript:void(0);" class="real_linktodetail" >' + data + '</a>';
                                 }
                             }
                         },
@@ -383,6 +394,7 @@
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
                 realloadpage("/pj/apply/confirm?realactiontype=affirm&applyid=" + realtable.row($(this).parents('tr')).data().id);
             });
+
         /**
          * 审核按钮
          */
@@ -395,16 +407,17 @@
             });
 
             $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
-                //            console.log(JSON.stringify($()))
+                console.log(JSON.stringify($()));
                 layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
 
             });
 
             $('#dt_basic_real').on('click', '.real_linktodetail', function () {
                 console.log("real_linktodetail");
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                realloadpage("/pj/apply/show/" + realtable.row($(this).parents('tr')).data().id);
             });
-
-
 
         }// end of ready
     );

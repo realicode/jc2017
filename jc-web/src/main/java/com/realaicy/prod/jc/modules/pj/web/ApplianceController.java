@@ -48,7 +48,6 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private static final String AUTH_PREFIX = "Appliance";
 
 
-
     @Autowired
     public ApplianceController(ApplianceService applianceService, UserService userService,
                                ApplicationEventPublisher publisher) {
@@ -63,7 +62,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String newModel(Model model,
                            @RequestParam(value = "applyid") Long applyid,
-                           @RequestParam(value = "realactiontype") String  realactiontype) throws InstantiationException {
+                           @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
         if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "ack", "approve")) {
             return NO_AUTH_VIEW_NAME;
@@ -199,6 +198,16 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     @Override
     protected Appliance internalSaveUpdate(ApplianceVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
         return null;
+    }
+
+    @Override
+    protected void extendShow(Appliance po, ApplianceVO vo) {
+        if (po.getConfirmor() != null) {
+            vo.setConfirmorName(po.getConfirmor().getNickname());
+        }
+        if (po.getApprover() != null) {
+            vo.setApproverName(po.getApprover().getNickname());
+        }
     }
 
     @Override

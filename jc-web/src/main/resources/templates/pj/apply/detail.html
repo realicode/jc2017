@@ -1,0 +1,133 @@
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+
+    <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/confirm}"
+          id="realentity" class="form-horizontal"
+          xmlns:th="http://www.thymeleaf.org">
+
+        <fieldset>
+            <legend>申请方信息</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">申请项目名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:field="*{name}" name="name" id="name">
+                    <input name="id" type="hidden" th:field="*{id}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">申请机构名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:field="*{orgName}" name="orgName" id="orgName">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">待稽查试验机构（多中心）</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:field="*{trialCenterNames}" name="trialCenterNames" id="trialCenterNames">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">试验方案摘要</label>
+                <div class="col-md-6">
+                    <input class="form-control" type="text" name="trialAbstractName" th:field="*{trialAbstractName}"
+                           placeholder="试验方案摘要" readonly="readonly"
+                           data-rule-required="true" data-msg-required="试验方案摘要">
+                </div>
+                <div class="col-md-4">
+                    <a id="realdownlaod">下载摘要 </a>
+                    <input class="form-control" placeholder="" type="hidden"
+                           th:field="*{trialAbstractURI}" name="trialAbstractURI" id="trialAbstractURI">
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">项目简述</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:field="*{applyDescribe}" name="applyDescribe" id="applyDescribe">
+                </div>
+            </div>
+            <legend class="real_legend">协作组秘书长确认信息</legend>
+            <div class="form-group" th:if="${realmodel.confirmorName}">
+                <label class="col-md-2 control-label">确认人</label>
+                <div class="col-md-10">
+                    <input class="form-control real_input_affirm" placeholder="aaaaaaa" type="text" readonly="readonly"
+                           th:value="${realmodel.confirmorName}">
+                </div>
+            </div>
+            <div class="form-group" th:if="${realmodel.confirmorName}">
+                <label class="col-md-2 control-label">确认意见</label>
+                <div class="col-md-10">
+                    <textarea class="form-control real_input_affirm" placeholder="" rows="4" readonly="readonly"
+                              th:field="*{confirmRemark}" name="confirmRemark" id="confirmRemark"></textarea>
+                </div>
+            </div>
+            <div class="form-group" th:if="${realmodel.confirmorName}">
+                <label class="col-md-2 control-label">预报价</label>
+                <div class="col-md-10">
+                    <input class="form-control real_input_affirm" placeholder="" type="text" readonly="readonly"
+                           th:field="*{quotation}" name="quotation" id="quotation">
+                </div>
+            </div>
+
+
+            <div id="real_div_approve">
+                <legend class="real_legend">协作组主任审批信息</legend>
+                <div class="form-group" th:if="${realmodel.approverName}">
+                    <label class="col-md-2 control-label">审批人</label>
+                    <div class="col-md-10">
+                        <input class="form-control real_input_approve" placeholder="aaaaaaa" type="text" readonly="readonly"
+                               th:value="${realmodel.approverName}">
+                    </div>
+                </div>
+                <div class="form-group" th:if="${realmodel.approverName}">
+                    <label class="col-md-2 control-label">确认意见</label>
+                    <div class="col-md-10">
+                    <textarea class="form-control real_input_approve" placeholder="" rows="4" readonly="readonly"
+                              th:field="*{approveRemark}" name="approveRemark" id="approveRemark"></textarea>
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+        <div class="form-actions">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default" type="button" id="btn_cancel" onclick="realclick(this.id)">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+
+    function realclick(data) {
+        $('#article_real_entity').hide();
+    }
+
+    var pagefunction = function () {
+
+    };
+
+    $(document).ready(function () {
+        $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+//        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+
+    });
+
+
+</script>

@@ -1,5 +1,6 @@
 package com.realaicy.prod.jc.modules.system.web;
 
+import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.system.model.Menu;
 import com.realaicy.prod.jc.modules.system.service.MenuService;
 import com.realaicy.prod.jc.realglobal.security.RealUserDetails;
@@ -23,10 +24,12 @@ import java.util.List;
 public class IndexController {
 
     private final MenuService menuService;
+    private final MyWorkService myWorkService;
 
     @Autowired
-    public IndexController(MenuService menuService) {
+    public IndexController(MenuService menuService, MyWorkService myWorkService) {
         this.menuService = menuService;
+        this.myWorkService = myWorkService;
     }
 
 
@@ -42,21 +45,14 @@ public class IndexController {
         model.addAttribute("usernickname",
                 ((RealUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
-
-        //UserDetails userDetails = SpringSecurityUtil.getCurrentUserDetails();
-
         List<Menu> menuList;
-        /*Menu menu = new Menu();
-        menu.setName("动态" + LocalTime.now());
-        menuList.add(menu);
-        Menu menu2 = new Menu();
-        for (int i = 1; i < 100; i++) ;
 
-        menu2.setName("动态" + LocalTime.now());
-        menuList.add(menu2);*/
-        // menuList = menuRepos.findAllMenus();
         menuList = menuService.findUserMenu();
         model.addAttribute("realmenus", menuList);
+
+//        myWorkService.countByUserUsername()
+
+
         return "index";
     }
 }

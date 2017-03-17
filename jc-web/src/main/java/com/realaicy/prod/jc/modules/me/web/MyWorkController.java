@@ -6,9 +6,12 @@ import com.realaicy.prod.jc.modules.me.model.vo.MyWorkVO;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
+import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigInteger;
@@ -46,6 +49,10 @@ public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, M
         this.publisher = publisher;
     }
 
+    private static Specification<MyWork> worksByUsername(String username) {
+        return (workRoot, query, cb) -> cb.like(workRoot.get("user").get("username"), username);
+    }
+
 
     @Override
     protected List<MyWorkVO> convertFromPOListToVOList(List<MyWork> poList) {
@@ -81,6 +88,21 @@ public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, M
     @Override
     protected void extendSave(MyWork po, BigInteger updateID, BigInteger pid) {
 
+    }
+
+    @Override
+    protected void addAttrToModel(Model model) {
+        super.addAttrToModel(model);
+    }
+
+    @Override
+    protected Specification<MyWork> addSpec() {
+        return worksByUsername(SpringSecurityUtil.getNameOfCurrentPrincipal());
+    }
+
+    @Override
+    protected boolean needAddSpec() {
+        return true;
     }
 
 

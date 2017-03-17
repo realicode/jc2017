@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.me.service.impl;
 import com.realaicy.prod.jc.lib.core.service.impl.DefaultBaseServiceImpl;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.model.vo.MyWorkVO;
+import com.realaicy.prod.jc.modules.me.repos.MyWorkRepos;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +23,10 @@ public class DefaultMyWorkService extends DefaultBaseServiceImpl<MyWork, BigInte
     @Override
     public void saveFromVO(MyWork po, MyWorkVO vo) {
 
+    }
+
+    @Override
+    public Long countByUserUsername(String username) {
+        return ((MyWorkRepos) baseRepository).countByUserUsername(username);
     }
 }

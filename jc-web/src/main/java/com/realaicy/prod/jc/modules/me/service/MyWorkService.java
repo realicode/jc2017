@@ -12,5 +12,5 @@ import java.math.BigInteger;
  */
 public interface MyWorkService extends BaseServiceWithVO<MyWork, BigInteger, MyWorkVO> {
 
-
+    Long countByUserUsername(String username);
 }

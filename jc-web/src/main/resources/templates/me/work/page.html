@@ -57,27 +57,26 @@
                                             <th>
                                             </th>
                                             <th>
-                                                <select id='real_filter_status' class="form-control">
-                                                    <option value="0">过滤状态</option>
-                                                    <option value="1">待确认</option>
-                                                    <option value="2">已确认待审核</option>
+                                                <select id='real_filter_level' class="form-control">
+                                                    <option value="0">所有级别</option>
+                                                    <option value="5">普通</option>
+                                                    <option value="8">紧急</option>
                                                 </select>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_name' class="form-control"
-                                                       placeholder="过滤项目名称"/>
+                                                <select id='real_filter_status' class="form-control">
+                                                    <option value="0">所有状态</option>
+                                                    <option value="1">未开始</option>
+                                                    <option value="8">紧急</option>
+                                                </select>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_orgname' class="form-control"
-                                                       placeholder="过滤申请单位"/>
+                                                <input type="text" id='real_filter_maintitle' class="form-control"
+                                                       placeholder="过滤工作标题"/>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_centername' class="form-control"
-                                                       placeholder="过滤稽查机构"/>
                                             </th>
-                                            <th><input type="text" id='real_filter_trialabstractname'
-                                                       class="form-control"
-                                                       placeholder="过滤方案摘要"/>
+                                            <th>
                                             </th>
                                         </tr>
                                         <tr>
@@ -118,12 +117,8 @@
     </section>
 </div>
 
-
 <div>
-    <input id="auth_approve" name="auth_approve" type="hidden" th:value="${real_auth_approve}"
-           xmlns:th="http://www.thymeleaf.org">
-    <input id="auth_affirm" name="auth_affirm" type="hidden" th:value="${real_auth_affirm}"
-           xmlns:th="http://www.thymeleaf.org">
+
     <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
            xmlns:th="http://www.thymeleaf.org">
 </div>
@@ -210,13 +205,9 @@
                         className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                         action: function (e, dt, node, config) {
 
-
-                            $("#real_filter_name").val("");
-                            $("#real_filter_orgname").val("");
-                            $("#real_filter_centername").val("");
-                            $("#real_filter_trialabstractname").val("");
+                            $("#real_filter_maintitle").val("");
                             $("#real_filter_status").val("0");
-
+                            $("#real_filter_level").val("0");
                             realtable.draw();
                         }
                     },
@@ -233,41 +224,24 @@
                     "data": function (d) {
                         delete d.columns;
                         var searchString = "";
-                        if (firstFlag == "true") {
-                            searchString = $("#firstfilter").val();
-//                            console.log($("#firstfilter").val().split(":")[1]);
-                            $("#real_filter_status").val($("#firstfilter").val().split(":")[1]);
-                            firstFlag = "false";
-                        } else {
+                       {
+                            var search_maintitle = $("#real_filter_maintitle").val();
+                            var search_status = $("#real_filter_status").val();
+                            var search_level = $("#real_filter_level").val();
 
-                            var search_name = $("#real_filter_name").val();
-                            var search_orgname = $("#real_filter_orgname").val();
-                            var search_centername = $("#real_filter_centername").val();
-                            var search_trialabstractname = $("#real_filter_trialabstractname").val();
-
-
-                            if (search_name != undefined && search_name != "") {
-                                searchString += "name~";
-                                searchString += search_name + ",";
+                            if (search_maintitle != undefined && search_maintitle != "") {
+                                searchString += "mainTitle~";
+                                searchString += search_maintitle;
                             }
-                            if (search_orgname != undefined && search_orgname != "") {
-                                searchString += "orgName~";
-                                searchString += search_orgname + ",";
-                            }
-                            if (search_centername != undefined && search_centername != "") {
-                                searchString += "trialCenterNames~";
-                                searchString += search_centername + ",";
-                            }
-                            if (search_trialabstractname != undefined && search_trialabstractname != "") {
-                                searchString += "trialAbstractName~";
-                                searchString += search_trialabstractname;
-                            }
-                            if ($("#real_filter_status").val() != undefined && $("#real_filter_status").val() !== "0") {
+                            if (search_status != undefined && search_status !== "0") {
                                 searchString += ",status:";
-                                searchString += $("#real_filter_status").val();
+                                searchString += search_status;
+
                             }
-
-
+                            if (search_level != undefined && search_level !== "0") {
+                                searchString += ",workLevel:";
+                                searchString += search_level;
+                            }
                         }
 
                         d.search = searchString;
@@ -330,12 +304,7 @@
                                 return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
                             }
                             return "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>";
-                        }
-
-//
-//                            return "<a class='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + data + "</a>"
-                        ,
-//                        "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>",
+                        },
                         "width": "10%"
                     }
                 ],

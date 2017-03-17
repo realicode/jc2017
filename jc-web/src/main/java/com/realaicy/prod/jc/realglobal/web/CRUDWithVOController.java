@@ -105,8 +105,6 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     @RequestMapping(value = "/page", method = RequestMethod.GET)
     public String listEntityPage(Model model) {
         if (checkCRUDAuth("r", aClass.getSimpleName())) {
-            System.out.println("pageUrl: " + pageUrl);
-
             addAttrToModel(model);
             return this.pageUrl;
         } else {
@@ -162,11 +160,13 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
-//        model.addAttribute("realmodel", service.findOne(id));
 
-        model.addAttribute("realUpdateID", id);
-        return editEntityUrl;
+        return showEntityUrl;
     }
+
+    protected void extendShow(M po, V vo) {
+    }
+
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String showModel4Edit(@PathVariable("id") final ID id, Model model) {
@@ -177,7 +177,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             V vo = voClass.newInstance();
             M po = service.findOne(id);
             BeanUtils.copyProperties(po, vo);
-            extendShow(po, vo);
+            extendEdit(po, vo);
             model.addAttribute("realmodel", vo);
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
@@ -416,7 +416,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     protected void extendSave(M po, V realmodel) {
     }
 
-    protected void extendShow(M po, V realmodel) {
+    protected void extendEdit(M po, V realmodel) {
     }
 
 

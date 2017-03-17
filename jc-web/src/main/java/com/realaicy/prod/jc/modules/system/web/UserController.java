@@ -243,7 +243,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
 
     @Override
-    protected void extendShow(User po, UserVO realmodel) {
+    protected void extendEdit(User po, UserVO realmodel) {
         realmodel.setOrgRegion(po.getOrg().getRegion());
         realmodel.setOrgProvince(po.getOrg().getProvince());
         realmodel.setOrgName(po.getOrg().getName());

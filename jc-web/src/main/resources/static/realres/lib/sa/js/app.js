@@ -2027,7 +2027,8 @@ function pageSetUp() {
  * ONE POP OVER THEORY
  * Keep only 1 active popover per trigger - also check and hide active popover if user clicks on document
  */
-$('body').on('click', function (e) {
+//modified by realaicy!
+/*$('body').on('click', function (e) {
     $('[rel="popover"], [data-rel="popover"]').each(function () {
         //the 'is' for buttons that trigger popups
         //the 'has' for icons within a button that triggers a popup
@@ -2035,7 +2036,7 @@ $('body').on('click', function (e) {
             $(this).popover('hide');
         }
     });
-});
+});*/
 /* ~ END: ONE POP OVER THEORY */
 
 /*
