@@ -7,4 +7,5 @@ import java.io.Serializable;
  * xx
  */
 public class BaseVO<ID extends Serializable> implements Serializable {
+
 }

@@ -35,13 +35,18 @@ public class DefaultRoleService extends DefaultBaseServiceImpl<Role, BigInteger>
     }
 
     @Override
+    public Boolean checkOrgName(String orgName) {
+        return ((RoleRepos) baseRepository).countByName(orgName) >= 1;
+    }
+
+    @Override
     public List<Role> findByDeleteFlag(Boolean deleteFlag) {
         return ((RoleRepos) baseRepository).findByDeleteFlag(deleteFlag);
     }
 
     @Override
-    public boolean canBeDelete(Role entity) {
-        return !userService.ifHasNoDelUserByRole(entity);
+    public boolean canBeDelete(BigInteger roleID) {
+        return !userService.ifHasNoDelUserByRole(roleID);
     }
 
     @Override

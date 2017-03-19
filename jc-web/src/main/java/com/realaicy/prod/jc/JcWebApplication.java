@@ -18,13 +18,10 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
-import org.springframework.cache.interceptor.AbstractCacheResolver;
-import org.springframework.cache.interceptor.CacheOperationInvocationContext;
-import org.springframework.cache.interceptor.CacheResolver;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.cache.interceptor.SimpleKeyGenerator;
+import org.springframework.cache.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.servlet.http.HttpSessionListener;
@@ -42,6 +39,7 @@ import java.util.Collections;
 @EnableAspectJAutoProxy
 @EnableCaching
 @EnableConfigurationProperties({StudyProperties.class})
+@Profile({"production", "develop"})
 public class JcWebApplication extends CachingConfigurerSupport {
 
     @Bean

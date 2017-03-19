@@ -20,7 +20,6 @@ import java.util.Set;
 public class Org extends CommonDeletableEntity<BigInteger> {
 
     /**
-
      * 类型
      */
     @Column(name = "ORG_TYPE")
@@ -28,7 +27,7 @@ public class Org extends CommonDeletableEntity<BigInteger> {
     /**
      * 名称
      */
-    @Column(name = "ORG_NAME")
+    @Column(name = "ORG_NAME", unique = true)
     @NotEmpty
     private String name;
     /**
@@ -67,14 +66,14 @@ public class Org extends CommonDeletableEntity<BigInteger> {
 
     @OneToMany(mappedBy = "org")
     @JsonIgnore
-    private Set<User> userList = new HashSet<User>();
+    private Set<User> users = new HashSet<User>();
 
-    public Set<User> getUserList() {
-        return userList;
+    public Set<User> getUsers() {
+        return users;
     }
 
-    public void setUserList(Set<User> userList) {
-        this.userList = userList;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getType() {
@@ -140,8 +139,6 @@ public class Org extends CommonDeletableEntity<BigInteger> {
     public void setContactName(String contactName) {
         this.contactName = contactName;
     }
-
-
 
 
 }

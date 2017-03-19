@@ -9,7 +9,7 @@
 
 
 
-    <form th:object="${realmodel}" method="POST" th:action="@{/system/user/save}"
+    <form th:object="${realmodel}" method="POST" th:action="@{/system/userInfo/save}"
           id="realentity" class="smart-form"
           xmlns:th="http://www.thymeleaf.org">
         <header>
@@ -38,7 +38,7 @@
             </div>
             <div class="row">
                 <section class="col col-6">
-                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                    <label class="input"> <i class="icon-prepend fa fa-cog"></i>
                         <input type="password" id="password" name="password" th:field="*{password}" placeholder="用户密码"
                                data-rule-required="true" data-msg-required="用户密码">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
@@ -57,7 +57,7 @@
             </div>
             <div class="row">
                 <section class="col col-6">
-                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                    <label class="input"> <i class="icon-prepend fa fa-cog"></i>
                         <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="确认密码"
                                data-rule-required="true" data-msg-required="确认密码">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
@@ -76,7 +76,7 @@
             </div>
             <div class="row">
                 <section class="col col-6">
-                    <label class="input"> <i class="icon-prepend fa fa-user"></i>
+                    <label class="input"> <i class="icon-prepend fa fa-mobile"></i>
                         <input type="text" name="mobile" th:field="*{mobile}" placeholder="手机号码"
                                data-rule-required="true" data-msg-required="手机号码">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
@@ -84,6 +84,12 @@
                     </label>
                 </section>
                 <section class="col col-6">
+                    <label class="input"> <i class="icon-prepend fa fa-weixin"></i>
+                        <input type="text" name="wxUserID" th:field="*{wxUserID}" placeholder="微信"
+                               data-rule-required="true" data-msg-required="手机号码">
+                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
+                                class="tooltip-realaicy">请输入手机号码</span></b>
+                    </label>
                 </section>
             </div>
 
@@ -292,29 +298,6 @@
                 isMobile : true
             }
         },
-        messages: {
-            username: {
-                required: '请输入用户名'
-            },
-            email: {
-                required: '请输入电子邮箱地址',
-                email: '请输入格式正确的电子邮箱地址'
-            },
-            password: {
-                required: '请输入密码'
-            },
-            passwordConfirm: {
-                required: '请再次输入密码',
-                equalTo: '请确认两次密码输入相同'
-            },
-            mobile: {
-                required: '请输入手机号码',
-                minlength : "确认手机不能小于11个字符",
-                isMobile : "请正确填写您的手机号码"
-            }
-
-
-        },
 
         submitHandler: function (form) {
             if ($("#updateflag").val() == "new") {
@@ -352,26 +335,12 @@
     var pagefunction = function () {
 
 
-        // 用户名验证
-        jQuery.validator.addMethod("isUsername", function(value, element) {
-            var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
-            return this.optional(element) || (username.test(value));
-        }, "请正确填写您的用户名");
-
         console.log("add pagefunction");
         addressInit('area','cmbProvince','cmbCity','cmbArea','华北地区', '北京', '市辖区', '东城区');
-
-        // 手机号码验证
-        jQuery.validator.addMethod("isMobile", function(value, element) {
-            var length = value.length;
-            var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
-            return this.optional(element) || (length == 11 && mobile.test(value));
-        }, "请正确填写您的手机号码");
 
         $("#portrait").on("change", uploadPortrait);
 
         $("#cmbProvince").on("change", laodOrg);
-
 
         if ($("#updateflag").val() == "new") {
             $("#password").attr("disabled", false);

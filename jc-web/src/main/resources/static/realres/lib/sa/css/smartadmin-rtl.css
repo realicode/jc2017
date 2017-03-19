@@ -1546,7 +1546,7 @@ body.smart-rtl, .smart-rtl body{
 	left: 0;
 }
 
-/* User Activity Section */
+/* UserInfo Activity Section */
 .smart-rtl #logo-group > span b.badge{
 	right: auto;
 	left: -5px;

@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class MyWorkReposTest {
     @Autowired
-    MyWorkRepos myWorkRepos;
+    private MyWorkRepos myWorkRepos;
 
     @Test
     public void testfind(){

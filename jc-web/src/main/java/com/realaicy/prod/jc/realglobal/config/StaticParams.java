@@ -44,6 +44,12 @@ public class StaticParams {
         public static final int DEFAULTSIZE = 1000;
     }
 
+    public static final class SESSIONKEY {
+        public static final String USERID = "userid";
+        public static final String USERNAME = "username";
+
+    }
+
     public static final class WX {
         public static final String NEWAPPLYSENTTO = "wym";
     }

@@ -2,7 +2,7 @@ package com.realaicy.prod.jc.modules.me.model;
 
 
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
-import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.modules.system.model.UserInfo;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -54,13 +54,13 @@ public class MyMessage extends CommonDeletableEntity<BigInteger> {
      */
     @ManyToOne()
     @JoinColumn(name = "DIST_USER_ID")
-    private User distUser;
+    private UserInfo distUserInfo;
     /**
      * 发送者
      */
     @ManyToOne()
     @JoinColumn(name = "SRC_USER_ID")
-    private User srcUser;
+    private UserInfo srcUserInfo;
 
     public String getName() {
         return name;
@@ -110,20 +110,20 @@ public class MyMessage extends CommonDeletableEntity<BigInteger> {
         this.processDate = processDate;
     }
 
-    public User getDistUser() {
-        return distUser;
+    public UserInfo getDistUserInfo() {
+        return distUserInfo;
     }
 
-    public void setDistUser(User distUser) {
-        this.distUser = distUser;
+    public void setDistUserInfo(UserInfo distUserInfo) {
+        this.distUserInfo = distUserInfo;
     }
 
-    public User getSrcUser() {
-        return srcUser;
+    public UserInfo getSrcUserInfo() {
+        return srcUserInfo;
     }
 
-    public void setSrcUser(User srcUser) {
-        this.srcUser = srcUser;
+    public void setSrcUserInfo(UserInfo srcUserInfo) {
+        this.srcUserInfo = srcUserInfo;
     }
 
 }

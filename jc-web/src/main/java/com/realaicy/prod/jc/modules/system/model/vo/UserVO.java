@@ -31,8 +31,17 @@ public class UserVO extends BaseVO<BigInteger> {
     @NotEmpty
     @Size(min = 2, max = 20)
     private String nickname;
+
+    public String getWxUserID() {
+        return wxUserID;
+    }
+
+    public void setWxUserID(String wxUserID) {
+        this.wxUserID = wxUserID;
+    }
+
     /**
-     * 用户密码(加密后的密文)
+     * 用户密码(明文)
      */
     @NotEmpty
     @Size(min = 8, max = 20)
@@ -70,6 +79,12 @@ public class UserVO extends BaseVO<BigInteger> {
      * 用户头像
      */
     private String portraitUrl;
+
+    /**
+     * 微信
+     */
+    private String wxUserID;
+
     /**
      * 用户性别
      */
@@ -93,11 +108,11 @@ public class UserVO extends BaseVO<BigInteger> {
         this.id = user.getId();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
-        this.email = user.getEmail();
+        this.email = user.getUserInfo().getEmail();
         this.orgRegion = user.getOrg().getRegion();
         this.orgProvince = user.getOrg().getProvince();
         this.orgName = user.getOrg().getName();
-        this.mobile = user.getMobile();
+        this.mobile = user.getUserInfo().getMobile();
         this.createTime = user.getCreateTime();
 
     }

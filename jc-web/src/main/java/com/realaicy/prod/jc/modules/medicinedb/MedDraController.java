@@ -45,7 +45,7 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
 
     @Autowired
     public MedDraController(MedDraService medDraService) {
-        super(medDraService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(medDraService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, MedDra.class, MedDraVO.class, BINDING_WHITE_LIST);
     }
 
@@ -81,22 +81,12 @@ public class MedDraController extends CRUDWithVOController<MedDra, BigInteger, M
 
 
     @Override
-    protected boolean canBeDelete(MedDra entity) {
+    protected boolean canBeDelete(BigInteger id) {
         return false;
     }
 
     @Override
-    protected void internalSaveNew(MedDraVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-
-    }
-
-    @Override
-    protected MedDra internalSaveUpdate(MedDraVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        return null;
-    }
-
-    @Override
-    protected void extendSave(MedDra po, BigInteger updateID, BigInteger pid) {
+    protected void checkBeforeSaveNew(MedDraVO realmodel) throws SaveNewException {
 
     }
 }

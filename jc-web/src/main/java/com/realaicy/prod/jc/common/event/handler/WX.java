@@ -2,9 +2,9 @@ package com.realaicy.prod.jc.common.event.handler;
 
 import com.realaicy.prod.jc.common.event.JCEventHandler;
 import com.realaicy.prod.jc.modules.system.model.EventAction;
-import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.modules.system.model.UserInfo;
 import com.realaicy.prod.jc.modules.system.repos.EventMsgTemRepos;
-import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.modules.system.service.UserInfoService;
 import com.realaicy.prod.jc.uitl.WxUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,21 +17,21 @@ import org.springframework.stereotype.Component;
 public class WX implements JCEventHandler {
 
 
-    private final UserService userService;
+    private final UserInfoService userInfoService;
     private final EventMsgTemRepos eventMsgTemRepos;
 
     @Autowired
-    public WX(UserService userService, EventMsgTemRepos eventMsgTemRepos) {
-        this.userService = userService;
+    public WX(UserInfoService userInfoService, EventMsgTemRepos eventMsgTemRepos) {
+        this.userInfoService = userInfoService;
         this.eventMsgTemRepos = eventMsgTemRepos;
     }
 
     @Override
     public void dowork(EventAction eventAction, String extMsg) {
         if (eventAction.getSubscriberID() != null) {
-            User user = userService.findOne(eventAction.getSubscriberID());
-            WxUtil.sentMsgToUser(eventMsgTemRepos.getOne(eventAction.getMsgTemID()).getName().replace("{$$$$}", user.getNickname()),
-                    user.getWxUserID());
+            UserInfo userInfo = userInfoService.findOne(eventAction.getSubscriberID());
+            WxUtil.sentMsgToUser(eventMsgTemRepos.getOne(eventAction.getMsgTemID()).getName().replace("{$$$$}", userInfo.getNickname()),
+                    userInfo.getWxUserID());
         }
     }
 }

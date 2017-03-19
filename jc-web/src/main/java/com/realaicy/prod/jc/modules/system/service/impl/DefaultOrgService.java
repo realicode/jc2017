@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -30,18 +29,13 @@ public class DefaultOrgService extends DefaultBaseServiceImpl<Org, BigInteger>
     }
 
     @Override
-    public List<Org> findByRegion(String region) {
-        return ((OrgRepos) baseRepository).findByRegion(region);
+    public Boolean checkOrgName(String orgName) {
+        return ((OrgRepos) baseRepository).countByName(orgName) >= 1;
     }
 
     @Override
-    public List<Org> findByProvince(String province) {
-        return ((OrgRepos) baseRepository).findByProvince(province);
-    }
-
-    @Override
-    public boolean canBeDelete(Org entity) {
-        return !userService.ifHasNoDelUserByOrg(entity);
+    public boolean canBeDelete(BigInteger orgID) {
+        return !userService.ifHasNoDelUserByOrgID(orgID);
     }
 
     @Override

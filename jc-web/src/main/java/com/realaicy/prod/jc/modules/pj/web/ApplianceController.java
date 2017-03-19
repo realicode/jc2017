@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -49,9 +50,9 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
 
     @Autowired
-    public ApplianceController(ApplianceService applianceService, UserService userService,
-                               ApplicationEventPublisher publisher) {
-        super(applianceService, "application", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
+    public ApplianceController(ApplianceService applianceService,
+                               UserService userService, ApplicationEventPublisher publisher) {
+        super(applianceService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
                 NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
                 Appliance.class, ApplianceVO.class, BINDING_WHITE_LIST);
         this.applianceService = applianceService;
@@ -81,6 +82,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     @RequestMapping(value = "/confirm", method = RequestMethod.POST)
     public String doConfirm(@Valid @ModelAttribute("realmodel") final ApplianceVO realmodel,
                             final BindingResult result,
+                            HttpSession httpSession,
                             @RequestParam(value = "btnType") String btnType,
                             @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
         Appliance po = null;
@@ -97,7 +99,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             po = applianceService.findOne(realmodel.getId());
             po.setQuotation(realmodel.getQuotation());
             po.setConfirmRemark(realmodel.getConfirmRemark());
-            po.setConfirmor(userService.findByName(SpringSecurityUtil.getNameOfCurrentPrincipal()));
+            po.setConfirmor(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
 
             if (btnType.equals("nopass")) {
                 po.setStatus(Short.valueOf("4101"));
@@ -115,7 +117,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             }
             po = applianceService.findOne(realmodel.getId());
             po.setApproveRemark(realmodel.getApproveRemark());
-            po.setApprover(userService.findByName(SpringSecurityUtil.getNameOfCurrentPrincipal()));
+            po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
             if (btnType.equals("nopass")) {
                 po.setStatus(Short.valueOf("4201"));
             } else if (btnType.equals("pass")) {
@@ -132,6 +134,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     @RequestMapping(value = "/approve", method = RequestMethod.POST)
     public String doApprove(@Valid @ModelAttribute("realmodel") final ApplianceVO realmodel,
                             final BindingResult result,
+                            HttpSession httpSession,
                             @RequestParam(value = "approveType") String btnType) throws InstantiationException {
 
         if (result.hasFieldErrors("approveRemark")) {
@@ -145,7 +148,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         Appliance po = applianceService.findOne(realmodel.getId());
 
         po.setApproveRemark(realmodel.getConfirmRemark());
-        po.setApprover(userService.findByName(SpringSecurityUtil.getNameOfCurrentPrincipal()));
+        po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
 
         if (btnType.equals("nopass")) {
             po.setStatus(Short.valueOf("4201"));
@@ -176,7 +179,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
     @Override
-    protected boolean canBeDelete(Appliance entity) {
+    protected boolean canBeDelete(BigInteger id) {
         return false;
     }
 
@@ -192,16 +195,11 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
     @Override
-    protected void internalSaveNew(ApplianceVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
+    protected void checkBeforeSaveNew(ApplianceVO realmodel) throws SaveNewException {
     }
 
     @Override
-    protected Appliance internalSaveUpdate(ApplianceVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        return null;
-    }
-
-    @Override
-    protected void extendShow(Appliance po, ApplianceVO vo) {
+    protected void extendShowDetail(Appliance po, ApplianceVO vo) {
         if (po.getConfirmor() != null) {
             vo.setConfirmorName(po.getConfirmor().getNickname());
         }
@@ -223,11 +221,11 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         }
     }
 
-    @Override
+   /* @Override
     protected void extendSave(Appliance po, BigInteger updateID, BigInteger pid) {
         po.setStatus(Short.valueOf("1"));
-        po.setUser(userService.findByName(SpringSecurityUtil.getNameOfCurrentPrincipal()));
-    }
+        po.setUser(userService.findByUsername(SpringSecurityUtil.getNameOfCurrentPrincipal()));
+    }*/
 
     @Override
     protected Specification<Appliance> addSpec() {

@@ -4,22 +4,15 @@ package com.realaicy.prod.jc.modules.system.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 用户安全类
  */
 @Entity
-@Table(name = "jc_sys_user_sec")
+@Table(name = "jc_sys_user")
 public class UserSec extends CommonDeletableEntity<BigInteger> {
 
     /**
@@ -33,11 +26,6 @@ public class UserSec extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "PASSWORD")
     private String password;
-    /**
-     * 用户昵称
-     */
-    @Column(name = "NICKNAME")
-    private String nickname;
 
     /**
      * 标识:各种标识
@@ -52,10 +40,10 @@ public class UserSec extends CommonDeletableEntity<BigInteger> {
     private boolean enabled;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "jc_sys_usersec_role", joinColumns = @JoinColumn(name = "USERID"),
+    @JoinTable(name = "jc_sys_user_role", joinColumns = @JoinColumn(name = "USERID"),
             inverseJoinColumns = @JoinColumn(name = "ROLEID"))
     @JsonIgnore
-    private List<Role> roles;
+    private Set<Role> roles;
 
     public boolean isAccountNonExpired() {
         return accountNonExpired;
@@ -105,19 +93,11 @@ public class UserSec extends CommonDeletableEntity<BigInteger> {
         this.password = password;
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

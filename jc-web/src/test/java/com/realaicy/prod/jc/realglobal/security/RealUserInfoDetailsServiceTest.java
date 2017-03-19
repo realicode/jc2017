@@ -1,6 +1,5 @@
 package com.realaicy.prod.jc.realglobal.security;
 
-import com.realaicy.prod.jc.modules.demo.respos.jpa.DemoRepos;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Created by realaicy on 2017/2/26.
@@ -21,7 +19,7 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @Transactional
 @Rollback
-public class RealUserDetailsServiceTest {
+public class RealUserInfoDetailsServiceTest {
     @Autowired
     private
     RealUserDetailsService realUserDetailsService;

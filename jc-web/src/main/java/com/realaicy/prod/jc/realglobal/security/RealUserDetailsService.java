@@ -2,7 +2,7 @@ package com.realaicy.prod.jc.realglobal.security;
 
 import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.UserSec;
-import com.realaicy.prod.jc.modules.system.service.UserSecService;
+import com.realaicy.prod.jc.modules.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -24,36 +24,37 @@ import java.util.HashSet;
 public class RealUserDetailsService implements UserDetailsService {
 
     //@SuppressWarnings("SpringAutowiredFieldsWarningInspection")
-    private final UserSecService userSecService;
+    private final UserService userService;
 
     @Autowired
-    public RealUserDetailsService(UserSecService userSecService) {
-        this.userSecService = userSecService;
+    public RealUserDetailsService(UserService userService) {
+        this.userService = userService;
     }
 
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        UserSec userSec;
+
+        UserSec usersec;
         Collection<GrantedAuthority> grantedAuthorities;
 
         HashSet<String> realAuthorities = new HashSet<>();
 
         try {
-            userSec = userSecService.findByUsername(userName);
+            usersec = userService.getUserSecFromUsername(userName);
         } catch (Exception e) {
             throw new UsernameNotFoundException("user select fail");
         }
-        if (userSec == null) {
+        if (usersec == null) {
             throw new UsernameNotFoundException("no user found");
         } else {
             try {
 
-                if (userSec.getRoles() == null || userSec.getRoles().size() < 1) {
+                if (usersec.getRoles() == null || usersec.getRoles().size() < 1) {
                     grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("");
                 } else {
                     StringBuilder commaBuilder = new StringBuilder();
-                    for (Role role : userSec.getRoles()) {
+                    for (Role role : usersec.getRoles()) {
                         commaBuilder.append(role.getName()).append(",");
                         if (role.getRealauthorities() != null && !role.getRealauthorities().equals("")) {
                             Collections.addAll(realAuthorities, role.getRealauthorities().split(","));
@@ -64,9 +65,9 @@ public class RealUserDetailsService implements UserDetailsService {
                     grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
                 }
 
-                return new RealUserDetails(userSec.getId(), userSec.getUsername(), userSec.getPassword(),
-                        userSec.getNickname(), userSec.isEnabled(), userSec.isAccountNonExpired(),
-                        userSec.isCredentialsNonExpired(), userSec.isAccountNonLocked(),
+                return new RealUserDetails(usersec.getId(), usersec.getUsername(), usersec.getPassword(),
+                        "fake", usersec.isEnabled(), usersec.isAccountNonExpired(),
+                        usersec.isCredentialsNonExpired(), usersec.isAccountNonLocked(),
                         grantedAuthorities, realAuthorities);
             } catch (Exception e) {
                 e.printStackTrace();

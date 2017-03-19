@@ -101,14 +101,14 @@ public class UserServiceTest {
         temp1 = Specifications.where(temp1).and(usersByOrgName("%拟%"));
         temp2 = Specifications.where(temp2).and(usersByRoleName("%管理%"));
 
-        //final Specification<User> spec2 = usersByOrgName("虚拟机构");
+        //final Specification<UserInfo> spec2 = usersByOrgName("虚拟机构");
 
         final Specification<User> spec3 = Specifications.where(temp2).and(usersByRoleID(BigInteger.valueOf(6L)));
 
         final Specification<User> spec4 = Specifications.where(temp2).and(usersByRoleName2("%管理%"));
 
 
-//        List<User> poList = userService.findAll(temp1);
+//        List<UserInfo> poList = userInfoService.findAll(temp1);
         List<User> poList = userService.findAll(spec4);
 
         System.out.println(poList.size());
@@ -136,7 +136,7 @@ public class UserServiceTest {
         final BaseSpecificationsBuilder<User> builder = new BaseSpecificationsBuilder<>();
         builder.with("deleteFlag", ":", false, "", "");
         Specification<User> spec = builder.build();
-//        List<User> poList = userService.findAll();
+//        List<UserInfo> poList = userInfoService.findAll();
 
         userService.findOne(BigInteger.valueOf(124L));
         System.out.println();

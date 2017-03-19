@@ -2,7 +2,7 @@ package com.realaicy.prod.jc.modules.me.model;
 
 
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
-import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.modules.system.model.UserInfo;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -42,7 +42,7 @@ public class MyCalendar extends CommonDeletableEntity<BigInteger> {
      */
     @ManyToOne()
     @JoinColumn(name = "USER_ID")
-    private User user;
+    private UserInfo userInfo;
 
     /**
      * 紧急程度
@@ -94,12 +94,12 @@ public class MyCalendar extends CommonDeletableEntity<BigInteger> {
         this.calendarType = calendarType;
     }
 
-    public User getUser() {
-        return user;
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public Short getLevel() {

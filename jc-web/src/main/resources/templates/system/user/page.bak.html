@@ -111,7 +111,7 @@
                                 <th>
                                 </th>
                                 <th data-class="expand" class="realaicy_table_header"><i
-                                        class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> 用户名称
+                                        class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i> 用户名称
                                 </th>
                                 <th data-hide="phone" class="realaicy_table_header"><i
                                         class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> 密码
@@ -218,7 +218,7 @@
                             action: function (e, dt, node, config) {
                                 console.log("新增!");
 
-                                $("#realeditdiv").load("/system/user/new", function () {
+                                $("#realeditdiv").load("/system/userInfo/new", function () {
 
                                 });
 
@@ -246,7 +246,7 @@
                                 }
                                 $.each(rows_selected, function (index, rowId) {
                                     console.log("id: " + rowId);
-                                    $("#realeditdiv").load("/system/user/show/" + rowId, function () {
+                                    $("#realeditdiv").load("/system/userInfo/show/" + rowId, function () {
                                     });
                                 });
 
@@ -300,7 +300,7 @@
                             text: '自助复杂查询',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function (e, dt, node, config) {
-                                $("#realeditdiv").load("/system/user/search", function () {
+                                $("#realeditdiv").load("/system/userInfo/search", function () {
 
                                 });
                                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
@@ -320,7 +320,7 @@
                     ],
 
                     ajax: {
-                        url: "/system/user/list4dt",
+                        url: "/system/userInfo/list4dt",
                         type: "POST",
                         'beforeSend': function (request) {
                             var token = $("meta[name='_csrf']").attr("content");
@@ -402,7 +402,7 @@
         $('#dt_basic_real').on('click', '.btn-intable-realaicy', function () {
             var data = realtable.row($(this).parents('tr')).data();
             console.log("data: " + data.id);
-            $("#realeditdiv").load("/system/user/user2role/" + data.id, function () {
+            $("#realeditdiv").load("/system/userInfo/user2role/" + data.id, function () {
             });
 
             if ($("#real_entity").hasClass("jarviswidget-collapsed"))

@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonTreeableDeletableEntity;
-import com.realaicy.prod.jc.lib.core.data.jpa.search.BaseSpecificationsBuilder;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +34,7 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
     private final String newEntityUrl;
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Override
+   /* @Override
     protected void extendSave(M po, ID updateID, ID pid) {
 
         M parent = service.findOne(pid);
@@ -52,12 +50,12 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
         } else {
             po.setCascadeID(parent.getCascadeID() + "." + String.format("%03d", childSize));
         }
-    }
+    }*/
 
     public TreeController(BaseServiceWithVO<M, ID, V> service, String initFormParam, String[] nameDic, String pageUrl,
                           String showEntityUrl, String newEntityUrl, String editEntityUrl, String listUrl,
                           String searchEntityUrl, Class<M> aClass, Class<V> voClass, List<String> editBindWhiteList) {
-        super(service, initFormParam, nameDic, pageUrl, showEntityUrl, newEntityUrl, editEntityUrl,
+        super(service, nameDic, pageUrl, showEntityUrl, newEntityUrl, editEntityUrl,
                 listUrl, searchEntityUrl, aClass, voClass, editBindWhiteList);
         this.service = service;
         this.newEntityUrl = newEntityUrl;
@@ -71,8 +69,9 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
     }
 
 
-    @Override
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
+
+
+    @RequestMapping(value = "/treenew", method = RequestMethod.GET)
     public String newModel(Model model,
                            @RequestParam(value = "pid", required = false) final ID pid,
                            @RequestParam(value = "pname", required = false) final String pname) {

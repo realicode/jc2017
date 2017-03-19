@@ -256,6 +256,13 @@ jQuery.validator.addMethod("isUsername", function(value, element) {
     return this.optional(element) || (username.test(value));
 }, "请正确填写您的用户名");
 
+// 手机号码验证
+jQuery.validator.addMethod("isMobile", function(value, element) {
+    var length = value.length;
+    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;
+    return this.optional(element) || (length == 11 && mobile.test(value));
+}, "请正确填写您的手机号码");
+
 jQuery.validator.addMethod("isADLine", function(value, element) {
     var realvalue = /^\w+$/;
     return this.optional(element) || (realvalue.test(value));
@@ -266,8 +273,6 @@ jQuery.validator.addMethod("isADCLine", function(value, element) {
     return this.optional(element) || (realvalue.test(value));
 }, "请不要填写非法字符，只能输入中文（不包含生僻字）、英文字母、数字、下划线");
 
-
-/[\w\u4e00-\u9fa5]/
 realaicy_g_var_dlurl = "http://111.30.31.179:32003/download/file/";
 login_url = "http://111.30.31.179:48080";
 

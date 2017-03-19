@@ -29,4 +29,9 @@ public class DefaultMyWorkService extends DefaultBaseServiceImpl<MyWork, BigInte
     public Long countByUserUsername(String username) {
         return ((MyWorkRepos) baseRepository).countByUserUsername(username);
     }
+
+    @Override
+    public Long countByUserId(BigInteger id) {
+        return ((MyWorkRepos) baseRepository).countByUserId(id);
+    }
 }

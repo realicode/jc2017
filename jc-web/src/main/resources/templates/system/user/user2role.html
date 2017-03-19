@@ -1,7 +1,7 @@
 <div class="jarviswidget-editbox" xmlns:th="http://www.w3.org/1999/xhtml">
 </div>
 <div class="widget-body no-padding">
-    <form id="realroletree" method="post" th:action="@{/system/user/u2rsave}">
+    <form id="realroletree" method="post" th:action="@{/system/userInfo/u2rsave}">
         <fieldset>
             <legend>
                 分配角色
@@ -96,7 +96,7 @@
                 });
                 realrols = selKeys.join(",");
                 $.ajax({
-                    url: '/system/user/u2rsave',
+                    url: '/system/userInfo/u2rsave',
                     type: 'post',
                     data: {
                         userid: $('#userid').val(),

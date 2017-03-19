@@ -6,7 +6,6 @@ import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.vo.OrgVO;
 
 import java.math.BigInteger;
-import java.util.List;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -14,8 +13,18 @@ import java.util.List;
  */
 public interface OrgService extends BaseServiceWithVO<Org, BigInteger, OrgVO> {
 
-    List<Org> findByRegion(String region);
-    List<Org> findByProvince(String province);
-    boolean canBeDelete(Org entity);
+    /**
+     * 检查给定名称的机构是否存在
+     * @param orgName 机构名称
+     * @return 如果存在则返回true, 否则返回false
+     */
+    Boolean checkOrgName(String orgName);
+
+    /**
+     * 检查一个给定的机构是否能够被删除
+     * @param orgID 机构主键
+     * @return 如果可以则返回  true
+     */
+    boolean canBeDelete(BigInteger orgID);
 
 }

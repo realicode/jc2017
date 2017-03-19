@@ -23,9 +23,8 @@ import java.util.List;
 @RequestMapping("/me/work")
 public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, MyWorkVO> {
 
-    private final UserService userService;
     private final ApplicationEventPublisher publisher;
-
+    private UserService userService;
 
     private MyWorkService myWorkService;
     private static final String[] NAME_DIC = {"name"};
@@ -42,7 +41,7 @@ public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, M
     @Autowired
     public MyWorkController(MyWorkService myWorkService, UserService userService,
                             ApplicationEventPublisher publisher) {
-        super(myWorkService, "myWork", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL,
+        super(myWorkService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL,
                 EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL, MyWork.class, MyWorkVO.class, BINDING_WHITE_LIST);
         this.myWorkService = myWorkService;
         this.userService = userService;
@@ -71,24 +70,15 @@ public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, M
     }
 
     @Override
-    protected boolean canBeDelete(MyWork entity) {
+    protected boolean canBeDelete(BigInteger id) {
         return false;
     }
 
     @Override
-    protected void internalSaveNew(MyWorkVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
+    protected void checkBeforeSaveNew(MyWorkVO realmodel) throws SaveNewException {
 
     }
 
-    @Override
-    protected MyWork internalSaveUpdate(MyWorkVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        return null;
-    }
-
-    @Override
-    protected void extendSave(MyWork po, BigInteger updateID, BigInteger pid) {
-
-    }
 
     @Override
     protected void addAttrToModel(Model model) {

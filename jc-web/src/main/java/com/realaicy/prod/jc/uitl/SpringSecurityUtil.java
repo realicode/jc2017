@@ -22,7 +22,7 @@ public final class SpringSecurityUtil {
 
     // API
 
-    /*public static User authenticate(final String key, final String uuid) {
+    /*public static UserInfo authenticate(final String key, final String uuid) {
         final SpringSecurityPrincipal principal = new SpringSecurityPrincipal(randomAlphabetic(6),
         randomAlphabetic(6), true, Lists.<GrantedAuthority>newArrayList(), uuid);
         SecurityContextHolder.getContext().setAuthentication(new RunAsUserToken(key,

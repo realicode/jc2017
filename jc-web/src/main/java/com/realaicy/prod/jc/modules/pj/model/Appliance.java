@@ -177,5 +177,4 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
     public void setUser(User user) {
         this.user = user;
     }
-
 }

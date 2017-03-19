@@ -3,14 +3,13 @@ package com.realaicy.prod.jc.modules.system.web;
 import com.google.common.base.Splitter;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
-import com.realaicy.prod.jc.modules.system.model.Org;
 import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
-import com.realaicy.prod.jc.modules.system.model.UserSec;
+import com.realaicy.prod.jc.modules.system.model.UserInfo;
 import com.realaicy.prod.jc.modules.system.model.vo.User2RoleS2VO;
 import com.realaicy.prod.jc.modules.system.model.vo.User2RoleVO;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
-import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
+import com.realaicy.prod.jc.modules.system.repos.UserRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
@@ -25,11 +24,7 @@ import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
@@ -37,14 +32,7 @@ import javax.persistence.criteria.Subquery;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.realaicy.prod.jc.uitl.RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE;
 
@@ -69,21 +57,21 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     private static final String USER_TO_ROLE_URL = "system/user/user2role";
     private static JsonMapper binder = JsonMapper.nonDefaultMapper();
     private final PasswordEncoder bcryptEncoder;
-    private final UserSecRepos userSecRepos;
+    private final UserRepos userRepos;
     private UserService userService;
     private OrgService orgService;
     private RoleService roleService;
 
     @Autowired
     public UserController(UserService userService, RoleService roleService,
-                          PasswordEncoder bcryptEncoder, UserSecRepos userSecRepos, OrgService orgService) {
-        super(userService, "user", NAMEDIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+                          PasswordEncoder bcryptEncoder, UserRepos userRepos, OrgService orgService) {
+        super(userService, NAMEDIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, User.class, UserVO.class, EDIT_BIND_WHITE_LIST);
-        this.userService = userService;
         this.roleService = roleService;
         this.bcryptEncoder = bcryptEncoder;
-        this.userSecRepos = userSecRepos;
+        this.userRepos = userRepos;
         this.orgService = orgService;
+        this.userService = userService;
     }
 
     private static Specification<User> usersByOrgName(String orgName) {
@@ -125,27 +113,27 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     }
 
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/list4select", produces = "application/json")
     public Map<String, Object> findAllBySpecificationToSelect(
             @RequestParam(value = "q") String search) {
 
         Map<String, Object> info = new HashMap<>();
 
-        List<User> users = userService.findByUsernameContaining(search);
-        info.put("items", users);
+        List<UserInfo> userInfos = userInfoService.findByUsernameContaining(search);
+        info.put("items", userInfos);
         return info;
-    }
+    }*/
 
     @RequestMapping(value = "/user2role/{userid}", method = RequestMethod.GET)
     public String userToRole(@PathVariable("userid") final BigInteger userid,
                              Model model) {
 
-        User user = userService.findOne(userid);
-        User2RoleVO user2RoleVO = productVONode(user.getRoles());
+        /*User user = userService.findOne(userid);
+        User2RoleVO user2RoleVO = productVONode(userInfo.getUser().getRoles());
         model.addAttribute("user2role", binder.toJson(user2RoleVO));
         model.addAttribute("userid", userid);
-        model.addAttribute("user2roles2", binder.toJson(productVOS2Node(user.getRoles())));
+        model.addAttribute("user2roles2", binder.toJson(productVOS2Node(userInfo.getUser().getRoles())));*/
         return USER_TO_ROLE_URL;
     }
 
@@ -154,30 +142,26 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     @ResponseBody
     public String userToRoleSave(@RequestParam(value = "userid", required = false) BigInteger userid,
                                  @RequestParam(value = "user2role", required = false) String user2role) {
+/*
 
-        User user = userService.findOne(userid);
-        UserSec userSec = userSecRepos.findByUsername(user.getUsername());
-
+        UserInfo userInfo = userService.findOne(userid);
+        User user = userInfo.getUser();
 
         String roleNames = "";
         user.getRoles().clear();
-        userSec.getRoles().clear();
-        //user.setRolenames(roleNames);
-        userService.save(user);
-        userSecRepos.save(userSec);
+
         if (user2role != null && !Objects.equals(user2role, "")) {
             for (String str : user2role.split(",")) {
                 Role roleTemp = roleService.findOne(new BigInteger(str));
                 user.getRoles().add(roleService.findOne(new BigInteger(str)));
-                userSec.getRoles().add(roleService.findOne(new BigInteger(str)));
-
                 roleNames += roleTemp.getName();
                 roleNames += ",";
             }
-            user.setRolenames(roleNames.substring(0, roleNames.length() - 1));
-            userService.save(user);
-            userSecRepos.save(userSec);
+            userInfo.setRolenames(roleNames.substring(0, roleNames.length() - 1));
+            userInfoService.save(userInfo);
+            userRepos.save(user);
         }
+*/
 
         return "ok";
     }
@@ -231,71 +215,89 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         return true;
     }
 
-    @Override
-    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
-        return userService.convertFromPOListToVOList(poList);
-    }
 
     @Override
-    protected boolean canBeDelete(User entity) {
+    protected boolean canBeDelete(BigInteger id) {
         return false;
     }
 
+    @Override
+    protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
+
+        List<UserVO> voList = new ArrayList<>();
+        for (User userPO : poList) {
+            UserVO userVO = new UserVO(userPO);
+            String roleIDs = "";
+            String roleNames = "";
+
+            for (Role role : userPO.getRoles()) {
+                roleIDs += role.getId();
+                roleIDs += " || ";
+
+                roleNames += role.getName();
+                roleNames += " || ";
+            }
+            if (!Objects.equals(roleIDs, "")) {
+                userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
+
+            }
+            if (!Objects.equals(roleNames, "")) {
+                userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
+            }
+
+            voList.add(userVO);
+        }
+        return voList;    }
 
     @Override
-    protected void extendEdit(User po, UserVO realmodel) {
-        realmodel.setOrgRegion(po.getOrg().getRegion());
+    protected void extendShowEdit(User po, UserVO realmodel) {
+        /*realmodel.setOrgRegion(po.getOrg().getRegion());
         realmodel.setOrgProvince(po.getOrg().getProvince());
         realmodel.setOrgName(po.getOrg().getName());
-        realmodel.setOrgID(po.getOrg().getId().toString());
+        realmodel.setOrgID(po.getOrg().getId().toString());*/
 
     }
 
     @Override
-    protected void internalSaveNew(UserVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
+    protected void checkBeforeSaveNew(UserVO realmodel) throws SaveNewException {
 
-        if (userService.findByName(realmodel.getUsername()) != null) {
+        if (userService.checkUsername(realmodel.getUsername()) != null) {
             throw new SaveNewException("error用户名称已存在!");
 
         }
 
         realmodel.setPassword(bcryptEncoder.encode(realmodel.getPassword()));
 
-        UserSec userSec = new UserSec();
+        User user = new User();
         try {
-            BeanUtils.copyProperties(userSec, realmodel);
+            BeanUtils.copyProperties(user, realmodel);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             throw new SaveNewException(e.getMessage());
 
         }
-        userSec.setAccountNonExpired(true);
-        userSec.setCredentialsNonExpired(true);
-        userSec.setAccountNonLocked(true);
-        userSec.setEnabled(true);
-        //userSecRepos.save(userSec);
-        realmodel.setId(userSecRepos.save(userSec).getId());
+        user.setAccountNonExpired(true);
+        user.setCredentialsNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setEnabled(true);
+        //userSecRepos.save(user);
+        realmodel.setId(userRepos.save(user).getId());
 //        realmodel.setOrgCascadeID(getOrgService().findOne(realmodel.getOrgID()).getCascadeID());
     }
 
     @Override
     protected void extendSave(User po, UserVO realmodel) {
-        Org org = orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID())));
-        po.setOrg(org);
-    }
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickname(realmodel.getNickname());
+        userInfo.setEmail(realmodel.getEmail());
+        userInfo.setMobile(realmodel.getMobile());
+        userInfo.setNickname(realmodel.getNickname());
+        userInfo.setNickname(realmodel.getNickname());
+        userInfo.setNickname(realmodel.getNickname());
 
-    @Override
-    protected User internalSaveUpdate(UserVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        User user = userService.findOne(updateID);
-        user.setNickname(realmodel.getNickname());
-        user.setEmail(realmodel.getEmail());
-        user.setSex(realmodel.getSex());
-        return user;
-    }
 
-    @Override
-    protected void extendSave(User po, BigInteger updateID, BigInteger pid) {
-
+//        Org org = orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID())));
+//        po.setOrg(org);
     }
 
     @Override

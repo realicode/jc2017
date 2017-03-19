@@ -17,7 +17,9 @@ public interface RoleService extends BaseServiceWithVO<Role, BigInteger, RoleVO>
 
     Role findByRoleName(String roleName);
 
+    Boolean checkOrgName(String orgName);
+
     List<Role> findByDeleteFlag(Boolean deleteFlag);
 
-    boolean canBeDelete(Role entity);
+    boolean canBeDelete(BigInteger roleID);
 }

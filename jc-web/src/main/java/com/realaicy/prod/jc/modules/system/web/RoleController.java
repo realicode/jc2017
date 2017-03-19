@@ -35,31 +35,20 @@ public class RoleController extends CRUDWithVOController<Role, BigInteger, RoleV
 
     @Autowired
     public RoleController(RoleService roleService) {
-        super(roleService, "role", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(roleService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, Role.class, RoleVO.class, BINDING_WHITE_LIST);
         this.roleService = roleService;
     }
 
     @Override
-    protected boolean canBeDelete(Role entity) {
-        return roleService.canBeDelete(entity);
+    protected boolean canBeDelete(BigInteger id) {
+        return roleService.canBeDelete(id);
     }
 
     @Override
-    protected void internalSaveNew(RoleVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-//        if (roleService.findByNameWithInAOrg(realmodel.getName(), realmodel.getOrgID()) != null)
-//            throw new SaveNewException("error角色名称已存在!");
-    }
-
-    @Override
-    protected Role internalSaveUpdate(RoleVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        Role org = roleService.findOne(updateID);
-        org.setName(realmodel.getName());
-        return org;
-    }
-
-    @Override
-    protected void extendSave(Role po, BigInteger updateID, BigInteger pid) {
-
+    protected void checkBeforeSaveNew(RoleVO realmodel) throws SaveNewException {
+        if (roleService.checkOrgName(realmodel.getName())) {
+            throw new SaveNewException("error角色名称已存在!");
+        }
     }
 }

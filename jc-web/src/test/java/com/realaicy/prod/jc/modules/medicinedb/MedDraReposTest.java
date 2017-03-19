@@ -1,7 +1,5 @@
 package com.realaicy.prod.jc.modules.medicinedb;
 
-import com.realaicy.prod.jc.modules.system.model.UserSec;
-import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Created by realaicy on 2017/3/1.

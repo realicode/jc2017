@@ -337,10 +337,10 @@
 
 						<!-- CHAT CONTAINER -->
 						<div id="chat-container">
-							<span class="chat-list-open-close"><i class="fa fa-user"></i><b>!</b></span>
+							<span class="chat-list-open-close"><i class="fa fa-userInfo"></i><b>!</b></span>
 
 							<div class="chat-list-body custom-scroll">
-								<ul id="chat-users">
+								<ul id="chat-userInfos">
 									<li>
 										<a href="javascript:void(0);"><img th:src="@{/smartadmin/img/avatars/5.png}" xmlns:th="http://www.thymeleaf.org"
 																		   src="../../static/smartadmin/img/avatars/5.png" alt="">
@@ -1226,7 +1226,7 @@
 		
 		var filter_input = $('#filter-chat-list'),
 			chat_users_container = $('#chat-container > .chat-list-body'),
-			chat_users = $('#chat-users'),
+			chat_users = $('#chat-userInfos'),
 			chat_list_btn = $('#chat-container > .chat-list-open-close'),
 			chat_body = $('#chat-body');
 		

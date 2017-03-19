@@ -1,21 +1,17 @@
 package com.realaicy.prod.jc.modules.system.service.impl;
 
 import com.realaicy.prod.jc.lib.core.service.impl.DefaultBaseServiceImpl;
-import com.realaicy.prod.jc.modules.system.model.Org;
-import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.modules.system.model.UserSec;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 import com.realaicy.prod.jc.modules.system.repos.UserRepos;
+import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import com.realaicy.prod.jc.modules.system.service.UserService;
-import com.realaicy.prod.jc.realglobal.config.StaticParams;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -26,61 +22,21 @@ import java.util.Objects;
 public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
         implements UserService {
 
+    private final UserSecRepos userSecRepos;
+
+    @Autowired
+    public DefaultUserService(UserSecRepos userSecRepos) {
+        this.userSecRepos = userSecRepos;
+    }
 
     @Override
-    public User findByName(String username) {
+    public User findByUsername(String username) {
         return ((UserRepos) baseRepository).findByUsername(username);
     }
 
     @Override
-    public List<User> findAllUsersWithPage(PageRequest pageRequest) {
-
-        return baseRepository.findAll(pageRequest).getContent();
-    }
-
-    @Override
-    public List<User> findByUsernameContaining(String username) {
-        return ((UserRepos) baseRepository).findTop10ByUsernameContaining(username);
-    }
-
-    @Override
-    public Boolean ifHasNoDelUserByRole(Role role) {
-        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByRoleIDNative(role.getId()) != null;
-    }
-
-    @Override
-    public Boolean ifHasNoDelUserByOrg(Org org) {
-        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByOrgIDNative(org.getId()) != null;
-
-    }
-
-    @Override
-    public List<UserVO> convertFromPOListToVOList(List<User> poList) {
-
-        List<UserVO> voList = new ArrayList<>();
-        for (User userPO : poList) {
-            UserVO userVO = new UserVO(userPO);
-            String roleIDs = "";
-            String roleNames = "";
-            for (Role role : userPO.getRoles()) {
-                roleIDs += role.getId();
-                roleIDs += " || ";
-
-                roleNames += role.getName();
-                roleNames += " || ";
-            }
-            if (!Objects.equals(roleIDs, "")) {
-                userVO.setRoleIDs(roleIDs.substring(0, roleIDs.length() - StaticParams.REALNUM.N3));
-
-            }
-            if (!Objects.equals(roleNames, "")) {
-                userVO.setRoleNames(roleNames.substring(0, roleNames.length() - StaticParams.REALNUM.N3));
-            }
-
-            voList.add(userVO);
-        }
-        return voList;
-
+    public UserSec getUserSecFromUsername(String username) {
+        return userSecRepos.findByUsername(username);
     }
 
     @Override
@@ -88,6 +44,15 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
         return ((UserRepos) baseRepository).checkUsername(username) >= 1;
     }
 
+    @Override
+    public Boolean ifHasNoDelUserByRole(BigInteger roleID) {
+        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByRoleIDNative(roleID) != null;
+    }
+
+    @Override
+    public Boolean ifHasNoDelUserByOrgID(BigInteger orgID) {
+        return ((UserRepos) baseRepository).findFirstNoDeletedUserIDByOrgIDNative(orgID) != null;
+    }
 
     @Override
     public void saveFromVO(User po, UserVO vo) {

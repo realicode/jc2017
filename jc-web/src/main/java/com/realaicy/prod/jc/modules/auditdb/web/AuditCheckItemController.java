@@ -7,7 +7,6 @@ import com.realaicy.prod.jc.modules.auditdb.model.vo.AuditCheckItemVO;
 import com.realaicy.prod.jc.modules.auditdb.service.AuditCheckItemService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.TreeController;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
-
-import static com.realaicy.prod.jc.lib.core.utils.RealBeanUtils.getNullPropertyNames;
 
 
 /**
@@ -49,21 +46,21 @@ public class AuditCheckItemController extends TreeController<AuditCheckItem, Big
     }
 
     @Override
-    protected boolean canBeDelete(AuditCheckItem entity) {
+    protected boolean canBeDelete(BigInteger id) {
         return false;
     }
 
     @Override
-    protected void internalSaveNew(AuditCheckItemVO realmodel, BigInteger updateID, BigInteger pid)
+    protected void checkBeforeSaveNew(AuditCheckItemVO realmodel)
             throws SaveNewException {
     }
 
-    @Override
-    protected AuditCheckItem internalSaveUpdate(AuditCheckItemVO realmodel, BigInteger updateID, BigInteger pid)
+   /* @Override
+    protected AuditCheckItem extendUpdate(AuditCheckItemVO realmodel, BigInteger updateID, BigInteger pid)
             throws SaveNewException {
         AuditCheckItem auditCheckItem = getService().findOne(updateID);
         BeanUtils.copyProperties(realmodel, auditCheckItem, getNullPropertyNames(realmodel));
 
         return auditCheckItem;
-    }
+    }*/
 }

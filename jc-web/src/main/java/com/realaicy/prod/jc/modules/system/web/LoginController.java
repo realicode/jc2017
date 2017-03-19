@@ -1,10 +1,10 @@
 package com.realaicy.prod.jc.modules.system.web;
 
 import com.realaicy.prod.jc.modules.system.model.User;
-import com.realaicy.prod.jc.modules.system.model.UserSec;
+import com.realaicy.prod.jc.modules.system.model.UserInfo;
 import com.realaicy.prod.jc.modules.system.model.vo.UserRegisVO;
-import com.realaicy.prod.jc.modules.system.repos.UserSecRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
+import com.realaicy.prod.jc.modules.system.service.UserInfoService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.uitl.NetUtil;
@@ -36,17 +36,18 @@ public class LoginController {
 
 
     private final PasswordEncoder bcryptEncoder;
-    private UserService userService;
+    private UserInfoService userInfoService;
     private OrgService orgService;
-    private final UserSecRepos userSecRepos;
+    private final UserService userService;
 
 
     @Autowired
-    public LoginController(PasswordEncoder bcryptEncoder, OrgService orgService, UserService userService, UserSecRepos userSecRepos) {
+    public LoginController(PasswordEncoder bcryptEncoder, OrgService orgService,
+                           UserInfoService userInfoService, UserService userService) {
         this.bcryptEncoder = bcryptEncoder;
         this.orgService = orgService;
+        this.userInfoService = userInfoService;
         this.userService = userService;
-        this.userSecRepos = userSecRepos;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -82,48 +83,44 @@ public class LoginController {
             return "Error:手机验证码错误";
         }
 
-        if (userService.findByName(realmodel.getUsername()) != null) {
+        if (userService.findByUsername(realmodel.getUsername()) != null) {
             realSecurity(clientIP);
             return "Error:用户名已经存在";
         }
 
         realmodel.setPassword(bcryptEncoder.encode(realmodel.getPassword()));
 
-        UserSec userSec = new UserSec();
         User user = new User();
-        User user2 = new User();
+        UserInfo userInfo = new UserInfo();
 
         try {
-            BeanUtils.copyProperties(userSec, realmodel);
+            BeanUtils.copyProperties(user, realmodel);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return "Error:内部错误";
         }
-        userSec.setAccountNonExpired(true);
-        userSec.setCredentialsNonExpired(true);
-        userSec.setAccountNonLocked(true);
-        userSec.setEnabled(true);
-        userSec.setCreaterID(BigInteger.valueOf(6L));
-        userSec.setUpdaterID(BigInteger.valueOf(6L));
-        userSec.setCreateTime(new Date());
-        userSec.setUpdateTime(new Date());
-        userSec.setNickname(realmodel.getUsername());
 
-        userSecRepos.save(userSec);
+        userInfo.setNickname(realmodel.getUsername());
+        userInfo.setEmail(realmodel.getEmail());
+        userInfo.setMobile(realmodel.getMobile());
+        userInfo.setUsertype(Short.valueOf("5"));
+        userInfo.setCreaterID(BigInteger.valueOf(6L));
+        userInfo.setUpdaterID(BigInteger.valueOf(6L));
+        userInfo.setCreateTime(new Date());
+        userInfo.setUpdateTime(new Date());
 
-        user.setUsername(realmodel.getUsername());
-        user.setNickname(realmodel.getUsername());
-        user.setPassword(realmodel.getPassword());
-        user.setEmail(realmodel.getEmail());
-        user.setMobile(realmodel.getMobile());
+        user.setAccountNonExpired(true);
+        user.setCredentialsNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setEnabled(true);
         user.setCreaterID(BigInteger.valueOf(6L));
         user.setUpdaterID(BigInteger.valueOf(6L));
         user.setCreateTime(new Date());
         user.setUpdateTime(new Date());
-
-        user.setOrg(orgService.findOne(BigInteger.valueOf(117L)));
-        user.setUsertype(Short.valueOf("5"));
-        userService.update(user);
+        user.setNickname(realmodel.getUsername());
+        user.setOrg(orgService.findOne(BigInteger.valueOf(117L))); // 为从网页注册成功的用户添加一个虚拟机构
+        user.setUserInfo(userInfoService.save(userInfo));
+        userService.save(user);
 
         return "ok";
     }

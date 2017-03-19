@@ -8,6 +8,7 @@ import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -29,35 +30,21 @@ public class OrgController extends CRUDWithVOController<Org, BigInteger, OrgVO> 
 
     @Autowired
     public OrgController(OrgService orgService) {
-        super(orgService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
+        super(orgService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, Org.class, OrgVO.class, BINDING_WHITE_LIST);
         this.orgService = orgService;
     }
 
 
     @Override
-    protected boolean canBeDelete(Org entity) {
-        return orgService.canBeDelete(entity);
+    protected boolean canBeDelete(BigInteger orgID) {
+        return orgService.canBeDelete(orgID);
     }
 
     @Override
-    protected void internalSaveNew(OrgVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-//        if (roleService.findByNameWithInAOrg(realmodel.getName(), realmodel.getOrgID()) != null)
-//            throw new SaveNewException("error角色名称已存在!");
-    }
-
-    @Override
-    protected Org internalSaveUpdate(OrgVO realmodel, BigInteger updateID, BigInteger pid) throws SaveNewException {
-        Org org = orgService.findOne(updateID);
-        org.setName(realmodel.getName());
-        org.setContactName(realmodel.getContactName());
-        org.setRegion(realmodel.getRegion());
-        org.setProvince(realmodel.getProvince());
-        return org;
-    }
-
-    @Override
-    protected void extendSave(Org po, BigInteger updateID, BigInteger pid) {
-
+    protected void checkBeforeSaveNew(OrgVO realmodel) throws SaveNewException {
+        if (orgService.checkOrgName(realmodel.getName())) {
+            throw new SaveNewException("error机构名称已存在!");
+        }
     }
 }
