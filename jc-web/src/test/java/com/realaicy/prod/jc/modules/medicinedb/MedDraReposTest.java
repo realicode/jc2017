@@ -1,11 +1,8 @@
 package com.realaicy.prod.jc.modules.medicinedb;
 
+import com.realaicy.prod.jc.test.JcDataRootTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -16,10 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by realaicy on 2017/3/1.
  * xxx
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-public class MedDraReposTest {
+public class MedDraReposTest extends JcDataRootTest {
 
     @Autowired
     private MedDraRepos medDraRepos;

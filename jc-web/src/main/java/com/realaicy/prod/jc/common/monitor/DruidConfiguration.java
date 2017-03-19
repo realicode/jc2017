@@ -2,16 +2,19 @@ package com.realaicy.prod.jc.common.monitor;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 /**
  * Created by realaicy on 2017/2/13.
  * xxx
  */
 @Configuration
+@Profile({StaticParams.SPRINGPROFILES.PRODUCTION, StaticParams.SPRINGPROFILES.DEVELOP})
 public class DruidConfiguration {
     /**
      * 注册一个StatViewServlet

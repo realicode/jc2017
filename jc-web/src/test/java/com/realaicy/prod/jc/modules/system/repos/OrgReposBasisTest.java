@@ -1,23 +1,20 @@
 package com.realaicy.prod.jc.modules.system.repos;
 
 import com.realaicy.prod.jc.modules.system.model.Org;
+import com.realaicy.prod.jc.test.JcDataBasicRootTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigInteger;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
+
 //@Sql("real-db-m-test.sql")
-public class OrgReposBasisTest {
+public class OrgReposBasisTest  extends JcDataBasicRootTest {
 
     @Autowired
     private OrgRepos orgRepos;

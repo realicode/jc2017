@@ -2,6 +2,7 @@ package com.realaicy.prod.jc;
 
 import com.realaicy.prod.jc.common.properties.StudyProperties;
 import com.realaicy.prod.jc.lib.core.data.jpa.SimpleBaseJPARepository;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
                 @ComponentScan.Filter(value = RestController.class)})
 @EnableJpaRepositories(repositoryBaseClass = SimpleBaseJPARepository.class)
 @EnableConfigurationProperties({StudyProperties.class})
-@Profile({"realtest"})
-public class JcServiceTestRootContext {
+@Profile({StaticParams.SPRINGPROFILES.TEST_SERVICE})
+public class JcServiceTestContext {
 
 }

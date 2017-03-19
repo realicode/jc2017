@@ -3,16 +3,13 @@ package com.realaicy.prod.jc.modules.system.service;
 import com.realaicy.prod.jc.lib.core.data.jpa.search.BaseSpecificationsBuilder;
 import com.realaicy.prod.jc.modules.system.model.Role;
 import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.test.JcServiceRootTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.math.BigInteger;
@@ -25,10 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by realaicy on 2017/3/6.
  * xxx
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-public class UserServiceTest {
+public class UserServiceTest extends JcServiceRootTest {
 
     public static Specification<User> usersByRoleID(final BigInteger roleID) {
         return new Specification<User>() {

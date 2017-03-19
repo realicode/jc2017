@@ -1,11 +1,9 @@
 package com.realaicy.prod.jc.modules.me.repos;
 
+import com.realaicy.prod.jc.test.JcDataRootTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -14,10 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Created by realaicy on 2017/3/15.
  * xx
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
-public class MyWorkReposTest {
+public class MyWorkReposTest extends JcDataRootTest {
     @Autowired
     private MyWorkRepos myWorkRepos;
 

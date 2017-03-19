@@ -44,6 +44,16 @@ public class StaticParams {
         public static final int DEFAULTSIZE = 1000;
     }
 
+    public static final class SPRINGPROFILES {
+        public static final String PRODUCTION = "prod";
+        public static final String DEVELOP = "develop";
+        public static final String TEST_UAT = "test_uat";
+        public static final String TEST_IT = "test_it";
+        public static final String TEST_SERVICE = "test_service";
+        public static final String TEST_WEB = "test_web";
+
+    }
+
     public static final class SESSIONKEY {
         public static final String USERID = "userid";
         public static final String USERNAME = "username";

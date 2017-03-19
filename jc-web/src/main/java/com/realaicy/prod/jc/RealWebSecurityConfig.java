@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,6 +25,8 @@ import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.*;
  * XX
  */
 @Configuration
+@Profile({StaticParams.SPRINGPROFILES.PRODUCTION, StaticParams.SPRINGPROFILES.DEVELOP,
+        StaticParams.SPRINGPROFILES.TEST_UAT, StaticParams.SPRINGPROFILES.TEST_IT})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Order(StaticParams.REALNUM.N20)
 public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
