@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.test;
 
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
+import com.realaicy.prod.jc.realglobal.security.RealUserDetails;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,13 +11,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 
 import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.*;
 
@@ -60,12 +63,47 @@ public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
 
-        GrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
+       /* GrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_ADMIN");
         GrantedAuthority userAuthority = new SimpleGrantedAuthority("ROLE_USER");
-
         UserDetails user1 = (UserDetails) new User("raghu", "pwd", Arrays.asList(adminAuthority));
-        UserDetails user2 = (UserDetails) new User("ram", "pwd", Arrays.asList(userAuthority));
+        UserDetails user2 = (UserDetails) new User("ram", "pwd", Arrays.asList(userAuthority));*/
 
-        return new InMemoryUserDetailsManager(Arrays.asList(user1, user2));
+        Collection<GrantedAuthority> grantedAuthoritiesForSuperAdmin =
+                AuthorityUtils.commaSeparatedStringToAuthorityList("超级管理员");   //超级管理员
+        Collection<GrantedAuthority> grantedAuthoritiesForSecretaryWym =
+                AuthorityUtils.commaSeparatedStringToAuthorityList("秘书处处长,项目经理");   //秘书长
+        Collection<GrantedAuthority> grantedAuthoritiesForDirector =
+                AuthorityUtils.commaSeparatedStringToAuthorityList("肿瘤协作组主任");       //协作组主任
+        Collection<GrantedAuthority> grantedAuthoritiesForSponsor =
+                AuthorityUtils.commaSeparatedStringToAuthorityList("潜在申办者");    //申办者
+
+        HashSet<String> realAuthoritiesForSuperAdmin = new HashSet<>();
+        HashSet<String> realAuthoritiesForSecretaryWym = new HashSet<>();
+        HashSet<String> realAuthoritiesForDirector = new HashSet<>();
+        HashSet<String> realAuthoritiesForSponsor = new HashSet<>();
+
+        Collections.addAll(realAuthoritiesForSuperAdmin, "superadmin");
+        Collections.addAll(realAuthoritiesForSecretaryWym,
+                "superop,Org-r,Org-c,Role-a,User-a,DocRes-a,DocFileRes-a,Appliance-a,Appliance-ack,MyWork-r".split(","));
+        Collections.addAll(realAuthoritiesForDirector,
+                "Appliance-r,Appliance-approve,MyWork-r".split(","));
+        Collections.addAll(realAuthoritiesForSponsor,
+                "Appliance-a".split(","));
+
+        RealUserDetails userSuserAdmin = new RealUserDetails(BigInteger.valueOf(6), "realaicy", "fakepassword",
+                "fakenickname", true, true, true, true,
+                grantedAuthoritiesForSuperAdmin, realAuthoritiesForSuperAdmin);
+        RealUserDetails userSecretaryWym = new RealUserDetails(BigInteger.valueOf(6), "wym", "fakepassword",
+                "fakenickname", true, true, true, true,
+                grantedAuthoritiesForSecretaryWym, realAuthoritiesForSecretaryWym);
+        RealUserDetails userDirector = new RealUserDetails(BigInteger.valueOf(6), "zhaoy", "fakepassword",
+                "fakenickname", true, true, true, true,
+                grantedAuthoritiesForDirector, realAuthoritiesForDirector);
+        RealUserDetails userSponsor = new RealUserDetails(BigInteger.valueOf(6), "sbztest1", "fakepassword",
+                "fakenickname", true, true, true, true,
+                grantedAuthoritiesForSponsor, realAuthoritiesForSponsor);
+
+
+        return new InMemoryUserDetailsManager(Arrays.asList(userSuserAdmin, userSecretaryWym, userDirector, userSponsor));
     }
 }

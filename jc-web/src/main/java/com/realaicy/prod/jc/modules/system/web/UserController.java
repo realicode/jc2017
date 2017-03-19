@@ -12,12 +12,13 @@ import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 import com.realaicy.prod.jc.modules.system.repos.UserRepos;
 import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.RoleService;
+import com.realaicy.prod.jc.modules.system.service.UserInfoService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import com.realaicy.prod.jc.uitl.NetUtil;
 import com.realaicy.prod.jc.uitl.RealCacheUtil;
-import org.apache.commons.beanutils.BeanUtils;
+import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.domain.Specifications;
@@ -30,7 +31,6 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -59,17 +59,20 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     private final PasswordEncoder bcryptEncoder;
     private final UserRepos userRepos;
     private UserService userService;
+    private UserInfoService userInfoService;
+
     private OrgService orgService;
     private RoleService roleService;
 
     @Autowired
     public UserController(UserService userService, RoleService roleService,
-                          PasswordEncoder bcryptEncoder, UserRepos userRepos, OrgService orgService) {
+                          PasswordEncoder bcryptEncoder, UserRepos userRepos, UserInfoService userInfoService, OrgService orgService) {
         super(userService, NAMEDIC, PAGE_URL, SHOW_ENTITY_URL, NEW_ENTITY_URL, EDIT_ENTITY_URL,
                 LIST_ENTITY_URL, SEARCH_ENTITY_URL, User.class, UserVO.class, EDIT_BIND_WHITE_LIST);
         this.roleService = roleService;
         this.bcryptEncoder = bcryptEncoder;
         this.userRepos = userRepos;
+        this.userInfoService = userInfoService;
         this.orgService = orgService;
         this.userService = userService;
     }
@@ -113,47 +116,32 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     }
 
-    /*@ResponseBody
-    @RequestMapping(method = RequestMethod.GET, value = "/list4select", produces = "application/json")
-    public Map<String, Object> findAllBySpecificationToSelect(
-            @RequestParam(value = "q") String search) {
-
-        Map<String, Object> info = new HashMap<>();
-
-        List<UserInfo> userInfos = userInfoService.findByUsernameContaining(search);
-        info.put("items", userInfos);
-        return info;
-    }*/
-
     @RequestMapping(value = "/user2role/{userid}", method = RequestMethod.GET)
     public String userToRole(@PathVariable("userid") final BigInteger userid,
                              Model model) {
 
-        /*User user = userService.findOne(userid);
-        User2RoleVO user2RoleVO = productVONode(userInfo.getUser().getRoles());
+        User user = userService.findOne(userid);
+        User2RoleVO user2RoleVO = productVONode(user.getRoles());
         model.addAttribute("user2role", binder.toJson(user2RoleVO));
         model.addAttribute("userid", userid);
-        model.addAttribute("user2roles2", binder.toJson(productVOS2Node(userInfo.getUser().getRoles())));*/
+        model.addAttribute("user2roles2", binder.toJson(productVOS2Node(user.getRoles())));
         return USER_TO_ROLE_URL;
     }
-
 
     @RequestMapping(value = "/u2rsave", method = RequestMethod.POST)
     @ResponseBody
     public String userToRoleSave(@RequestParam(value = "userid", required = false) BigInteger userid,
                                  @RequestParam(value = "user2role", required = false) String user2role) {
-/*
 
-        UserInfo userInfo = userService.findOne(userid);
-        User user = userInfo.getUser();
-
+        User user = userService.findOne(userid);
+        UserInfo userInfo = user.getUserInfo();
         String roleNames = "";
         user.getRoles().clear();
 
         if (user2role != null && !Objects.equals(user2role, "")) {
             for (String str : user2role.split(",")) {
                 Role roleTemp = roleService.findOne(new BigInteger(str));
-                user.getRoles().add(roleService.findOne(new BigInteger(str)));
+                user.getRoles().add(roleTemp);
                 roleNames += roleTemp.getName();
                 roleNames += ",";
             }
@@ -161,7 +149,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
             userInfoService.save(userInfo);
             userRepos.save(user);
         }
-*/
 
         return "ok";
     }
@@ -179,7 +166,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
                 if (roles.contains(role)) {
                     user2RoleVOS2Temp.setSelected(true);
                 }
-
                 user2RoleS2VOList.add(user2RoleVOS2Temp);
             }
         }
@@ -218,8 +204,10 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     @Override
     protected boolean canBeDelete(BigInteger id) {
-        return false;
+        return true;
     }
+
+
 
     @Override
     protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
@@ -250,39 +238,30 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         return voList;    }
 
     @Override
-    protected void extendShowEdit(User po, UserVO realmodel) {
-        /*realmodel.setOrgRegion(po.getOrg().getRegion());
-        realmodel.setOrgProvince(po.getOrg().getProvince());
-        realmodel.setOrgName(po.getOrg().getName());
-        realmodel.setOrgID(po.getOrg().getId().toString());*/
+    protected void extendShowEdit(User po, UserVO vo) {
+        vo.setEmail(po.getUserInfo().getEmail());
+        vo.setMobile(po.getUserInfo().getMobile());
+        vo.setWxUserID(po.getUserInfo().getWxUserID());
+        vo.setSex(po.getUserInfo().getSex());
+        vo.setOrgRegion(po.getOrg().getRegion());
+        vo.setOrgProvince(po.getOrg().getProvince());
+        vo.setOrgName(po.getOrg().getName());
+        vo.setOrgID(po.getOrg().getId().toString());
+        vo.setPortraitUrl(po.getUserInfo().getPortraitUrl());
+
+    }
+
+    @Override
+    protected void extendShowDetail(User po, UserVO vo) {
 
     }
 
     @Override
     protected void checkBeforeSaveNew(UserVO realmodel) throws SaveNewException {
 
-        if (userService.checkUsername(realmodel.getUsername()) != null) {
+        if (userService.checkUsername(realmodel.getUsername())) {
             throw new SaveNewException("error用户名称已存在!");
-
         }
-
-        realmodel.setPassword(bcryptEncoder.encode(realmodel.getPassword()));
-
-        User user = new User();
-        try {
-            BeanUtils.copyProperties(user, realmodel);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            throw new SaveNewException(e.getMessage());
-
-        }
-        user.setAccountNonExpired(true);
-        user.setCredentialsNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setEnabled(true);
-        //userSecRepos.save(user);
-        realmodel.setId(userRepos.save(user).getId());
-//        realmodel.setOrgCascadeID(getOrgService().findOne(realmodel.getOrgID()).getCascadeID());
     }
 
     @Override
@@ -291,14 +270,51 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         userInfo.setNickname(realmodel.getNickname());
         userInfo.setEmail(realmodel.getEmail());
         userInfo.setMobile(realmodel.getMobile());
-        userInfo.setNickname(realmodel.getNickname());
-        userInfo.setNickname(realmodel.getNickname());
-        userInfo.setNickname(realmodel.getNickname());
+        userInfo.setSex(realmodel.getSex());
+        userInfo.setWxUserID(realmodel.getWxUserID());
+        userInfo.setPortraitUrl(realmodel.getPortraitUrl());
+        //noinspection ConstantConditions
+        userInfo.setCreaterID(SpringSecurityUtil.getCurrentRealUserDetails().getId());
+        userInfo.setUpdaterID(userInfo.getCreaterID());
+        userInfo.setCreateTime(new Date());
+        userInfo.setUpdateTime(userInfo.getCreateTime());
 
+        po.setUserInfo(userInfo);
 
-//        Org org = orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID())));
-//        po.setOrg(org);
+        po.setOrg(orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID()))));
+        po.setPassword(bcryptEncoder.encode(realmodel.getPassword()));
+
+        po.setAccountNonExpired(true);
+        po.setCredentialsNonExpired(true);
+        po.setAccountNonLocked(true);
+        po.setEnabled(true);
+
+        userInfo.setUser(po);
+        userInfoService.save(userInfo);
     }
+
+    @Override
+    protected String[] getNOEditPropertyNames() {
+        return "password,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled,roles".split(",");
+    }
+    @Override
+    protected void extendSaveEdit(User po, UserVO realmodel) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickname(realmodel.getNickname());
+        userInfo.setEmail(realmodel.getEmail());
+        userInfo.setMobile(realmodel.getMobile());
+        userInfo.setSex(realmodel.getSex());
+        userInfo.setWxUserID(realmodel.getWxUserID());
+        userInfo.setPortraitUrl(realmodel.getPortraitUrl());
+        userInfo.setUpdaterID(userInfo.getCreaterID());
+        userInfo.setUpdateTime(userInfo.getCreateTime());
+
+        po.setUserInfo(userInfo);
+
+        po.setOrg(orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID()))));
+
+        userInfo.setUser(po);
+        userInfoService.save(userInfo);    }
 
     @Override
     protected Specification<User> getExtSpec(String str) {

@@ -73,6 +73,20 @@ public class UserInfo extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "ROLENAMES")
     private String rolenames;
+    /**
+     * 用户其他信息
+     */
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getWxUserID() {
         return wxUserID;

@@ -17,12 +17,11 @@ import org.springframework.stereotype.Component;
 public class WX implements JCEventHandler {
 
 
-    private final UserInfoService userInfoService;
     private final EventMsgTemRepos eventMsgTemRepos;
+    private  UserInfoService userInfoService;
 
     @Autowired
     public WX(UserInfoService userInfoService, EventMsgTemRepos eventMsgTemRepos) {
-        this.userInfoService = userInfoService;
         this.eventMsgTemRepos = eventMsgTemRepos;
     }
 

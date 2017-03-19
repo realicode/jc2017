@@ -44,6 +44,13 @@ public class StaticParams {
         public static final int DEFAULTSIZE = 1000;
     }
 
+    public static final class TODOWORK {
+        public static final String userSuserAdmin = "realaicy";
+        public static final String userSecretaryWym = "wym";
+        public static final String userDirector = "zhaoy";
+
+    }
+
     public static final class SPRINGPROFILES {
         public static final String PRODUCTION = "prod";
         public static final String DEVELOP = "develop";

@@ -1,20 +1,18 @@
 package com.realaicy.prod.jc;
 
+import com.realaicy.prod.jc.common.RealBaseMapper;
 import com.realaicy.prod.jc.common.properties.StudyProperties;
 import com.realaicy.prod.jc.lib.core.data.jpa.SimpleBaseJPARepository;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.security.SessionCounterListener;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.SizeOfPolicyConfiguration;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.web.htmlunit.webdriver.LocalHostWebConnectionHtmlUnitDriver;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
@@ -22,12 +20,12 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.interceptor.*;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import javax.servlet.http.HttpSessionListener;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,23 +33,11 @@ import java.util.Collections;
 /**
  * The type Jc web application.
  */
-@SpringBootApplication
-@EnableJpaRepositories(repositoryBaseClass = SimpleBaseJPARepository.class)
-@EnableAspectJAutoProxy
+@Configuration
 @EnableCaching
 @EnableConfigurationProperties({StudyProperties.class})
-@Profile({StaticParams.SPRINGPROFILES.TEST_UAT})
-public class JcUATTestContext extends CachingConfigurerSupport {
-
-    @Bean
-    public WebDriver webDriver() throws MalformedURLException {
-        return new ChromeDriver();
-    }
-
-    @Bean
-    public HttpSessionListener httpSessionListener() {
-        return new SessionCounterListener();
-    }
+@Profile({StaticParams.SPRINGPROFILES.PRODUCTION, StaticParams.SPRINGPROFILES.DEVELOP})
+public class CacheConfig extends CachingConfigurerSupport {
 
     @Override
     @Bean
@@ -79,6 +65,14 @@ public class JcUATTestContext extends CachingConfigurerSupport {
         config.addCache(wUsermenuCacheConfiguration);
 
 
+        CacheConfiguration wUserSecCacheConfiguration = new CacheConfiguration();
+        wUserSecCacheConfiguration.setName("UserSec");
+        wUserSecCacheConfiguration.setEternal(false);
+        wUserSecCacheConfiguration.setMaxBytesLocalHeap(StaticParams.REALCACHE.DEFAULTBYTES);
+        wUserSecCacheConfiguration.setMemoryStoreEvictionPolicy("LRU");
+        config.addCache(wUserSecCacheConfiguration);
+
+
         return new EhCacheCacheManager(net.sf.ehcache.CacheManager.newInstance(config));
     }
 
@@ -90,7 +84,7 @@ public class JcUATTestContext extends CachingConfigurerSupport {
 
     @Bean
     public CacheResolver runtimeCacheResolver() {
-        return new JcUATTestContext.RuntimeCacheResolver(cacheManager());
+        return new CacheConfig.RuntimeCacheResolver(cacheManager());
     }
 
     /**
@@ -116,7 +110,7 @@ public class JcUATTestContext extends CachingConfigurerSupport {
                 return Collections.singleton("wUsermenu");
             } else {
                 //Object[] objects = context.getArgs();
-                String cacheName = context.getTarget().getClass().getSimpleName();
+                String cacheName = context.getTarget().getClass().getSimpleName ();
                 return Collections.singleton(cacheName);
             }
 
@@ -145,14 +139,5 @@ public class JcUATTestContext extends CachingConfigurerSupport {
                 return result;
             }
         }
-    }
-
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        SpringApplication.run(JcUATTestContext.class, args);
     }
 }

@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.system.repos;
 
 import com.realaicy.prod.jc.lib.core.data.jpa.BaseJPARepository;
 import com.realaicy.prod.jc.modules.system.model.UserSec;
+import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigInteger;
 
@@ -12,6 +13,9 @@ import java.math.BigInteger;
  */
 public interface UserSecRepos extends BaseJPARepository<UserSec, BigInteger> {
 
+    //    @Cacheable(key = "#username",
+//            cacheResolver = "runtimeCacheResolver")
+    @Cacheable(key = "#p0", cacheNames = "UserSec")
     UserSec findByUsername(String username);
 
 }

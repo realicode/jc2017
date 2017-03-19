@@ -9,7 +9,7 @@
 
 
 
-    <form th:object="${realmodel}" method="POST" th:action="@{/system/userInfo/save}"
+    <form th:object="${realmodel}" method="POST" th:action="@{/system/user/save}"
           id="realentity" class="smart-form"
           xmlns:th="http://www.thymeleaf.org">
         <header>
@@ -66,7 +66,7 @@
                 </section>
                 <section class="col col-6">
                     <label class="select">
-                        <select name="sex">
+                        <select name="sex" id="sel_sex">
                             <option value="0" selected="" disabled="">用户性别</option>
                             <option value="1">男</option>
                             <option value="2">女</option>
@@ -86,9 +86,9 @@
                 <section class="col col-6">
                     <label class="input"> <i class="icon-prepend fa fa-weixin"></i>
                         <input type="text" name="wxUserID" th:field="*{wxUserID}" placeholder="微信"
-                               data-rule-required="true" data-msg-required="手机号码">
+                               data-rule-required="true" data-msg-required="请输入微信ID">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入手机号码</span></b>
+                                class="tooltip-realaicy">请输入微信ID</span></b>
                     </label>
                 </section>
             </div>
@@ -123,6 +123,8 @@
                     <input id="real_province" name="real_province" type="hidden" th:value="${realmodel.orgProvince}">
                     <input id="real_orgname" name="real_orgname" type="hidden" th:value="${realmodel.orgName}">
                     <input id="real_orgid" name="real_orgid" type="hidden" th:value="${realmodel.orgID}">
+                    <input id="real_sex" name="real_orgid" type="hidden" th:value="${realmodel.sex}">
+
 
                 </section>
             </div>
@@ -178,6 +180,9 @@
 
     });
 
+    function setSex() {
+        $("#real_sex").val($("#sel_sex").val())
+    }
     function laodOrg() {
 
         console.log("laodOrg");
@@ -301,6 +306,9 @@
 
         submitHandler: function (form) {
             if ($("#updateflag").val() == "new") {
+
+                console.log("suoshujigou :" +$("#sel_orgName").val());
+
                 $.ajax({
                     url: form.action,
                     type: form.method,
@@ -359,6 +367,14 @@
             $("#cmbProvince").val($("#real_province").val());
             $("#cmbProvince").trigger("change");
             $("#sel_orgName").val($("#real_orgid").val());
+
+            $("#sel_sex").val($("#real_sex").val());
+
+            $("#sel_sex").on("change", setSex);
+
+
+
+
         }
 
 

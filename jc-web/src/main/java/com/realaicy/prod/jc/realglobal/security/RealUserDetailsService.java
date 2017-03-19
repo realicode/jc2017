@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by realaicy on 16/7/14.
@@ -34,7 +36,10 @@ public class RealUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-
+        String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(userName);
+        userName = m.replaceAll("").trim();
         UserSec usersec;
         Collection<GrantedAuthority> grantedAuthorities;
 
@@ -43,6 +48,7 @@ public class RealUserDetailsService implements UserDetailsService {
         try {
             usersec = userService.getUserSecFromUsername(userName);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new UsernameNotFoundException("user select fail");
         }
         if (usersec == null) {

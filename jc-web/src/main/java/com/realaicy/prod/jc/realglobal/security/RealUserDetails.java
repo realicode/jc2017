@@ -17,7 +17,7 @@ public class RealUserDetails extends User {
     private final BigInteger id;
     private final HashSet<String> realAuthorities;
 
-    RealUserDetails(final BigInteger id, final String username, final String password,
+    public RealUserDetails(final BigInteger id, final String username, final String password,
                     final String nickName, boolean enabled,
                     boolean accountNonExpired, boolean credentialsNonExpired,
                     boolean accountNonLocked,

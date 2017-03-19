@@ -2,6 +2,8 @@ package com.realaicy.prod.jc.uitl;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.realaicy.prod.jc.modules.system.model.User;
+import com.realaicy.prod.jc.realglobal.security.RealUserDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,8 +23,4 @@ public class RealCacheUtil {
     public static final Table<String, String, Integer> IPADRESS_CANUSEFUNC_TABLE = HashBasedTable.create();
     public static final Table<String, String, LocalDateTime> SMS_CODE_MAP = HashBasedTable.create();
     public static final Map<String, String> EVENT_ACTION = new HashMap<>();
-
-
-
-
 }

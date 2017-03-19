@@ -12,8 +12,8 @@ import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -345,7 +345,6 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     @ResponseBody
-    @CacheEvict(cacheResolver = "runtimeCacheResolver", allEntries = true)
     public String saveModel(@Valid @ModelAttribute("realmodel") final V realmodel,
                             final BindingResult result, HttpSession httpSession,
                             @RequestParam(value = "updateflag", required = false) String updateFlag,
@@ -381,12 +380,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
                 //3.将额外的信息保存至PO对象
                 extendSave(po, realmodel);
 
-                service.save(po);
+                ID newEntityID = service.save(po).getId();
+                //4.保存成功之后的回掉函数
+                saveNewEntityCallBack(newEntityID);
+
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
-            //4.保存成功之后的回掉函数
-            saveNewEntityCallBack();
+
 
             return "ok";
 
@@ -397,11 +398,12 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
                 }
             }
 
-
             M po = service.findOne(updateID);
 
             String[] atemp = getNullPropertyNames(realmodel);
-            BeanUtils.copyProperties(realmodel, po, atemp);
+            String[] btemp = getNOEditPropertyNames();
+
+            BeanUtils.copyProperties(realmodel, po, ArrayUtils.addAll(atemp, btemp));
 
             po.setUpdateTime(new Date());
             //noinspection unchecked,ConstantConditions
@@ -416,8 +418,13 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         return null;
     }
 
+    protected String[] getNOEditPropertyNames() {
+        return null;
+    }
+
     /**
      * 删除
+     *
      * @param id 实体主键
      * @return 成功ok
      */
@@ -476,7 +483,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     protected abstract boolean canBeDelete(ID id);
 
 
-    protected void saveNewEntityCallBack() {
+    protected void saveNewEntityCallBack(ID id) {
 
     }
 

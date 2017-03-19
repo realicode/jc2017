@@ -2,6 +2,7 @@ package com.realaicy.prod.jc.test;
 
 import com.realaicy.prod.jc.JcUATTestContext;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public  class JcUATRootTest {
     private TestRestTemplate restTemplate;
 
     @Test
+    @Ignore
     public void aaa() throws Exception {
 
 

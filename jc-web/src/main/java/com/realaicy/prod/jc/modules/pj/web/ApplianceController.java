@@ -184,14 +184,11 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
     @Override
-    protected void saveNewEntityCallBack() {
+    protected void saveNewEntityCallBack(BigInteger id) {
 
-        ApplianceCreatedEvent applianceCreatedEvent = new ApplianceCreatedEvent();
+        ApplianceCreatedEvent applianceCreatedEvent = new ApplianceCreatedEvent(id);
         applianceCreatedEvent.setEventKey("Appliance_Creation");
         this.publisher.publishEvent(applianceCreatedEvent);
-        //通知秘书有新申请
-//        WxUtil.sentMsgToUser("尊敬的秘书长：有一个新的稽查项目申请，请登录系统查看", StaticParams.WX.NEWAPPLYSENTTO);
-
     }
 
     @Override
@@ -221,19 +218,14 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         }
     }
 
-   /* @Override
-    protected void extendSave(Appliance po, BigInteger updateID, BigInteger pid) {
+    @Override
+    protected void extendSave(Appliance po, ApplianceVO realmodel) {
         po.setStatus(Short.valueOf("1"));
         po.setUser(userService.findByUsername(SpringSecurityUtil.getNameOfCurrentPrincipal()));
-    }*/
+    }
 
     @Override
     protected Specification<Appliance> addSpec() {
-       /* if (SpringSecurityUtil.hasPrivilege("superop")
-                || SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-ack")
-                || SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-approve")) {
-            return null;
-        }*/
 
         if (SpringSecurityUtil.hasPrivilege("superop")) {
             return null;

@@ -33,12 +33,42 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/CacheConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/JcWebApplication.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/RealWebMvcConfig.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/RealWebSecurityConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/A.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/ApplianceCreatedEvent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/CreationEvent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/handler/WX.java">
           <value>
             <set />
           </value>
@@ -78,6 +108,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/me/model/MyMessage.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/me/model/MyWork.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/Application.java">
           <value>
             <set />
@@ -93,12 +133,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/service/ApplianceCreatedListener.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/service/ApplicationService.java">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/service/impl/DefaultApplicationService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/web/ApplianceController.java">
           <value>
             <set />
           </value>
@@ -114,6 +164,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/User.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/model/UserInfo.java">
           <value>
             <set />
           </value>
@@ -143,7 +198,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/repos/UserSecRepos.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/service/OrgService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/system/service/impl/DefaultMenuService.java">
           <value>
             <set />
           </value>
@@ -213,6 +278,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/security/RealUserDetails.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/security/RealUserDetailsService.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/web/CRUDWithVOController.java">
           <value>
             <set />
@@ -229,6 +304,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/uitl/WxUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/application-develop.properties">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/application.properties">
           <value>
             <set />
           </value>
@@ -313,6 +398,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/system/user/user2role.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/JcUATTestContext.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/JcWebTestContext.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/pj/service/ApplicationServiceTest.java">
           <value>
             <set />
@@ -328,6 +428,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/repos/UserSecReposTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/service/UserSecServiceTest.java">
           <value>
             <set />
@@ -338,7 +443,77 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/service/impl/DefaultUserServiceTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/web/OrgControllerTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/web/OrgControllerUATTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/web/OrgITTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/modules/system/web/OrgUATTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/realglobal/ValidatorTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/A.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/JcDataRootTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/JcITRootTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/JcUATRootTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/JcWebRootTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/SecurityTestConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/SeleniumTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/SeleniumTestExecutionListener.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/test/java/com/realaicy/prod/jc/test/UATConfig.java">
           <value>
             <set />
           </value>

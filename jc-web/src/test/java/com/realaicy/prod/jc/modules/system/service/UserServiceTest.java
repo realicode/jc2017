@@ -114,15 +114,18 @@ public class UserServiceTest extends JcServiceRootTest {
 
     @Test
     public void checkUsername() {
-
         assertThat(userService.checkUsername("realaicy")).isEqualTo(true);
-        assertThat(userService.checkUsername("aaa")).isEqualTo(false);
-
+        assertThat(userService.checkUsername("realtest1")).isEqualTo(false);
     }
 
 
     @Test
-    public void getAll(){
+    public void getUserSecFromUsername() {
+        assertThat(userService.getUserSecFromUsername("realaicy")).isNotNull();
+    }
+
+    @Test
+    public void getAll() {
         Sort sort = new Sort(Sort.Direction.ASC, "username");
         PageRequest pageRequest = new PageRequest(
                 0 / 10, 10, sort
