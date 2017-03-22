@@ -46,5 +46,8 @@ public interface UserRepos extends BaseJPARepository<User, BigInteger> {
     BigInteger findFirstNoDeletedUserIDByRoleIDNative(@Param("roleID") BigInteger roleID);
 
 
+    User findByUserinfoWxuserid(String wxUserid);
+
+
 
 }

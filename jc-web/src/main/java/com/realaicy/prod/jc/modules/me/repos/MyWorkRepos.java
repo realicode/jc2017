@@ -5,12 +5,16 @@ import com.realaicy.prod.jc.lib.core.data.jpa.BaseJPARepository;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by realaicy on 2016/3/13.
  * XXX
  */
 public interface MyWorkRepos extends BaseJPARepository<MyWork, BigInteger> {
+
+
+    MyWork findByWorkUri(String workUri);
 
     /**
      *根据用户名，查找该用户的待办工作数量
@@ -25,5 +29,7 @@ public interface MyWorkRepos extends BaseJPARepository<MyWork, BigInteger> {
      * @return 该用户的待办工作数量
      */
     Long countByUserId(BigInteger id);
+
+    List<MyWork> findByUserUsername(String username);
 
 }

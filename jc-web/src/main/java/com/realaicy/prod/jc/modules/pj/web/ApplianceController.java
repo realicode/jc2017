@@ -1,11 +1,16 @@
 package com.realaicy.prod.jc.modules.pj.web;
 
+import com.realaicy.prod.jc.common.event.ApplianceApproveEvent;
+import com.realaicy.prod.jc.common.event.ApplianceConfirmEvent;
 import com.realaicy.prod.jc.common.event.ApplianceCreatedEvent;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
+import com.realaicy.prod.jc.modules.me.model.MyWork;
+import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.pj.model.Appliance;
 import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
 import com.realaicy.prod.jc.modules.pj.service.ApplianceService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import javax.validation.Valid;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy;
@@ -30,6 +36,7 @@ import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFu
 public class ApplianceController extends CRUDWithVOController<Appliance, BigInteger, ApplianceVO> {
     private final UserService userService;
     private final ApplicationEventPublisher publisher;
+    private final MyWorkService myWorkService;
 
     private static Specification<Appliance> applicaitonByUserName(String userName) {
         return (userRoot, query, cb) -> cb.equal(userRoot.get("user").get("username"), userName);
@@ -51,19 +58,22 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @Autowired
     public ApplianceController(ApplianceService applianceService,
-                               UserService userService, ApplicationEventPublisher publisher) {
+                               UserService userService, ApplicationEventPublisher publisher, MyWorkService myWorkService) {
         super(applianceService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
                 NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
                 Appliance.class, ApplianceVO.class, BINDING_WHITE_LIST);
         this.applianceService = applianceService;
         this.userService = userService;
         this.publisher = publisher;
+        this.myWorkService = myWorkService;
     }
 
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String newModel(Model model,
                            @RequestParam(value = "applyid") Long applyid,
                            @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+
+
 
         if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "ack", "approve")) {
             return NO_AUTH_VIEW_NAME;
@@ -107,6 +117,19 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                 po.setStatus(Short.valueOf("2"));
             }
 
+            MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=affirm&applyid="
+                    + realmodel.getId());
+            if (myWork != null) {
+                //清理代办工作
+                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setProcessDate(new Date());
+                myWorkService.save(myWork);
+            }
+
+            ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
+            applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
+            this.publisher.publishEvent(applianceConfirmEvent);
+
         } else if (realactiontype.equals("approve")) {
             if (result.hasFieldErrors("approveRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
@@ -123,6 +146,19 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             } else if (btnType.equals("pass")) {
                 po.setStatus(Short.valueOf("3"));
             }
+
+            MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=approve&applyid="
+                    + realmodel.getId());
+            if (myWork != null) {
+                //清理代办工作
+                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setProcessDate(new Date());
+                myWorkService.save(myWork);
+            }
+
+            ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
+            applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
+            this.publisher.publishEvent(applianceApproveEvent);
         }
 
         applianceService.save(po);

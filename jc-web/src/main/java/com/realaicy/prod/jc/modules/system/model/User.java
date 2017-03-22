@@ -61,7 +61,7 @@ public class User extends CommonDeletableEntity<BigInteger> {
      */
     @OneToOne()
     @JoinColumn(name = "USERINFO_ID")
-    private UserInfo userInfo;
+    private UserInfo userinfo;
 
     public Org getOrg() {
         return org;
@@ -71,12 +71,12 @@ public class User extends CommonDeletableEntity<BigInteger> {
         this.org = org;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public UserInfo getUserinfo() {
+        return userinfo;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUserinfo(UserInfo userinfo) {
+        this.userinfo = userinfo;
     }
 
     public boolean isAccountNonExpired() {

@@ -119,7 +119,7 @@ public class LoginController {
         user.setUpdateTime(new Date());
         user.setNickname(realmodel.getUsername());
         user.setOrg(orgService.findOne(BigInteger.valueOf(117L))); // 为从网页注册成功的用户添加一个虚拟机构
-        user.setUserInfo(userInfoService.save(userInfo));
+        user.setUserinfo(userInfoService.save(userInfo));
         userService.save(user);
 
         return "ok";

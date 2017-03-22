@@ -134,7 +134,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
                                  @RequestParam(value = "user2role", required = false) String user2role) {
 
         User user = userService.findOne(userid);
-        UserInfo userInfo = user.getUserInfo();
+        UserInfo userInfo = user.getUserinfo();
         String roleNames = "";
         user.getRoles().clear();
 
@@ -239,15 +239,15 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
     @Override
     protected void extendShowEdit(User po, UserVO vo) {
-        vo.setEmail(po.getUserInfo().getEmail());
-        vo.setMobile(po.getUserInfo().getMobile());
-        vo.setWxUserID(po.getUserInfo().getWxUserID());
-        vo.setSex(po.getUserInfo().getSex());
+        vo.setEmail(po.getUserinfo().getEmail());
+        vo.setMobile(po.getUserinfo().getMobile());
+        vo.setWxUserID(po.getUserinfo().getWxuserid());
+        vo.setSex(po.getUserinfo().getSex());
         vo.setOrgRegion(po.getOrg().getRegion());
         vo.setOrgProvince(po.getOrg().getProvince());
         vo.setOrgName(po.getOrg().getName());
         vo.setOrgID(po.getOrg().getId().toString());
-        vo.setPortraitUrl(po.getUserInfo().getPortraitUrl());
+        vo.setPortraitUrl(po.getUserinfo().getPortraitUrl());
 
     }
 
@@ -271,7 +271,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         userInfo.setEmail(realmodel.getEmail());
         userInfo.setMobile(realmodel.getMobile());
         userInfo.setSex(realmodel.getSex());
-        userInfo.setWxUserID(realmodel.getWxUserID());
+        userInfo.setWxuserid(realmodel.getWxUserID());
         userInfo.setPortraitUrl(realmodel.getPortraitUrl());
         //noinspection ConstantConditions
         userInfo.setCreaterID(SpringSecurityUtil.getCurrentRealUserDetails().getId());
@@ -279,7 +279,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         userInfo.setCreateTime(new Date());
         userInfo.setUpdateTime(userInfo.getCreateTime());
 
-        po.setUserInfo(userInfo);
+        po.setUserinfo(userInfo);
 
         po.setOrg(orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID()))));
         po.setPassword(bcryptEncoder.encode(realmodel.getPassword()));
@@ -289,7 +289,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         po.setAccountNonLocked(true);
         po.setEnabled(true);
 
-        userInfo.setUser(po);
         userInfoService.save(userInfo);
     }
 
@@ -304,16 +303,15 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
         userInfo.setEmail(realmodel.getEmail());
         userInfo.setMobile(realmodel.getMobile());
         userInfo.setSex(realmodel.getSex());
-        userInfo.setWxUserID(realmodel.getWxUserID());
+        userInfo.setWxuserid(realmodel.getWxUserID());
         userInfo.setPortraitUrl(realmodel.getPortraitUrl());
         userInfo.setUpdaterID(userInfo.getCreaterID());
         userInfo.setUpdateTime(userInfo.getCreateTime());
 
-        po.setUserInfo(userInfo);
+        po.setUserinfo(userInfo);
 
         po.setOrg(orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID()))));
 
-        userInfo.setUser(po);
         userInfoService.save(userInfo);    }
 
     @Override

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -33,5 +34,15 @@ public class DefaultMyWorkService extends DefaultBaseServiceImpl<MyWork, BigInte
     @Override
     public Long countByUserId(BigInteger id) {
         return ((MyWorkRepos) baseRepository).countByUserId(id);
+    }
+
+    @Override
+    public MyWork findByWorkUri(String workUri) {
+        return ((MyWorkRepos) baseRepository).findByWorkUri(workUri);
+    }
+
+    @Override
+    public List<MyWork> findByUserUsername(String username) {
+        return ((MyWorkRepos) baseRepository).findByUserUsername(username);
     }
 }

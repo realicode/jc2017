@@ -40,14 +40,21 @@ public class StaticParams {
     public static final class REALCACHE {
         public static final String DEFAULTTOTALBYTES = "100M";
         public static final String DEFAULTBYTES = "10M";
+    }
 
-        public static final int DEFAULTSIZE = 1000;
+    public static final class MYWORKSTATUS {
+        public static final Short NOTSTART = Short.valueOf("1");
+        public static final Short DONE = Short.valueOf("3");
     }
 
     public static final class TODOWORK {
-        public static final String userSuserAdmin = "realaicy";
-        public static final String userSecretaryWym = "wym";
-        public static final String userDirector = "zhaoy";
+        public static final String USER_SUSER_ADMIN = "realaicy";
+        public static final String USER_SECRETARY_WYM = "wym";
+        public static final String USER_DIRECTOR = "zhaoy";
+        public static final String APPLY_CONFIRM_KEY = "Appliance_Confirm";
+        public static final String APPLY_CREATION_KEY = "Appliance_Creation";
+        public static final String APPLY_APPROVE_KEY = "Appliance_Approve";
+
 
     }
 

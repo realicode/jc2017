@@ -66,8 +66,9 @@
                                             <th>
                                                 <select id='real_filter_status' class="form-control">
                                                     <option value="0">所有状态</option>
-                                                    <option value="1">未开始</option>
-                                                    <option value="8">紧急</option>
+                                                    <option value="1" selected>未开始</option>
+                                                    <option value="2">进行中</option>
+                                                    <option value="3">已完成</option>
                                                 </select>
                                             </th>
                                             <th>
@@ -128,216 +129,231 @@
     var firstFlag = "true";
 
     $(document).ready(function () {
-        var realtable = $('#dt_basic_real').DataTable(
-            {
-                sScrollX: true,
+            var realtable = $('#dt_basic_real').DataTable(
+                {
+                    sScrollX: true,
 //                    sScrollY: "300px",
-                scrollCollapse: true,
-                bcrollCollapse: true,
-                "pagingType": "full_numbers",
-                "searching": false,
-                "language": realaicy_g_var_tableopt_lang,
-                // "dom": 'rt<"bottom"iflp<"clear">>',
-                "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
-                "t" +
-                "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
-                "autoWidth": true,
-                buttons: [
-                    {
-                        text: '<i class="glyphicon glyphicon-plus"></i> 新增',
-                        className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
-                                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                            realloadpage("/pj/apply/new");
-                        }
-                    },
-                    {
-                        text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
-                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            var rows_selected = realtable.column(0).checkboxes.selected();
-                            if (rows_selected.length <= 0 || rows_selected.length > 1) {
-                                var msg;
-                                if (rows_selected.length <= 0)
-                                    msg = "请选择一个待修改的申请";
-                                else
-                                    msg = "请求操作不支持多选，请选择一个并且只选择一个待修改申请！";
-                                realalert(msg);
-                            } else {
-
-                                $.each(rows_selected, function (index, rowId) {
-                                    realloadpage("/pj/apply/edit/" + rowId);
-                                });
+                    scrollCollapse: true,
+                    bcrollCollapse: true,
+                    "pagingType": "full_numbers",
+                    "searching": false,
+                    "language": realaicy_g_var_tableopt_lang,
+                    // "dom": 'rt<"bottom"iflp<"clear">>',
+                    "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+                    "autoWidth": true,
+                    buttons: [
+                        {
+                            text: '<i class="glyphicon glyphicon-plus"></i> 新增',
+                            className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                                realloadpage("/pj/apply/new");
                             }
-                        }
-                    },
-                    {
-                        text: '<i  class="fa fa-trash-o"></i> 删除',
-                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            real_g_del("申请", '/pj/apply/del/');
-                        }
-                    },
-                    {
-                        text: '<i  class="fa fa-trash-o"></i> 批量删除',
-                        className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            realalert("功能实现敬请期待。。。。。。");
-                        }
-                    },
-                    {
-                        text: '快速查询',
-                        className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            realtable.draw();
-                        }
-                    },
-                    {
-                        text: '自助复杂查询',
-                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                        action: function (e, dt, node, config) {
-                            realloadpage("/pj/apply/search");
-                        }
-                    },
-                    {
-                        text: '刷新数据',
-                        className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                        action: function (e, dt, node, config) {
+                        },
+                        {
+                            text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                var rows_selected = realtable.column(0).checkboxes.selected();
+                                if (rows_selected.length <= 0 || rows_selected.length > 1) {
+                                    var msg;
+                                    if (rows_selected.length <= 0)
+                                        msg = "请选择一个待修改的申请";
+                                    else
+                                        msg = "请求操作不支持多选，请选择一个并且只选择一个待修改申请！";
+                                    realalert(msg);
+                                } else {
 
-                            $("#real_filter_maintitle").val("");
-                            $("#real_filter_status").val("0");
-                            $("#real_filter_level").val("0");
-                            realtable.draw();
-                        }
-                    },
-                    'excel'
-                ],
-                ajax: {
-                    url: "/me/work/list4dt",
-                    type: "POST",
-                    'beforeSend': function (request) {
-                        var token = $("meta[name='_csrf']").attr("content");
-                        var header = $("meta[name='_csrf_header']").attr("content");
-                        request.setRequestHeader(header, token);
-                    },
-                    "data": function (d) {
-                        delete d.columns;
-                        var searchString = "";
-                       {
-                            var search_maintitle = $("#real_filter_maintitle").val();
-                            var search_status = $("#real_filter_status").val();
-                            var search_level = $("#real_filter_level").val();
-
-                            if (search_maintitle != undefined && search_maintitle != "") {
-                                searchString += "mainTitle~";
-                                searchString += search_maintitle;
+                                    $.each(rows_selected, function (index, rowId) {
+                                        realloadpage("/pj/apply/edit/" + rowId);
+                                    });
+                                }
                             }
-                            if (search_status != undefined && search_status !== "0") {
-                                searchString += ",status:";
-                                searchString += search_status;
-
+                        },
+                        {
+                            text: '<i  class="fa fa-trash-o"></i> 删除',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                real_g_del("申请", '/pj/apply/del/');
                             }
-                            if (search_level != undefined && search_level !== "0") {
-                                searchString += ",workLevel:";
-                                searchString += search_level;
+                        },
+                        {
+                            text: '<i  class="fa fa-trash-o"></i> 批量删除',
+                            className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realalert("功能实现敬请期待。。。。。。");
                             }
-                        }
+                        },
+                        {
+                            text: '快速查询',
+                            className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realtable.draw();
+                            }
+                        },
+                        {
+                            text: '自助复杂查询',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realloadpage("/pj/apply/search");
+                            }
+                        },
+                        {
+                            text: '刷新数据',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
 
-                        d.search = searchString;
-                        console.log("search: " + d.search);
+                                $("#real_filter_maintitle").val("");
+                                $("#real_filter_status").val("0");
+                                $("#real_filter_level").val("0");
+                                realtable.draw();
+                            }
+                        },
+                        'excel'
+                    ],
+                    ajax: {
+                        url: "/me/work/list4dt",
+                        type: "POST",
+                        'beforeSend': function (request) {
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            request.setRequestHeader(header, token);
+                        },
+                        "data": function (d) {
+                            delete d.columns;
+                            var searchString = "";
+                            {
+                                var search_maintitle = $("#real_filter_maintitle").val();
+                                var search_status = $("#real_filter_status").val();
+                                var search_level = $("#real_filter_level").val();
 
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.responseText.indexOf("invalid") == 0) {
-                            location = login_url;
-                        }
-                    }
-                },
-                processing: true,
-                serverSide: true,
-                columns: [
-                    {"data": "id", "width": "20px"},
-                    {
-                        "data": "workLevel", "width": "6%",
-                        "render": function (data, type, row) {
-                            if (data == 5) {
-                                return "<span class='label label-default'>" + "普通" + "</span>"
+                                if (search_maintitle != undefined && search_maintitle != "") {
+                                    searchString += "name~";
+                                    searchString += search_maintitle;
+                                }
+                                if (search_status != undefined && search_status !== "0") {
+                                    searchString += ",status:";
+                                    searchString += search_status;
 
-                            } else if ((data == 2)) {
-                                return "<span class='label label-primary'>" + "紧急" + "</span>"
+                                }
+                                if (search_level != undefined && search_level !== "0") {
+                                    searchString += ",workLevel:";
+                                    searchString += search_level;
+                                }
                             }
 
-                        }
-                    },
-                    {
-                        "data": "workStatus",
-                        "width": "10%",
-                        "render": function (data, type, row, meta) {
-                            if (data == 1) {
-                                return "<span class='label real_label_todo_notstart'>" + "未开始" + "</span>"
+                            d.search = searchString;
+                            console.log("search: " + d.search);
 
-                            } else if ((data == 2)) {
-                                return "<span class='label label-primary'>" + "紧急" + "</span>"
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.responseText.indexOf("invalid") == 0) {
+                                location = login_url;
                             }
+                        },
+
+                        complete: function () {
+                            $("[rel=popover-hover]").popover({trigger: "hover"});
+//                            $("[rel=popover]").popover();
+
                         }
                     },
-                    {"data": "mainTitle"},
-                    {"data": "deadline", "width": "10%"},
-                    {
-                        "data": "processDate", "width": "10%",
-                        "render": function (data, type, row) {
+                    processing: true,
+                    serverSide: true,
+                    columns: [
+                        {"data": "id", "width": "20px"},
+                        {
+                            "data": "workLevel", "width": "6%",
+                            "render": function (data, type, row) {
+                                if (data == 5) {
+                                    return "<span class='label label-default'>" + "普通" + "</span>"
+
+                                } else if ((data == 2)) {
+                                    return "<span class='label label-primary'>" + "紧急" + "</span>"
+                                }
+
+                            }
+                        },
+                        {
+                            "data": "workStatus",
+                            "width": "10%",
+                            "render": function (data, type, row, meta) {
+                                if (data == 1) {
+                                    return "<span class='label real_label_todo_notstart'>" + "未开始" + "</span>"
+
+                                } else if ((data == 3)) {
+                                    return "<span class='label label-primary'>" + "已完成" + "</span>"
+                                }
+                            }
+                        },
+                        {
+                            "data": "name",
+                            "width": "10%",
+                            "render": function (data, type, row, meta) {
+                                if (data.length > 10) {
+                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="名称" data-content="' + data + '" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
+                                } else {
+//                                    return '<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover" class="real_linktodetail">' + data + '</a>';
+                                    return '<a href="javascript:void(0);" class="real_linktodetail" >' + data + '</a>';
+                                }
+                            }
+                        },
+                        {"data": "deadline", "width": "10%"},
+                        {
+                            "data": "processDate", "width": "10%",
+                            "render": function (data, type, row) {
 //                        console.log(JSON.stringify(row));
 //                            console.log(row.trialAbstractURI);
-                            return data;
-                        }
-                    },
-
-                    {
-                        "data": null,
-                        "render": function (data, type, row) {
-
-                            if (row.applyStatus == "1" && $("#auth_affirm").val() == 1) {
-                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
+                                return data;
                             }
-                            if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
-                                return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
-                            }
-                            return "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>";
                         },
-                        "width": "10%"
-                    }
-                ],
-                columnDefs: [
-                    {
-                        searchable: false,
-                        orderable: false,
-//                                className: 'select-checkbox',
-                        targets: 0,
-                        'checkboxes': {
-                            'selectRow': false
+
+                        {
+                            "data": null,
+                            "render": function (data, type, row) {
+
+                                if (row.applyStatus == "1" && $("#auth_affirm").val() == 1) {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
+                                }
+                                if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
+                                }
+                                return "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>";
+                            },
+                            "width": "10%"
                         }
-                    },
-                    {'className': 'real_dt_center', 'targets': 1},
-                    {'className': 'real_dt_center', 'targets': 2},
-                    {'className': 'real_dt_center', 'targets': 4}],
+                    ],
+                    columnDefs: [
+                        {
+                            searchable: false,
+                            orderable: false,
+//                                className: 'select-checkbox',
+                            targets: 0,
+                            'checkboxes': {
+                                'selectRow': false
+                            }
+                        },
+                        {'className': 'real_dt_center', 'targets': 1},
+                        {'className': 'real_dt_center', 'targets': 2},
+                        {'className': 'real_dt_center', 'targets': 4}],
 
-                select: {
-                    style: 'multi'
+                    select: {
+                        style: 'multi'
 //                            selector: ':not(:last-child)'
-                },
-                "order": [[1, 'asc']]
+                    },
+                    "order": [[1, 'asc']]
+                });
+            $("#realbtn-search").on("click", function () {
+                console.log("cccccccccccccccccccccc");
             });
-        $("#realbtn-search").on("click", function () {
-            console.log("cccccccccccccccccccccc");
-        });
 
 
-        $("#real_filter_status").on("change", function () {
-            if (firstFlag == "false") {
+            $("#real_filter_status").on("change", function () {
                 realtable.draw();
-            }
-        });
+            });
 
             $('#dt_basic_real').on('click', '.real-test', function () {
                 var data = realtable.row($(this).parents('tr')).data();
@@ -345,31 +361,26 @@
 
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                realloadpage("/pj/apply/new");
+                realloadpage(data.workUri);
 //                $('nav ul li.open').css('border','10px solid red');
 //                realalert("功能实现敬请期待")ss
 
             });
 
-
             $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
-                //            console.log(JSON.stringify($()))
-                console.log(realtable.row($(this).parents('tr')).data().id);
+                console.log(JSON.stringify($()));
                 layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
 
             });
 
-    }//end of ready
+        }//end of ready
     );
 
     var pagefunction = function () {
 
 
-
-
     };
 
-    //    loadScript("realaicy/js/geo.js", pagefunction);
     pagefunction();
 
 

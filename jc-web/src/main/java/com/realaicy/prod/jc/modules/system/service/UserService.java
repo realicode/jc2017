@@ -3,7 +3,6 @@ package com.realaicy.prod.jc.modules.system.service;
 
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
 import com.realaicy.prod.jc.modules.system.model.User;
-import com.realaicy.prod.jc.modules.system.model.UserSec;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 
 import java.math.BigInteger;
@@ -15,8 +14,6 @@ import java.math.BigInteger;
 public interface UserService  extends BaseServiceWithVO<User, BigInteger, UserVO> {
 
     User findByUsername(String username);
-
-    UserSec getUserSecFromUsername(String username);
 
     Boolean checkUsername(String username);
 
@@ -33,5 +30,8 @@ public interface UserService  extends BaseServiceWithVO<User, BigInteger, UserVO
      * @return 如果有则返回true
      */
     Boolean ifHasNoDelUserByOrgID(BigInteger orgID);
+
+    User findByUserinfoWxuserid(String wxUserid);
+
 
 }

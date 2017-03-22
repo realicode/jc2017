@@ -315,13 +315,7 @@
                             "data": "name",
                             "width": "10%",
                             "render": function (data, type, row, meta) {
-//                            console.log(JSON.stringify(data));
                                 if (data.length > 10) {
-//                                    console.log("row:" + meta.row + "col:" + meta.col);
-//                                    href="javascript:void(0)" onclick="fn()"
-//                                <a href="javascript:void(0);" class="btn btn-default btn-lg" rel="popover-hover" data-placement="top" data-original-title="Popover activated on hover" data-content="Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum."><strong>On</strong> <i>Hover</i></a>
-
-
                                     return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="'+data+'" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
                                 } else {
 //                                    return '<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover" class="real_linktodetail">' + data + '</a>';
@@ -350,7 +344,7 @@
                                 if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
                                     return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
                                 }
-                                return "";
+                                return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
                             }
 
 //                            return "<a class='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + data + "</a>"

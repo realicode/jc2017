@@ -1,0 +1,126 @@
+<form th:object="${realmodel}" method="POST" th:action="@{/wx/pj/apply/confirm}"
+      id="realentity" xmlns:th="http://www.thymeleaf.org">
+    <div class="weui-cells__title">申办方信息</div>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">项目名称：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{name}" name="name" id="name">
+                <input id="realactiontype" name="realactiontype" type="hidden" th:value="${realactiontype}">
+                <input id="real_item_code" name="real_item_code" type="hidden" th:value="${real_item_code}">
+                <input id="btnType" name="btnType" type="hidden" th:value="${btnType}">
+
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">申请机构：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{orgName}" name="orgName" id="orgName">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">稽查中心：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{trialCenterNames}" name="trialCenterNames" id="trialCenterNames">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">方案摘要：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{trialAbstractName}" name="trialAbstractName" id="vs">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">项目简述：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <!--<input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{applyDescribe}" name="applyDescribe" id="applyDescribe">-->
+
+                <textarea class="weui-textarea" placeholder="请输入文本" rows="3" readonly="readonly"
+                          th:field="*{applyDescribe}" name="applyDescribe" id="applyDescribe"></textarea>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title">协作组秘书长确认信息</div>
+    <div class="weui-cells weui-cells_form" >
+        <div class="weui-cell" th:if="${realmodel.confirmorName}">
+            <div class="weui-cell__hd"><label class="weui-label">确认人：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{confirmorName}" name="confirmorName" id="confirmorName">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">确认意见：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input real_input_affirm" type="text" readonly="readonly"
+                       th:field="*{confirmRemark}" name="confirmRemark" id="confirmRemark">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">预报价：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input real_input_affirm" type="text" readonly="readonly"
+                       th:field="*{quotation}" name="quotation" id="quotation">
+            </div>
+        </div>
+    </div>
+
+    <div class="weui-cells__title" hidden="hidden" id="real_div_approve">协作组主任审批信息</div>
+    <div class="weui-cells weui-cells_form" th:if="${realmodel.approverName}">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">确认人：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input" type="text" readonly="readonly"
+                       th:field="*{approverName}" name="approverName" id="approverName">
+            </div>
+        </div>
+        <div class="weui-cell" th:if="${realmodel.approverName}">
+            <div class="weui-cell__hd"><label class="weui-label">确认意见：</label></div>
+            <div class="weui-cell__bd">
+                <!--<input class="weui-input" type="text" readonly="readonly" value="">-->
+                <input class="weui-input real_input_approve" type="text" readonly="readonly"
+                       th:field="*{approveRemark}" name="approveRemark" id="approveRemark">
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+<script>
+
+    $(document).ready(function () {
+        /* $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+         console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+         */
+
+        var realactiontypeTemp = $("#realactiontype").val();
+        if (realactiontypeTemp == "affirm") {
+            $("form input.real_input_affirm").removeAttr("readonly");
+        }
+
+        if (realactiontypeTemp == "approve") {
+            console.log("approve");
+            $('#real_div_approve').show();
+            $("form input.real_input_approve").removeAttr("readonly");
+        }
+
+    });
+
+</script>

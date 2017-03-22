@@ -59,8 +59,8 @@ public class IndexController {
         httpSession.setAttribute(StaticParams.SESSIONKEY.USERNAME,
                 ((RealUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
 
-        myWorkService.countByUserId((BigInteger) httpSession.getAttribute(StaticParams.SESSIONKEY.USERID));
-
+        String myworkcount = myWorkService.countByUserId((BigInteger) httpSession.getAttribute(StaticParams.SESSIONKEY.USERID)).toString();
+        model.addAttribute("myworkcount", myworkcount);
 
         return "index";
     }

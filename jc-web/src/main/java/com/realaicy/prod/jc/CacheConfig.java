@@ -1,17 +1,11 @@
 package com.realaicy.prod.jc;
 
-import com.realaicy.prod.jc.common.RealBaseMapper;
 import com.realaicy.prod.jc.common.properties.StudyProperties;
-import com.realaicy.prod.jc.lib.core.data.jpa.SimpleBaseJPARepository;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
-import com.realaicy.prod.jc.realglobal.security.SessionCounterListener;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.SizeOfPolicyConfiguration;
-import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -21,11 +15,8 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.interceptor.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.servlet.http.HttpSessionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -66,7 +57,7 @@ public class CacheConfig extends CachingConfigurerSupport {
 
 
         CacheConfiguration wUserSecCacheConfiguration = new CacheConfiguration();
-        wUserSecCacheConfiguration.setName("UserSec");
+        wUserSecCacheConfiguration.setName("User");
         wUserSecCacheConfiguration.setEternal(false);
         wUserSecCacheConfiguration.setMaxBytesLocalHeap(StaticParams.REALCACHE.DEFAULTBYTES);
         wUserSecCacheConfiguration.setMemoryStoreEvictionPolicy("LRU");

@@ -118,11 +118,11 @@ public class UserServiceTest extends JcServiceRootTest {
         assertThat(userService.checkUsername("realtest1")).isEqualTo(false);
     }
 
-
     @Test
-    public void getUserSecFromUsername() {
-        assertThat(userService.getUserSecFromUsername("realaicy")).isNotNull();
+    public void findOneTest() {
+        assertThat(userService.findOne(BigInteger.valueOf(6L))).isNotNull();
     }
+
 
     @Test
     public void getAll() {

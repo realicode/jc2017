@@ -1,7 +1,7 @@
 package com.realaicy.prod.jc.realglobal.security;
 
 import com.realaicy.prod.jc.modules.system.model.Role;
-import com.realaicy.prod.jc.modules.system.model.UserSec;
+import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,32 +35,33 @@ public class RealUserDetailsService implements UserDetailsService {
 
     @Transactional(readOnly = true)
     @Override
+//    @Cacheable(key = "#userName", cacheNames = "User")
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
         Pattern p = Pattern.compile(regEx);
         Matcher m = p.matcher(userName);
         userName = m.replaceAll("").trim();
-        UserSec usersec;
+        User user;
         Collection<GrantedAuthority> grantedAuthorities;
 
         HashSet<String> realAuthorities = new HashSet<>();
 
         try {
-            usersec = userService.getUserSecFromUsername(userName);
+            user = userService.findByUsername(userName);
         } catch (Exception e) {
             e.printStackTrace();
             throw new UsernameNotFoundException("user select fail");
         }
-        if (usersec == null) {
+        if (user == null) {
             throw new UsernameNotFoundException("no user found");
         } else {
             try {
 
-                if (usersec.getRoles() == null || usersec.getRoles().size() < 1) {
+                if (user.getRoles() == null || user.getRoles().size() < 1) {
                     grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("");
                 } else {
                     StringBuilder commaBuilder = new StringBuilder();
-                    for (Role role : usersec.getRoles()) {
+                    for (Role role : user.getRoles()) {
                         commaBuilder.append(role.getName()).append(",");
                         if (role.getRealauthorities() != null && !role.getRealauthorities().equals("")) {
                             Collections.addAll(realAuthorities, role.getRealauthorities().split(","));
@@ -71,9 +72,9 @@ public class RealUserDetailsService implements UserDetailsService {
                     grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
                 }
 
-                return new RealUserDetails(usersec.getId(), usersec.getUsername(), usersec.getPassword(),
-                        "fake", usersec.isEnabled(), usersec.isAccountNonExpired(),
-                        usersec.isCredentialsNonExpired(), usersec.isAccountNonLocked(),
+                return new RealUserDetails(user.getId(), user.getUsername(), user.getPassword(),
+                        "fake", user.isEnabled(), user.isAccountNonExpired(),
+                        user.isCredentialsNonExpired(), user.isAccountNonLocked(),
                         grantedAuthorities, realAuthorities);
             } catch (Exception e) {
                 e.printStackTrace();

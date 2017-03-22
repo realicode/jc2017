@@ -23,8 +23,7 @@ public class ApplianceVO extends BaseVO<BigInteger> {
      * 申请名称
      */
     @NotEmpty
-    @Size(min = 5, max = 200)
-    @Pattern(regexp = "^[a-zA-Z0-9\\u4E00-\\u9FA5]+$", message = "申请名称格式不正确")
+    @Size(min = 5, max = 300)
     private String name;
 
     /**

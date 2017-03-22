@@ -54,7 +54,7 @@ public class UserInfo extends CommonDeletableEntity<BigInteger> {
      * 用户微信ID
      */
     @Column(name = "WX_USERID")
-    private String wxUserID;
+    private String wxuserid;
 
     /**
      * 用户性别
@@ -73,27 +73,13 @@ public class UserInfo extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "ROLENAMES")
     private String rolenames;
-    /**
-     * 用户其他信息
-     */
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userInfo")
-    @JoinColumn(name = "USER_ID")
-    private User user;
 
-    public User getUser() {
-        return user;
+    public String getWxuserid() {
+        return wxuserid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getWxUserID() {
-        return wxUserID;
-    }
-
-    public void setWxUserID(String wxUserID) {
-        this.wxUserID = wxUserID;
+    public void setWxuserid(String wxuserid) {
+        this.wxuserid = wxuserid;
     }
 
     public String getMobile() {

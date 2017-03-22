@@ -24,13 +24,10 @@ public class WxUtil {
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     private static String wxToken = "";
-    private static LocalDateTime wxTokenExpire;
+    private static LocalDateTime wxTokenExpire = LocalDateTime.now().minusDays(1);
 
-    public static void setWxTokenExpire(LocalDateTime wxTokenExpire) {
-        WxUtil.wxTokenExpire = wxTokenExpire;
-    }
 
-    public static String getWxToken() {
+    private static String getWxToken() {
 
         if (LocalDateTime.now().isAfter(wxTokenExpire)) {
             RealTK realTK = getRestTemplate().getForObject(
@@ -46,10 +43,6 @@ public class WxUtil {
         return wxToken;
     }
 
-    public static void setWxToken(String wxToken) {
-        WxUtil.wxToken = wxToken;
-    }
-
     public static UserInfoResponse getUserInfoFromCode(String code) {
         return WxUtil.getRestTemplate().getForObject(
                 GETUSERINFOURI + WxUtil.getWxToken() + "&code=" + code + "&agentid=2",
@@ -57,7 +50,7 @@ public class WxUtil {
     }
 
 
-    public static RestTemplate getRestTemplate() {
+    private static RestTemplate getRestTemplate() {
         return REST_TEMPLATE;
     }
 
@@ -72,7 +65,8 @@ public class WxUtil {
         wxMsg.setTouser(userID);
         wxMsg.setText(content);
 
-        WxMsgResp wxMsgResp = getRestTemplate().postForObject(SENTMSGURI + "access_token=" + wxToken, wxMsg, WxMsgResp.class);
+        WxMsgResp wxMsgResp = getRestTemplate().postForObject(SENTMSGURI + "access_token=" + getWxToken(), wxMsg, WxMsgResp.class);
+        System.out.println(wxMsgResp);
 
     }
 

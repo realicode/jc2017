@@ -108,11 +108,11 @@ public class UserVO extends BaseVO<BigInteger> {
         this.id = user.getId();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
-        this.email = user.getUserInfo().getEmail();
+        this.email = user.getUserinfo().getEmail();
         this.orgRegion = user.getOrg().getRegion();
         this.orgProvince = user.getOrg().getProvince();
         this.orgName = user.getOrg().getName();
-        this.mobile = user.getUserInfo().getMobile();
+        this.mobile = user.getUserinfo().getMobile();
         this.createTime = user.getCreateTime();
 
     }
