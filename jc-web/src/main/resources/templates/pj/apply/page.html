@@ -57,12 +57,21 @@
                                             <th>
                                             </th>
                                             <th>
-                                                <select id='real_filter_status' class="form-control">
-                                                    <option value="0">过滤状态</option>
+                                                <select id='real_filter_status' class="form-control" title="">
+                                                    <option value="0">全部状态</option>
                                                     <option value="1">待确认</option>
                                                     <option value="2">已确认待审核</option>
+                                                    <option value="3">已审核待提供合同</option>
+                                                    <option value="4">已审核待确认合同并提交方案</option>
+                                                    <option value="5">已提交方案待最终审核</option>
+                                                    <option value="6">通过审核</option>
+
                                                     <option value="4101">未通过确认</option>
                                                     <option value="4201">未通过审批</option>
+                                                    <option value="4301">客户确认合同异常</option>
+                                                    <option value="4401">方案异常</option>
+                                                    <option value="4501">审核未通过</option>
+
                                                 </select>
                                             </th>
                                             <th>
@@ -122,10 +131,13 @@
 
 
 <div>
+    <!--/*@thymesVar id="real_auth_approve" type=""*/-->
     <input id="auth_approve" name="auth_approve" type="hidden" th:value="${real_auth_approve}"
            xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="real_auth_affirm" type=""*/-->
     <input id="auth_affirm" name="auth_affirm" type="hidden" th:value="${real_auth_affirm}"
            xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="real_firstfilter" type=""*/-->
     <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
            xmlns:th="http://www.thymeleaf.org">
 </div>
@@ -137,8 +149,7 @@
     $(document).ready(function () {
 
 
-
-        var realtable = $('#dt_basic_real').DataTable(
+            var realtable = $('#dt_basic_real').DataTable(
                 {
                     sScrollX: true,
 //                    sScrollY: "300px",
@@ -156,7 +167,7 @@
                         {
                             text: '<i class="glyphicon glyphicon-plus"></i> 新增',
                             className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
                                 realloadpage("/pj/apply/new");
@@ -165,7 +176,7 @@
                         {
                             text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 var rows_selected = realtable.column(0).checkboxes.selected();
                                 if (rows_selected.length <= 0 || rows_selected.length > 1) {
                                     var msg;
@@ -176,7 +187,7 @@
                                     realalert(msg);
                                 } else {
                                     $.each(rows_selected, function (index, rowId) {
-                                        realloadpage("/pj/apply/edit/" + rowId);
+                                        realalert("本项已经进入后续流程，暂时无法编辑");
                                     });
                                 }
                             }
@@ -184,43 +195,40 @@
                         {
                             text: '<i  class="fa fa-trash-o"></i> 删除',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
-                                real_g_del("申请", '/pj/apply/del/');
+                            action: function () {
+                                realalert("本项已经进入后续流程，暂时无法删除");
                             }
                         },
                         {
                             text: '<i  class="fa fa-trash-o"></i> 批量删除',
                             className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realalert("功能实现敬请期待。。。。。。");
                             }
                         },
                         {
                             text: '快速查询',
                             className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realtable.draw();
                             }
                         },
                         {
                             text: '自助复杂查询',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realloadpage("/pj/apply/search");
                             }
                         },
                         {
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
-
-
+                            action: function () {
                                 $("#real_filter_name").val("");
                                 $("#real_filter_orgname").val("");
                                 $("#real_filter_centername").val("");
                                 $("#real_filter_trialabstractname").val("");
                                 $("#real_filter_status").val("0");
-
                                 realtable.draw();
                             }
                         },
@@ -237,10 +245,12 @@
                         "data": function (d) {
                             delete d.columns;
                             var searchString = "";
-                            if (firstFlag == "true") {
-                                searchString = $("#firstfilter").val();
+                            var firstfilterStr = $("#firstfilter").val();
+                            var realfirststatusStr  = $("#real_filter_status").val();
+                            if (firstFlag === "true" && firstfilterStr.split(":")[1] !== "0") {
+                                searchString = firstfilterStr;
 //                            console.log($("#firstfilter").val().split(":")[1]);
-                                $("#real_filter_status").val($("#firstfilter").val().split(":")[1]);
+                                $("#real_filter_status").val(firstfilterStr.split(":")[1]);
                                 firstFlag = "false";
                             } else {
 
@@ -250,23 +260,23 @@
                                 var search_trialabstractname = $("#real_filter_trialabstractname").val();
 
 
-                                if (search_name != undefined && search_name != "") {
+                                if (search_name !== undefined && search_name !== "") {
                                     searchString += "name~";
                                     searchString += search_name + ",";
                                 }
-                                if (search_orgname != undefined && search_orgname != "") {
+                                if (search_orgname !== undefined && search_orgname !== "") {
                                     searchString += "orgName~";
                                     searchString += search_orgname + ",";
                                 }
-                                if (search_centername != undefined && search_centername != "") {
+                                if (search_centername !== undefined && search_centername !== "") {
                                     searchString += "trialCenterNames~";
                                     searchString += search_centername + ",";
                                 }
-                                if (search_trialabstractname != undefined && search_trialabstractname != "") {
+                                if (search_trialabstractname !== undefined && search_trialabstractname !== "") {
                                     searchString += "trialAbstractName~";
                                     searchString += search_trialabstractname;
                                 }
-                                if ($("#real_filter_status").val() != undefined && $("#real_filter_status").val() !== "0") {
+                                if (realfirststatusStr !== undefined && realfirststatusStr !== "0") {
                                     searchString += ",status:";
                                     searchString += $("#real_filter_status").val();
                                 }
@@ -278,13 +288,13 @@
                             console.log("search: " + d.search);
 
                         },
-                        error: function (xhr, status, error) {
-                            if (xhr.responseText.indexOf("invalid") == 0) {
-                                location = login_url;
+                        error: function (xhr) {
+                            if (xhr.responseText.indexOf("invalid") === 0) {
+                                window.location = login_url;
                             }
                         },
-                        complete: function(){
-                            $("[rel=popover-hover]").popover({ trigger: "hover" });
+                        complete: function () {
+                            $("[rel=popover-hover]").popover({trigger: "hover"});
 //                            $("[rel=popover]").popover();
 
                         }
@@ -295,17 +305,17 @@
                         {"data": "id", "width": "20px"},
                         {
                             "data": "applyStatus", "width": "6%",
-                            "render": function (data, type, row) {
-                                if (data == 1) {
+                            "render": function (data) {
+                                if (data === "1") {
                                     return "<span class='label label-default'>" + "待确认" + "</span>"
 
-                                } else if ((data == 2)) {
+                                } else if ((data === "2")) {
                                     return "<span class='label label-primary'>" + "已确认待审核" + "</span>"
-                                }else if ((data == 3)) {
+                                } else if ((data === "3")) {
                                     return "<span class='label label-info'>" + "已审核待发送合同" + "</span>"
-                                }else if ((data == 4101)) {
+                                } else if ((data === "4101")) {
                                     return "<span class='label label-danger'>" + "未通过确认" + "</span>"
-                                }else if ((data == 4201)) {
+                                } else if ((data === "4201")) {
                                     return "<span class='label label-danger'>" + "未通过审批" + "</span>"
                                 }
 
@@ -314,9 +324,9 @@
                         {
                             "data": "name",
                             "width": "10%",
-                            "render": function (data, type, row, meta) {
+                            "render": function (data, type, row) {
                                 if (data.length > 10) {
-                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="'+data+'" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
+                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="' + data + '" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
                                 } else {
 //                                    return '<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover" class="real_linktodetail">' + data + '</a>';
                                     return '<a href="javascript:void(0);" class="real_linktodetail" >' + data + '</a>';
@@ -338,10 +348,10 @@
                             "data": null,
                             "render": function (data, type, row) {
 
-                                if (row.applyStatus == "1" && $("#auth_affirm").val() == 1) {
+                                if (row.applyStatus === "1" && $("#auth_affirm").val() === "1") {
                                     return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
                                 }
-                                if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
+                                if (row.applyStatus === "2" && $("#auth_approve").val() === "1") {
                                     return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
                                 }
                                 return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
@@ -375,14 +385,14 @@
 
 
             $("#real_filter_status").on("change", function () {
-                if (firstFlag == "false") {
+                if (firstFlag === "false") {
                     realtable.draw();
                 }
             });
 
-        /**
-         * 确认按钮
-         */
+            /**
+             * 确认按钮
+             */
             $('#dt_basic_real').on('click', '.real_apply_affirm', function () {
 
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
@@ -390,9 +400,9 @@
                 realloadpage("/pj/apply/confirm?realactiontype=affirm&applyid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
-        /**
-         * 审核按钮
-         */
+            /**
+             * 审核按钮
+             */
             $('#dt_basic_real').on('click', '.real_apply_approve', function () {
 
                 $("#real_controlpanel_span").text("新稽查项目申请——审批控制台");
@@ -401,13 +411,13 @@
                 realloadpage("/pj/apply/confirm?realactiontype=approve&applyid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
-            $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
+            /*$('#dt_basic_real').on('mouseover', '.real_long_text', function () {
                 console.log(JSON.stringify($()));
                 layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
 
-            });
+            });*/
 
-            $('#dt_basic_real').on('click', '.real_linktodetail', function () {
+        $('#dt_basic_real').on('click', '.real_linktodetail', function () {
                 console.log("real_linktodetail");
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
@@ -419,12 +429,11 @@
 
     var pagefunction = function () {
 
-
-        $('#dt_basic_real').on('click', '.real-test', function () {
+      /*  $('#dt_basic_real').on('click', '.real-test', function () {
             var data = realtable.row($(this).parents('tr')).data();
             console.log("data: " + data.id);
             realalert("功能实现敬请期待");
-        });
+        });*/
     };
 
     //    loadScript("realaicy/js/geo.js", pagefunction);

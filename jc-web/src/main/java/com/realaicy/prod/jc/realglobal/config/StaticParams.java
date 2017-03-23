@@ -42,9 +42,17 @@ public class StaticParams {
         public static final String DEFAULTBYTES = "10M";
     }
 
-    public static final class MYWORKSTATUS {
-        public static final Short NOTSTART = Short.valueOf("1");
-        public static final Short DONE = Short.valueOf("3");
+    public static final class REALSTATUS {
+        public static final Short MYWORK_NOTSTART = Short.valueOf("1");
+        public static final Short MYWORK_DONE = Short.valueOf("3");
+
+        public static final Short PJAPPLY_INI = Short.valueOf("1");
+        public static final Short PJAPPLY_ERR_IN_INI = Short.valueOf("4101");
+        public static final Short PJAPPLY_CONFIRMED = Short.valueOf("2");
+        public static final Short PJAPPLY_ERR_IN_CONFIRM = Short.valueOf("4201");
+        public static final Short PJAPPLY_APPROVED = Short.valueOf("3");
+
+
     }
 
     public static final class TODOWORK {
@@ -54,9 +62,18 @@ public class StaticParams {
         public static final String APPLY_CONFIRM_KEY = "Appliance_Confirm";
         public static final String APPLY_CREATION_KEY = "Appliance_Creation";
         public static final String APPLY_APPROVE_KEY = "Appliance_Approve";
-
-
     }
+
+    public static final class BTNTYPE {
+        public static final String PASS = "pass";
+        public static final String DENY = "deny";
+    }
+
+    public static final class REALACTIONTYPE {
+        public static final String PJ_AFFIRM = "affirm";
+        public static final String PJ_APPROVE = "approve";
+    }
+
 
     public static final class SPRINGPROFILES {
         public static final String PRODUCTION = "prod";

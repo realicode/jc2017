@@ -260,10 +260,9 @@
         src="../static/realres/lib/sa/js/app.js"></script>
 <script>
     $(document).ready(function(){
-
         console.log($("#myworkcount").val());
         $(".real-work").children(":first").html(function(i, v) {
-            return v.replace("3", $("#myworkcount").val());
+            return v.replace("0", $("#myworkcount").val());
         });
     });
 </script>

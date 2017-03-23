@@ -54,6 +54,8 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private static final String APPLY_CONFIRM_URL = "pj/apply/confirm";
 
     private static final String AUTH_PREFIX = "Appliance";
+    private static final String AUTH_KEY_ACK = "ack";
+    private static final String AUTH_KEY_APPROVE = "approve";
 
 
     @Autowired
@@ -74,17 +76,14 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                            @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
 
-
-        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "ack", "approve")) {
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK, AUTH_KEY_APPROVE)) {
             return NO_AUTH_VIEW_NAME;
         }
         ApplianceVO applianceVO = new ApplianceVO(applianceService.findOne(BigInteger.valueOf(applyid)));
         model.addAttribute("realmodel", applianceVO);
         model.addAttribute("realactiontype", realactiontype);
         model.addAttribute("affirmType", "");
-
         model.addAttribute("updateflag", "editedit");
-
         return APPLY_CONFIRM_URL;
     }
 
@@ -95,14 +94,15 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                             HttpSession httpSession,
                             @RequestParam(value = "btnType") String btnType,
                             @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+
         Appliance po = null;
 
-        if (realactiontype.equals("affirm")) {
+        if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_AFFIRM)) {
             if (result.hasFieldErrors("quotation") || result.hasFieldErrors("confirmRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
             }
 
-            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "ack")) {
+            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK)) {
                 return NO_AUTH_VIEW_NAME;
             }
 
@@ -111,47 +111,48 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             po.setConfirmRemark(realmodel.getConfirmRemark());
             po.setConfirmor(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
 
-            if (btnType.equals("nopass")) {
-                po.setStatus(Short.valueOf("4101"));
-            } else if (btnType.equals("pass")) {
-                po.setStatus(Short.valueOf("2"));
+            if (btnType.equals(StaticParams.BTNTYPE.DENY)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_ERR_IN_INI);
+            } else if (btnType.equals(StaticParams.BTNTYPE.PASS)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_CONFIRMED);
             }
 
             MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=affirm&applyid="
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
                 myWork.setProcessDate(new Date());
                 myWorkService.save(myWork);
             }
 
             ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
             applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
+            applianceConfirmEvent.setConfirmType(btnType);
             this.publisher.publishEvent(applianceConfirmEvent);
 
-        } else if (realactiontype.equals("approve")) {
+        } else if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_APPROVE)) {
             if (result.hasFieldErrors("approveRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
             }
 
-            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "approve")) {
+            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE)) {
                 return NO_AUTH_VIEW_NAME;
             }
             po = applianceService.findOne(realmodel.getId());
             po.setApproveRemark(realmodel.getApproveRemark());
             po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
-            if (btnType.equals("nopass")) {
-                po.setStatus(Short.valueOf("4201"));
-            } else if (btnType.equals("pass")) {
-                po.setStatus(Short.valueOf("3"));
+            if (btnType.equals(StaticParams.BTNTYPE.DENY)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_ERR_IN_CONFIRM);
+            } else if (btnType.equals(StaticParams.BTNTYPE.PASS)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_APPROVED);
             }
 
             MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=approve&applyid="
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
                 myWork.setProcessDate(new Date());
                 myWorkService.save(myWork);
             }
@@ -159,37 +160,6 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
             applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
             this.publisher.publishEvent(applianceApproveEvent);
-        }
-
-        applianceService.save(po);
-
-        return "ok";
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/approve", method = RequestMethod.POST)
-    public String doApprove(@Valid @ModelAttribute("realmodel") final ApplianceVO realmodel,
-                            final BindingResult result,
-                            HttpSession httpSession,
-                            @RequestParam(value = "approveType") String btnType) throws InstantiationException {
-
-        if (result.hasFieldErrors("approveRemark")) {
-            return "error绑定异常（非页面提交，你是机器人？）";
-        }
-
-        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "approve")) {
-            return NO_AUTH_VIEW_NAME;
-        }
-
-        Appliance po = applianceService.findOne(realmodel.getId());
-
-        po.setApproveRemark(realmodel.getConfirmRemark());
-        po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
-
-        if (btnType.equals("nopass")) {
-            po.setStatus(Short.valueOf("4201"));
-        } else if (btnType.equals("pass")) {
-            po.setStatus(Short.valueOf("3"));
         }
 
         applianceService.save(po);
@@ -243,20 +213,23 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @Override
     protected void addAttrToModel(Model model) {
-        if (SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-approve")) {
+
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE)) {
             model.addAttribute("real_auth_approve", "1");
             model.addAttribute("real_firstfilter", "status:2");
 
-        } else if (SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-ack")) {
+        } else if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK)) {
             model.addAttribute("real_auth_affirm", "1");
             model.addAttribute("real_firstfilter", "status:1");
 
+        } else {
+            model.addAttribute("real_firstfilter", "status:0");
         }
     }
 
     @Override
     protected void extendSave(Appliance po, ApplianceVO realmodel) {
-        po.setStatus(Short.valueOf("1"));
+        po.setStatus(StaticParams.REALSTATUS.PJAPPLY_INI);
         po.setUser(userService.findByUsername(SpringSecurityUtil.getNameOfCurrentPrincipal()));
     }
 
@@ -266,9 +239,12 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         if (SpringSecurityUtil.hasPrivilege("superop")) {
             return null;
         }
-        if (SpringSecurityUtil.hasAnyPrivilege(Appliance.class.getSimpleName() + "-f",
+       /* if (SpringSecurityUtil.hasAnyPrivilege(Appliance.class.getSimpleName() + "-f",
                 Appliance.class.getSimpleName() + "-ack",
                 Appliance.class.getSimpleName() + "-approve")) {
+            return null;
+        }*/
+        if (SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE, AUTH_KEY_ACK)) {
             return null;
         }
         return applicaitonByUserName(SpringSecurityUtil.getCurrentRealUserDetails().getUsername());
@@ -279,3 +255,34 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         return true;
     }
 }
+
+/*    @ResponseBody
+    @RequestMapping(value = "/approve", method = RequestMethod.POST)
+    public String doApprove(@Valid @ModelAttribute("realmodel") final ApplianceVO realmodel,
+                            final BindingResult result,
+                            HttpSession httpSession,
+                            @RequestParam(value = "approveType") String btnType) throws InstantiationException {
+
+        if (result.hasFieldErrors("approveRemark")) {
+            return "error绑定异常（非页面提交，你是机器人？）";
+        }
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "approve")) {
+            return NO_AUTH_VIEW_NAME;
+        }
+
+        Appliance po = applianceService.findOne(realmodel.getId());
+
+        po.setApproveRemark(realmodel.getConfirmRemark());
+        po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
+
+        if (btnType.equals("nopass")) {
+            po.setStatus(Short.valueOf("4201"));
+        } else if (btnType.equals("pass")) {
+            po.setStatus(Short.valueOf("3"));
+        }
+
+        applianceService.save(po);
+
+        return "ok";
+    }*/

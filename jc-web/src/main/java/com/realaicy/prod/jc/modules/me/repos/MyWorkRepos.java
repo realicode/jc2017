@@ -17,19 +17,26 @@ public interface MyWorkRepos extends BaseJPARepository<MyWork, BigInteger> {
     MyWork findByWorkUri(String workUri);
 
     /**
-     *根据用户名，查找该用户的待办工作数量
+     * 根据用户名，查找该用户的待办工作数量
+     *
      * @param username 用户名
      * @return 该用户的待办工作数量
      */
     Long countByUserUsername(String username);
 
     /**
-     *根据用户ID，查找该用户的待办工作数量
-     * @param id 该用户的ID
+     * 根据用户ID，查找该用户的待办工作数量
+     *
+     * @param userID 该用户的ID
      * @return 该用户的待办工作数量
      */
-    Long countByUserId(BigInteger id);
+    Long countByUserIdAndStatus(BigInteger userID, short status);
+
+    Long countByUserId(BigInteger userID);
 
     List<MyWork> findByUserUsername(String username);
+
+    List<MyWork> findByUserUsernameAndStatus(String username, Short status);
+
 
 }

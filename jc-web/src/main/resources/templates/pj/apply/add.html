@@ -1,6 +1,7 @@
 <div class="jarviswidget-editbox">
 </div>
 <div class="widget-body no-padding">
+    <!--/*@thymesVar id="realmodel" type=""*/-->
     <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/save}"
           id="realentity" class="smart-form"
           xmlns:th="http://www.thymeleaf.org">
@@ -8,7 +9,7 @@
             <div class="row">
                 <section class="col col-6">
                     <label class="input"> <i class="icon-prepend fa fa-userInfo"></i>
-                        <input class="" type="text" name="name" th:field="*{name}" placeholder="稽查项目名称"
+                        <input class="" type="text" id="name" name="name" th:field="*{name}" placeholder="稽查项目名称"
                                data-rule-required="true" data-msg-required="请输入稽查项目名称">
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
                                 class="tooltip-realaicy">请输入稽查项目名称</span></b>
@@ -32,7 +33,7 @@
                     <div class="form-group" id="reali">
                         <label id="reall">请输入待稽查机构名称,按回车键添加</label>
                         <input type="text" class="form-control tagsinput" name="orgtags" id="orgtags"
-                               value="" data-role="tagsinput">
+                               value="" data-role="tagsinput" title="">
                     </div>
                 </section>
             </div>
@@ -74,14 +75,6 @@
                         <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
                                 class="tooltip-realaicy">请输入项目简要描述</span></b>
                     </label>
-
-                    <!--<label class="input"> <i class="icon-prepend fa fa-userInfo"></i>
-                        <input class="" type="text" name="applyDescribe" th:field="*{applyDescribe}"
-                               placeholder="请输入项目简要描述"
-                               data-rule-required="true" data-msg-required="请输入项目简要描述">
-                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入项目简要描述</span></b>
-                    </label>-->
                 </section>
             </div>
         </fieldset>
@@ -150,7 +143,7 @@
         invalidHandler: function (event, validator) {
             var errors = validator.numberOfInvalids();
             if (errors) {
-                var message = errors == 1
+                var message = errors === 1
                     ? 'You missed 1 field. It has been highlighted'
                     : 'You missed ' + errors + ' fields. They have been highlighted';
                 $("#realerrormsg").html(message);
@@ -202,17 +195,17 @@
 
         submitHandler: function (form) {
 
-            console.log("a" + $("input").val());
-            console.log("b: " + $("#orgtags").val());
+//            console.log("a" + $("input").val());
+//            console.log("b: " + $("#orgtags").val());
             $("#trialCenterNames").val($("#orgtags").val());
 
-            if ($("#updateflag").val() == "new") {
+            if ($("#updateflag").val() === "new") {
                 $.ajax({
                     url: form.action,
                     type: form.method,
                     data: $(form).serialize(),
                     success: function (response) {
-                        if (response.substring(0, 2) == "ok") {
+                        if (response.substring(0, 2) === "ok") {
                             real_g_success("创建申请成功！");
                         }
                         else {
@@ -228,7 +221,7 @@
                     type: form.method,
                     data: $(form).serialize(),
                     success: function (response) {
-                        if (response.substring(0, 2) == "ok") {
+                        if (response.substring(0, 2) === "ok") {
                             real_g_success("修改机构成功！");
                         }
                         else {
@@ -264,6 +257,5 @@
     };
 
     pagefunction();
-
 
 </script>

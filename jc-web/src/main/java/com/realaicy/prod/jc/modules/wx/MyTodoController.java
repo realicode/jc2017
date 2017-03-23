@@ -62,11 +62,10 @@ public class MyTodoController {
         List<MyWork> todolist = myWorkService.findByUserUsername("zhaoy");*/
 
         model.addAttribute("realuser", "王雨萌");
-        List<MyWork> todolist = myWorkService.findByUserUsername("wym");
+        List<MyWork> todolist = myWorkService.findTodoWorkByUserUsername("wym");
 
         model.addAttribute("todolist", todolist);
         model.addAttribute("myworkcount", todolist.size());
-
 
         model.addAttribute("code", code);
 

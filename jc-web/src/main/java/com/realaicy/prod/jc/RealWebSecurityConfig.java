@@ -28,7 +28,7 @@ import static com.realaicy.prod.jc.realglobal.config.StaticParams.PATHREGX.*;
 @Profile({StaticParams.SPRINGPROFILES.PRODUCTION, StaticParams.SPRINGPROFILES.DEVELOP,
         StaticParams.SPRINGPROFILES.TEST_UAT, StaticParams.SPRINGPROFILES.TEST_IT})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@Order(StaticParams.REALNUM.N20)
+@Order(2)
 public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -62,7 +62,6 @@ public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(SB_ALL, REALAICY_ALL, REALRES, SIGNUP, SIGNUP_CHECKUSERNAME, SIGNUP_SENTMBCODE,
-                        WX_TEST, WX_TEST2, WX_TEST3, WX,
                         StaticParams.PATHREGX.STATIC, StaticParams.PATHREGX.TEMP_TEST, "/runtime/tasks/**").permitAll()//无需访问权限
                 .antMatchers(StaticParams.PATHREGX.AUTHADMIN).hasAuthority(StaticParams.USERROLE.ROLE_ADMIN)//admin角色访问权限
                 .antMatchers(StaticParams.PATHREGX.AUTHUSER).hasAuthority(StaticParams.USERROLE.ROLE_USER)//user角色访问权限
@@ -73,7 +72,7 @@ public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login").permitAll().and().exceptionHandling().accessDeniedPage("/403")
                 .and()
                 .logout().permitAll().and().sessionManagement().invalidSessionUrl("/g/realerror/session/realinvalid")
-                .maximumSessions(2).expiredUrl("/g/realerror/session/expire");
+                .maximumSessions(1).expiredUrl("/g/realerror/session/expire");
     }
 
     @Override
@@ -81,7 +80,7 @@ public class RealWebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity
                 .ignoring()
                 // All of Spring Security will ignore the requests
-                .antMatchers("/wx/**", SIGNUP, REGIS); // APIs use a key
+                .antMatchers(SIGNUP, REGIS, REALRES); // APIs use a key
     }
 
 

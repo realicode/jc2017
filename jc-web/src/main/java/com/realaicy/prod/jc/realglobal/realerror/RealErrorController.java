@@ -48,6 +48,10 @@ public class RealErrorController {
             System.out.println("Realaicy userAgent V2: " + "normal");
             HttpHeaders headers = new HttpHeaders();
             //headers.add("Location", "http://127.0.0.1:48080/");
+            if (userAgent.contains("mobile")){
+                headers.add("Location", "http://www.baidu.com/");
+                return new ResponseEntity<>(null, headers, HttpStatus.FOUND);
+            }
             headers.add("Location", loginUrl);
 
             return new ResponseEntity<>(null, headers, HttpStatus.FOUND);

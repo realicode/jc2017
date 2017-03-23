@@ -227,6 +227,48 @@ public final class SpringSecurityUtil {
         return false;
     }
 
+    /**
+     * Check if current user has specified role.
+     *
+     * @param privilege the role to check if user has.
+     * @return true if user has specified role, otherwise false.
+     */
+    public static boolean hasPrivilegeWithFuncByRealaicy(String prefix, final String privilege) {
+
+        final RealUserDetails realUserDetails = SpringSecurityUtil.getCurrentRealUserDetails();
+        return realUserDetails != null
+                && (realUserDetails.getRealAuthorities().contains("superadmin")
+                || realUserDetails.getRealAuthorities().contains(prefix + "-f")
+                || realUserDetails.getRealAuthorities().contains(prefix + "-" + privilege));
+    }
+
+
+    /**
+     * Check if current user has any role of specified.
+     *
+     * @param privileges the array of roles.
+     * @return true if has any role, otherwise false.
+     */
+    public static boolean hasAnyPrivilegeWithFuncByRealaicy4Wx(String code, String prefix, final String... privileges) {
+
+        final RealUserDetails realUserDetails = RealCacheUtil.CORE_USERSECURITYDETAILS.get(code);
+
+        if (realUserDetails != null) {
+            if (realUserDetails.getRealAuthorities().contains("superadmin")
+                    || realUserDetails.getRealAuthorities().contains(prefix + "-f")) {
+                return true;
+            }
+            for (String str : privileges) {
+                if (realUserDetails.getRealAuthorities().contains(prefix + "-" + str)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
     // auth
 
 

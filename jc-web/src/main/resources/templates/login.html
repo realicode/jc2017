@@ -109,7 +109,9 @@
 
         // 用户名验证
         jQuery.validator.addMethod("isUsername", function(value, element) {
-            var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
+//            var username = /^[a-zA-Z]{1}([a-zA-Z0-9]){4,19}$/;
+            var username = /^[a-zA-Z]([a-zA-Z0-9]){4,19}$/;
+
             return this.optional(element) || (username.test(value));
         }, "请正确填写您的用户名");
         // 密码验证
@@ -121,7 +123,7 @@
         $("#real_signup").validate({
 
             errorPlacement: function (error, element) {
-                if($(element).attr("id")=="mobilecode"){
+                if($(element).attr("id")==="mobilecode"){
                     error.appendTo(element.parent().parent().next().next());
                 }else {
                     error.appendTo(element.parent().parent().next());

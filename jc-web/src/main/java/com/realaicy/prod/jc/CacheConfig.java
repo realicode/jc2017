@@ -100,8 +100,7 @@ public class CacheConfig extends CachingConfigurerSupport {
             if (context.getMethod().getName().equals("findUserMenu")) {
                 return Collections.singleton("wUsermenu");
             } else {
-                //Object[] objects = context.getArgs();
-                String cacheName = context.getTarget().getClass().getSimpleName ();
+                String cacheName = context.getTarget().getClass().getSimpleName();
                 return Collections.singleton(cacheName);
             }
 

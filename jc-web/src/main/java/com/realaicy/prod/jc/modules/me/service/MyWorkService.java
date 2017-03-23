@@ -17,8 +17,11 @@ public interface MyWorkService extends BaseServiceWithVO<MyWork, BigInteger, MyW
 
     Long countByUserId(BigInteger id);
 
+    Long todoWorkCountByUserId(BigInteger id);
+
     MyWork findByWorkUri(String workUri);
 
-    List<MyWork> findByUserUsername(String username);
+    List<MyWork> findTodoWorkByUserUsername(String username);
+
 
 }

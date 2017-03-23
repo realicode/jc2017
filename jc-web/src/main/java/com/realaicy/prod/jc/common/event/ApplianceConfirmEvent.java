@@ -11,9 +11,18 @@ import java.math.BigInteger;
 public class ApplianceConfirmEvent extends JCBaseEvent implements ConfirmEvent<BigInteger, Appliance> {
 
     private BigInteger id;
+    private String confirmType;
 
     public ApplianceConfirmEvent(BigInteger id) {
         this.id = id;
+    }
+
+    public String getConfirmType() {
+        return confirmType;
+    }
+
+    public void setConfirmType(String confirmType) {
+        this.confirmType = confirmType;
     }
 
     @Override

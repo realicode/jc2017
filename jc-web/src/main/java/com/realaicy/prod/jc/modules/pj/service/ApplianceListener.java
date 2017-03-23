@@ -81,10 +81,10 @@ public class ApplianceListener {
                 work.setStatus(Short.valueOf("1"));
 
                 work.setWorkUri("/pj/apply/confirm?realactiontype=affirm&applyid=" + applicationCreationEvent.getCreatedEntityID());
+                work.setViewUri("/pj/apply/show/" + applicationCreationEvent.getCreatedEntityID());
                 myWorkService.save(work);
 
             }
-
         }
     }
 
@@ -120,6 +120,7 @@ public class ApplianceListener {
                 work.setStatus(Short.valueOf("1"));
 
                 work.setWorkUri("/pj/apply/confirm?realactiontype=approve&applyid=" + applicationConfirmEvent.getConfirmedEntityID());
+                work.setViewUri("/pj/apply/show/" + applicationConfirmEvent.getConfirmedEntityID());
                 myWorkService.save(work);
 
             }

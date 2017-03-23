@@ -1,3 +1,4 @@
+<!--suppress JSJQueryEfficiency -->
 <title>组织机构</title>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
@@ -57,14 +58,14 @@
                                             <th>
                                             </th>
                                             <th>
-                                                <select id='real_filter_level' class="form-control">
+                                                <select id='real_filter_level' class="form-control" title="">
                                                     <option value="0">所有级别</option>
                                                     <option value="5">普通</option>
                                                     <option value="8">紧急</option>
                                                 </select>
                                             </th>
                                             <th>
-                                                <select id='real_filter_status' class="form-control">
+                                                <select id='real_filter_status' class="form-control" title="">
                                                     <option value="0">所有状态</option>
                                                     <option value="1" selected>未开始</option>
                                                     <option value="2">进行中</option>
@@ -120,13 +121,13 @@
 
 <div>
 
+    <!--/*@thymesVar id="real_firstfilter" type=""*/-->
     <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
            xmlns:th="http://www.thymeleaf.org">
 </div>
 
 <script type="text/javascript">
     //    pageSetUp();
-    var firstFlag = "true";
 
     $(document).ready(function () {
             var realtable = $('#dt_basic_real').DataTable(
@@ -156,7 +157,7 @@
                         {
                             text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 var rows_selected = realtable.column(0).checkboxes.selected();
                                 if (rows_selected.length <= 0 || rows_selected.length > 1) {
                                     var msg;
@@ -176,35 +177,35 @@
                         {
                             text: '<i  class="fa fa-trash-o"></i> 删除',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 real_g_del("申请", '/pj/apply/del/');
                             }
                         },
                         {
                             text: '<i  class="fa fa-trash-o"></i> 批量删除',
                             className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realalert("功能实现敬请期待。。。。。。");
                             }
                         },
                         {
                             text: '快速查询',
                             className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realtable.draw();
                             }
                         },
                         {
                             text: '自助复杂查询',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
                                 realloadpage("/pj/apply/search");
                             }
                         },
                         {
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
-                            action: function (e, dt, node, config) {
+                            action: function () {
 
                                 $("#real_filter_maintitle").val("");
                                 $("#real_filter_status").val("0");
@@ -230,16 +231,16 @@
                                 var search_status = $("#real_filter_status").val();
                                 var search_level = $("#real_filter_level").val();
 
-                                if (search_maintitle != undefined && search_maintitle != "") {
+                                if (search_maintitle !== undefined && search_maintitle !== "") {
                                     searchString += "name~";
                                     searchString += search_maintitle;
                                 }
-                                if (search_status != undefined && search_status !== "0") {
+                                if (search_status !== undefined && search_status !== "0") {
                                     searchString += ",status:";
                                     searchString += search_status;
 
                                 }
-                                if (search_level != undefined && search_level !== "0") {
+                                if (search_level !== undefined && search_level !== "0") {
                                     searchString += ",workLevel:";
                                     searchString += search_level;
                                 }
@@ -250,8 +251,8 @@
 
                         },
                         error: function (xhr, status, error) {
-                            if (xhr.responseText.indexOf("invalid") == 0) {
-                                location = login_url;
+                            if (xhr.responseText.indexOf("invalid") === 0) {
+                                window.location = login_url;
                             }
                         },
 
@@ -268,10 +269,10 @@
                         {
                             "data": "workLevel", "width": "6%",
                             "render": function (data, type, row) {
-                                if (data == 5) {
+                                if (data === 5) {
                                     return "<span class='label label-default'>" + "普通" + "</span>"
 
-                                } else if ((data == 2)) {
+                                } else if ((data === 2)) {
                                     return "<span class='label label-primary'>" + "紧急" + "</span>"
                                 }
 
@@ -281,10 +282,10 @@
                             "data": "workStatus",
                             "width": "10%",
                             "render": function (data, type, row, meta) {
-                                if (data == 1) {
+                                if (data === 1) {
                                     return "<span class='label real_label_todo_notstart'>" + "未开始" + "</span>"
 
-                                } else if ((data == 3)) {
+                                } else if ((data === 3)) {
                                     return "<span class='label label-primary'>" + "已完成" + "</span>"
                                 }
                             }
@@ -303,25 +304,17 @@
                         },
                         {"data": "deadline", "width": "10%"},
                         {
-                            "data": "processDate", "width": "10%",
-                            "render": function (data, type, row) {
-//                        console.log(JSON.stringify(row));
-//                            console.log(row.trialAbstractURI);
-                                return data;
-                            }
+                            "data": "processDate", "width": "10%"
                         },
 
                         {
                             "data": null,
                             "render": function (data, type, row) {
 
-                                if (row.applyStatus == "1" && $("#auth_affirm").val() == 1) {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>确认申请</a>"
+                                if (row.workStatus === 1) {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>处理工作</a>"
                                 }
-                                if (row.applyStatus == "2" && $("#auth_approve").val() == "1") {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
-                                }
-                                return "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>";
+                                return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
                             },
                             "width": "10%"
                         }
@@ -346,22 +339,22 @@
                     },
                     "order": [[1, 'asc']]
                 });
+
             $("#realbtn-search").on("click", function () {
                 console.log("cccccccccccccccccccccc");
             });
-
 
             $("#real_filter_status").on("change", function () {
                 realtable.draw();
             });
 
-            $('#dt_basic_real').on('click', '.real-test', function () {
+            $('#dt_basic_real').on('click', '.real_linktodetail', function () {
                 var data = realtable.row($(this).parents('tr')).data();
                 console.log("data: " + data.id);
 
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                realloadpage(data.workUri);
+                realloadpage(data.viewUri);
 //                $('nav ul li.open').css('border','10px solid red');
 //                realalert("功能实现敬请期待")ss
 

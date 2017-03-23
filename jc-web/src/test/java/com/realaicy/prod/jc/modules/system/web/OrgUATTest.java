@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.system.web;
 import com.realaicy.prod.jc.JcUATTestContext;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -17,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JcUATTestContext.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(StaticParams.SPRINGPROFILES.TEST_UAT)
-//@Ignore
+@Ignore
 public  class OrgUATTest{
 
     @SuppressWarnings("unused")

@@ -50,15 +50,7 @@ public class MyWorkVO extends BaseVO<BigInteger> {
     private Date processDate;
 
     private String workUri;
-
-    public String getWorkUri() {
-        return workUri;
-    }
-
-    public void setWorkUri(String workUri) {
-        this.workUri = workUri;
-    }
-
+    private String viewUri;
     /**
      * 工作状态
      */
@@ -76,7 +68,24 @@ public class MyWorkVO extends BaseVO<BigInteger> {
         this.workStatus = po.getStatus();
         this.workLevel = po.getWorkLevel();
         this.workUri = po.getWorkUri();
+        this.viewUri = po.getViewUri();
 
+    }
+
+    public String getViewUri() {
+        return viewUri;
+    }
+
+    public void setViewUri(String viewUri) {
+        this.viewUri = viewUri;
+    }
+
+    public String getWorkUri() {
+        return workUri;
+    }
+
+    public void setWorkUri(String workUri) {
+        this.workUri = workUri;
     }
 
     public BigInteger getId() {

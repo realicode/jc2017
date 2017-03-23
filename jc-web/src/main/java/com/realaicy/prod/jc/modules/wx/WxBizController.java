@@ -22,6 +22,7 @@ import java.math.BigInteger;
 import java.util.Date;
 
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy;
+import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy4Wx;
 
 /**
  * The type Hello controller.
@@ -70,14 +71,6 @@ public class WxBizController {
         return WX_APPLY_CONFIRM_URL;
     }
 
-    private BigInteger getUserFromCode(String code) {
-        if (!RealCacheUtil.CORE_USER.containsKey(code)) {
-            return null;
-        } else {
-            return RealCacheUtil.CORE_USER.get(code);
-        }
-    }
-
 
     @ResponseBody
     @RequestMapping(value = "/pj/apply/confirm", method = RequestMethod.POST)
@@ -96,14 +89,16 @@ public class WxBizController {
         Appliance po = null;
 
         if (realactiontype.equals("affirm")) {
+
             if (result.hasFieldErrors("quotation") || result.hasFieldErrors("confirmRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
             }
 
-            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "ack")) {
+            if (!hasAnyPrivilegeWithFuncByRealaicy4Wx(code, AUTH_PREFIX, "ack")) {
                 return NO_AUTH_VIEW_NAME;
             }
 
+            //1， 改变这个业务的状态
             po = applianceService.findOne(realmodel.getId());
             po.setQuotation(realmodel.getQuotation());
             po.setConfirmRemark(realmodel.getConfirmRemark());
@@ -115,15 +110,16 @@ public class WxBizController {
                 po.setStatus(Short.valueOf("2"));
             }
 
+            //2， 如果是待办事项，则清理待办工作
             MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=affirm&applyid="
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
                 myWork.setProcessDate(new Date());
                 myWorkService.save(myWork);
             }
-
+            //3， 如果是待办事项，则清理待办工作
             ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
             applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
             this.publisher.publishEvent(applianceConfirmEvent);
@@ -149,7 +145,7 @@ public class WxBizController {
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.MYWORKSTATUS.DONE);
+                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
                 myWork.setProcessDate(new Date());
                 myWorkService.save(myWork);
             }
@@ -164,5 +160,9 @@ public class WxBizController {
         return "ok";
     }
 
+
+    private BigInteger getUserFromCode(String code) {
+        return RealCacheUtil.CORE_USER.getOrDefault(code, null);
+    }
 
 }

@@ -43,10 +43,15 @@ public class MyWork extends CommonDeletableEntity<BigInteger> {
     @Column(name = "WORKLEVEL")
     private Short workLevel;
     /**
-     * 处理日期
+     * 处理URI
      */
     @Column(name = "WORKURI")
     private String workUri;
+    /**
+     * 查看URI
+     */
+    @Column(name = "VIEWURI")
+    private String viewUri;
     /**
      * 最后截止日期
      */
@@ -63,6 +68,14 @@ public class MyWork extends CommonDeletableEntity<BigInteger> {
     @ManyToOne()
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public String getViewUri() {
+        return viewUri;
+    }
+
+    public void setViewUri(String viewUri) {
+        this.viewUri = viewUri;
+    }
 
     public String getWorkUri() {
         return workUri;

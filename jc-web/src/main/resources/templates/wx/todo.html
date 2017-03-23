@@ -67,9 +67,9 @@
                                                                               th:text="'尊敬的：' + ${realuser}"></span>
                     </div>
 
-                    <div class="weui-panel__hd" th:if="${#lists.isEmpty(todolist)}">
+                    <div class="weui-panel__hd" hidden="hidden">
                         <h5 class="weui-msg__title" style="font-size: 16px">您暂时没有待办事项</h5></div>
-                    <div class="weui-panel__hd" th:if="${not #lists.isEmpty(todolist)}">
+                    <div class="weui-panel__hd" hidden="hidden">
                         <h5 class="weui-msg__title" style="font-size: 16px">您的待办事项列表如下：</h5></div>
                     <div class="weui-panel__bd" th:each="todo : ${todolist}">
                         <a href="javascript:void(0);" onclick="real_load_workitem(this)"
