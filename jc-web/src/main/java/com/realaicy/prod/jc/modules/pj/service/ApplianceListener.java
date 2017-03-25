@@ -140,7 +140,7 @@ public class ApplianceListener {
 
     @EventListener
     public void handleApplicationApprovedEvent(ApproveEvent<BigInteger, Appliance> applicationApprovedEvent) {
-        logger.debug("handleApplicationConfirmDenyEvent");
+        logger.debug("handleApplicationApprovedEvent");
 
         String applicationName = applianceService.findOne(applicationApprovedEvent.getApproveEntityID()).getName();
 
@@ -168,7 +168,7 @@ public class ApplianceListener {
                 work.setWorkType("work");
                 work.setStatus(Short.valueOf("1"));
 
-                work.setWorkUri("/pj/apply/confirm?realactiontype=approve&applyid=" + applicationApprovedEvent.getApproveEntityID());
+                work.setWorkUri("/pj/apply/confirm?realactiontype=providecontract&applyid=" + applicationApprovedEvent.getApproveEntityID());
                 work.setViewUri("/pj/apply/show/" + applicationApprovedEvent.getApproveEntityID());
                 myWorkService.save(work);
 

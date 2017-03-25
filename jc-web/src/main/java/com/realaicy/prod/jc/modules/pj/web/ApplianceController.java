@@ -53,10 +53,13 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private static final String LIST_ENTITY_URL = "pj/apply/page";
     private static final String SEARCH_ENTITY_URL = "pj/apply/search";
     private static final String APPLY_CONFIRM_URL = "pj/apply/confirm";
+    private static final String APPLY_PROVIDECONTRACT_URL = "pj/apply/providecontract";
+
 
     private static final String AUTH_PREFIX = "Appliance";
     private static final String AUTH_KEY_ACK = "ack";
     private static final String AUTH_KEY_APPROVE = "approve";
+    private static final String AUTH_KEY_PROVIDECONTRACT = "providecontract";
 
 
     @Autowired
@@ -72,7 +75,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
-    public String newModel(Model model,
+    public String confirm(Model model,
                            @RequestParam(value = "applyid") Long applyid,
                            @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
@@ -172,6 +175,22 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
 
+    @RequestMapping(value = "/providecontract", method = RequestMethod.GET)
+    public String provideContract(Model model,
+                           @RequestParam(value = "applyid") Long applyid,
+                           @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
+            return NO_AUTH_VIEW_NAME;
+        }
+        ApplianceVO applianceVO = new ApplianceVO(applianceService.findOne(BigInteger.valueOf(applyid)));
+        model.addAttribute("realmodel", applianceVO);
+        model.addAttribute("realactiontype", realactiontype);
+        model.addAttribute("updateflag", "editedit");
+        return APPLY_PROVIDECONTRACT_URL;
+    }
+
     @Override
     protected List<ApplianceVO> convertFromPOListToVOList(List<Appliance> poList) {
         List<ApplianceVO> applianceVOList = new ArrayList<>();
@@ -218,17 +237,26 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     @Override
     protected void addAttrToModel(Model model) {
 
+        boolean tempF = false;
         if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE)) {
             model.addAttribute("real_auth_approve", "1");
             model.addAttribute("real_firstfilter", "status:2");
-
-        } else if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK)) {
+            tempF = true;
+        }
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK)) {
             model.addAttribute("real_auth_affirm", "1");
             model.addAttribute("real_firstfilter", "status:1");
-
-        } else {
-            model.addAttribute("real_firstfilter", "status:0");
+            tempF = true;
         }
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
+            model.addAttribute("real_auth_providecontract", "1");
+            model.addAttribute("real_firstfilter", "status:1");
+            tempF = true;
+        }
+
+        if (!tempF)
+            model.addAttribute("real_firstfilter", "status:0");
+
     }
 
     @Override
@@ -251,6 +279,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         if (SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE, AUTH_KEY_ACK)) {
             return null;
         }
+        //noinspection ConstantConditions
         return applicaitonByUserName(SpringSecurityUtil.getCurrentRealUserDetails().getUsername());
     }
 
@@ -259,34 +288,3 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         return true;
     }
 }
-
-/*    @ResponseBody
-    @RequestMapping(value = "/approve", method = RequestMethod.POST)
-    public String doApprove(@Valid @ModelAttribute("realmodel") final ApplianceVO realmodel,
-                            final BindingResult result,
-                            HttpSession httpSession,
-                            @RequestParam(value = "approveType") String btnType) throws InstantiationException {
-
-        if (result.hasFieldErrors("approveRemark")) {
-            return "error绑定异常（非页面提交，你是机器人？）";
-        }
-
-        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "approve")) {
-            return NO_AUTH_VIEW_NAME;
-        }
-
-        Appliance po = applianceService.findOne(realmodel.getId());
-
-        po.setApproveRemark(realmodel.getConfirmRemark());
-        po.setApprover(userService.findOne((BigInteger) httpSession.getAttribute("userid")));
-
-        if (btnType.equals("nopass")) {
-            po.setStatus(Short.valueOf("4201"));
-        } else if (btnType.equals("pass")) {
-            po.setStatus(Short.valueOf("3"));
-        }
-
-        applianceService.save(po);
-
-        return "ok";
-    }*/

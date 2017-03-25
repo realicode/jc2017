@@ -98,6 +98,8 @@ public class ApplianceVO extends BaseVO<BigInteger> {
     private Integer quotation;
 
 
+
+
     public ApplianceVO() {
     }
 

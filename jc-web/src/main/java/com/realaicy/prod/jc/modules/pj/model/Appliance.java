@@ -78,9 +78,39 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "QUOTATION")
     private Integer quotation;
+
+    /**
+     * 合同URI
+     */
+    @Column(name = "CONTRACTURI")
+    @NotEmpty
+    private String contractURI;
+
+    /**
+     * 研究方案URI
+     */
+    @Column(name = "TRIALURI")
+    @NotEmpty
+    private String trialURI;
     @ManyToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User user;
+
+    public String getContractURI() {
+        return contractURI;
+    }
+
+    public void setContractURI(String contractURI) {
+        this.contractURI = contractURI;
+    }
+
+    public String getTrialURI() {
+        return trialURI;
+    }
+
+    public void setTrialURI(String trialURI) {
+        this.trialURI = trialURI;
+    }
 
     public User getApprover() {
         return approver;

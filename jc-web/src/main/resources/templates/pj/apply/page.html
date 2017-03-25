@@ -137,6 +137,9 @@
     <!--/*@thymesVar id="real_auth_affirm" type=""*/-->
     <input id="auth_affirm" name="auth_affirm" type="hidden" th:value="${real_auth_affirm}"
            xmlns:th="http://www.thymeleaf.org">
+    <!--/*@thymesVar id="real_auth_approve" type=""*/-->
+    <input id="auth_providecontract" name="auth_providecontract" type="hidden" th:value="${real_auth_providecontract}"
+           xmlns:th="http://www.thymeleaf.org">
     <!--/*@thymesVar id="real_firstfilter" type=""*/-->
     <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
            xmlns:th="http://www.thymeleaf.org">
@@ -246,7 +249,7 @@
                             delete d.columns;
                             var searchString = "";
                             var firstfilterStr = $("#firstfilter").val();
-                            var realfirststatusStr  = $("#real_filter_status").val();
+                            var realfirststatusStr = $("#real_filter_status").val();
                             if (firstFlag === "true" && firstfilterStr.split(":")[1] !== "0") {
                                 searchString = firstfilterStr;
 //                            console.log($("#firstfilter").val().split(":")[1]);
@@ -354,6 +357,9 @@
                                 if (row.applyStatus === "2" && $("#auth_approve").val() === "1") {
                                     return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_approve'>审批</a>"
                                 }
+                                if (row.applyStatus === "3" && $("#auth_providecontract").val() === "1") {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_providecontract'>提供合同</a>"
+                                }
                                 return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
                             }
 
@@ -411,13 +417,23 @@
                 realloadpage("/pj/apply/confirm?realactiontype=approve&applyid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
-            /*$('#dt_basic_real').on('mouseover', '.real_long_text', function () {
-                console.log(JSON.stringify($()));
-                layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
+            /**
+             * 上传合同按钮
+             */
+            $('#dt_basic_real').on('click', '.real_apply_providecontract', function () {
 
-            });*/
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                realloadpage("/pj/apply/providecontract?realactiontype=ini&applyid=" + realtable.row($(this).parents('tr')).data().id);
+            });
 
-        $('#dt_basic_real').on('click', '.real_linktodetail', function () {
+                /*$('#dt_basic_real').on('mouseover', '.real_long_text', function () {
+                 console.log(JSON.stringify($()));
+                 layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
+
+                 });*/
+
+            $('#dt_basic_real').on('click', '.real_linktodetail', function () {
                 console.log("real_linktodetail");
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
@@ -429,11 +445,11 @@
 
     var pagefunction = function () {
 
-      /*  $('#dt_basic_real').on('click', '.real-test', function () {
-            var data = realtable.row($(this).parents('tr')).data();
-            console.log("data: " + data.id);
-            realalert("功能实现敬请期待");
-        });*/
+        /*  $('#dt_basic_real').on('click', '.real-test', function () {
+         var data = realtable.row($(this).parents('tr')).data();
+         console.log("data: " + data.id);
+         realalert("功能实现敬请期待");
+         });*/
     };
 
     //    loadScript("realaicy/js/geo.js", pagefunction);
