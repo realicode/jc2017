@@ -12,6 +12,8 @@ public class ApplianceApproveEvent extends JCBaseEvent implements ApproveEvent<B
 
     private BigInteger id;
 
+    private String approveType;
+
     public ApplianceApproveEvent(BigInteger id) {
         this.id = id;
     }
@@ -19,6 +21,15 @@ public class ApplianceApproveEvent extends JCBaseEvent implements ApproveEvent<B
     @Override
     public BigInteger getApproveEntityID() {
         return id;
+    }
+
+    @Override
+    public String getApproveType() {
+        return approveType;
+    }
+
+    public void setApproveType(String approveType) {
+        this.approveType = approveType;
     }
 }
 

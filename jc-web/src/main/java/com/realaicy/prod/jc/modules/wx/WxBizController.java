@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigInteger;
-import java.util.Date;
 
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy;
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy4Wx;
@@ -38,6 +37,8 @@ public class WxBizController {
 
     private static final String WX_APPLY_CONFIRM_URL = "wx/pj/apply/confirm";
     private static final String AUTH_PREFIX = "Appliance";
+    private static final String AUTH_KEY_ACK = "ack";
+    private static final String AUTH_KEY_APPROVE = "approve";
     private static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
 
     @Autowired
@@ -88,13 +89,13 @@ public class WxBizController {
         BigInteger userID = getUserFromCode(code);
         Appliance po = null;
 
-        if (realactiontype.equals("affirm")) {
+        if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_AFFIRM)) {
 
             if (result.hasFieldErrors("quotation") || result.hasFieldErrors("confirmRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
             }
 
-            if (!hasAnyPrivilegeWithFuncByRealaicy4Wx(code, AUTH_PREFIX, "ack")) {
+            if (!hasAnyPrivilegeWithFuncByRealaicy4Wx(code, AUTH_PREFIX, AUTH_KEY_ACK)) {
                 return NO_AUTH_VIEW_NAME;
             }
 
@@ -104,10 +105,15 @@ public class WxBizController {
             po.setConfirmRemark(realmodel.getConfirmRemark());
             po.setConfirmor(userService.findOne(userID));
 
-            if (btnType.equals("nopass")) {
-                po.setStatus(Short.valueOf("4101"));
-            } else if (btnType.equals("pass")) {
-                po.setStatus(Short.valueOf("2"));
+            if (btnType.equals(StaticParams.BTNTYPE.DENY)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_ERR_IN_INI);
+            } else if (btnType.equals(StaticParams.BTNTYPE.PASS)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_CONFIRMED);
+
+                ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
+                applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
+                applianceConfirmEvent.setConfirmType(btnType);
+                this.publisher.publishEvent(applianceConfirmEvent);
             }
 
             //2， 如果是待办事项，则清理待办工作
@@ -115,44 +121,37 @@ public class WxBizController {
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
-                myWork.setProcessDate(new Date());
-                myWorkService.save(myWork);
+                myWorkService.markDone(myWork);
             }
-            //3， 如果是待办事项，则清理待办工作
-            ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
-            applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
-            this.publisher.publishEvent(applianceConfirmEvent);
 
-        } else if (realactiontype.equals("approve")) {
+        } else if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_APPROVE)) {
             if (result.hasFieldErrors("approveRemark")) {
                 return "error绑定异常（非页面提交，你是机器人？）";
             }
 
-            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, "approve")) {
+            if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_APPROVE)) {
                 return NO_AUTH_VIEW_NAME;
             }
             po = applianceService.findOne(realmodel.getId());
             po.setApproveRemark(realmodel.getApproveRemark());
             po.setApprover(userService.findOne(userID));
-            if (btnType.equals("nopass")) {
-                po.setStatus(Short.valueOf("4201"));
-            } else if (btnType.equals("pass")) {
-                po.setStatus(Short.valueOf("3"));
+            if (btnType.equals(StaticParams.BTNTYPE.DENY)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_ERR_IN_CONFIRM);
+            } else if (btnType.equals(StaticParams.BTNTYPE.PASS)) {
+                po.setStatus(StaticParams.REALSTATUS.PJAPPLY_APPROVED);
+
+                ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
+                applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
+                this.publisher.publishEvent(applianceApproveEvent);
             }
 
             MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=approve&applyid="
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
-                myWork.setProcessDate(new Date());
-                myWorkService.save(myWork);
+                myWorkService.markDone(myWork);
             }
 
-            ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
-            applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
-            this.publisher.publishEvent(applianceApproveEvent);
         }
 
         applianceService.save(po);
@@ -160,6 +159,18 @@ public class WxBizController {
         return "ok";
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/me/work/count", method = RequestMethod.GET)
+    public Long getMyWorkCount(@RequestParam(value = "code") String code) {
+
+        if (getUserFromCode(code) == null) {
+            return 0L;
+        }
+
+        BigInteger userID = getUserFromCode(code);
+        return myWorkService.todoWorkCountByUserId(getUserFromCode(code));
+    }
 
     private BigInteger getUserFromCode(String code) {
         return RealCacheUtil.CORE_USER.getOrDefault(code, null);

@@ -49,7 +49,7 @@
                             </div>
                         </section>
                         <h1></h1>
-                        <a href="javascript:;" class="weui-btn weui-btn_primary" id="show-actions">操作按钮</a>
+                        <a href="javascript:" class="weui-btn weui-btn_primary" id="show-actions">操作按钮</a>
                     </article>
                     <!--<a href="javascript:;" class="weui-btn weui-btn_primary close-popup">关闭</a>-->
                     <div style="height: 60px">
@@ -93,7 +93,7 @@
 
         <div id="tab2" class="weui-tab__bd-item">
             <h1>页面二</h1>
-            <a href="javascript:;" class="weui-btn weui-btn_primary close-popup">关闭</a>
+            <a href="javascript:" class="weui-btn weui-btn_primary close-popup">关闭</a>
 
         </div>
         <div id="tab3" class="weui-tab__bd-item">
@@ -144,18 +144,14 @@
     function real_load_workitem(obj) {
 //        alert($(obj).html());
 
-
-
-
-        console.log($(obj).children(":first").val());
-        console.log("load url: " + "/wx" + $(obj).children(":first").val()+ '&code=' + $('#code').val());
+//        console.log($(obj).children(":first").val());
+//        console.log("load url: " + "/wx" + $(obj).children(":first").val()+ '&code=' + $('#code').val());
 
         $('#real_div_pop').animate({scrollTop: 0}, 'fast');
 
         $('#real_work_item_div').load('/wx' + $(obj).children(':first').val() + '&code=' + $('#code').val(), function () {
             $('.weui-loadmore').hide();
         });
-
 
 //        $(window).attr('location',"/wx" + $(obj).children(":first").val())
     }
@@ -167,7 +163,7 @@
 
         var myworkCount = $("#myworkcount").val();
 
-        if (myworkCount == 0) {
+        if (myworkCount === 0) {
             $(".realaicy-work-count").remove();
         } else {
             $(".realaicy-work-count").text(myworkCount);
@@ -192,9 +188,9 @@
 
                         var confirmRemark = $('#confirmRemark').val();
                         var quotation = $('#quotation').val();
-                        if (confirmRemark == undefined || confirmRemark == "") {
+                        if (confirmRemark === undefined || confirmRemark === "") {
                             $.toptip('请输入处理意见');
-                        } else if (quotation == undefined || quotation == "") {
+                        } else if (quotation === undefined || quotation === "") {
                             $.toptip('请输入预报价');
                         } else {
                             $.confirm("确定提交事项处理?", "确认?", function () {
@@ -206,9 +202,10 @@
                                     type: 'POST',
                                     data: $("#realentity").serialize(),
                                     success: function (response) {
-                                        if (response.substring(0, 2) == "ok") {
+                                        if (response.substring(0, 2) === "ok") {
                                             $.toast("事项处理提交成功!");
                                             $.closePopup();
+                                            window.location.reload();
                                         }
                                         else {
                                             $.toast("事项处理失败!");
@@ -227,19 +224,20 @@
                     className: "color-warning",
                     onClick: function () {
                         var confirmRemark = $('#confirmRemark').val();
-                        if (confirmRemark == undefined || confirmRemark == "") {
+                        if (confirmRemark === undefined || confirmRemark === "") {
                             $.toptip('请输入处理意见');
                         } else {
                             $.confirm("确定提交事项处理?", "确认?", function () {
-                                $('#btnType').val("nopass");
+                                $('#btnType').val("deny");
                                 $.ajax({
                                     url: $("#realentity").attr('action'),
                                     type: 'POST',
                                     data: $("#realentity").serialize(),
                                     success: function (response) {
-                                        if (response.substring(0, 2) == "ok") {
+                                        if (response.substring(0, 2) === "ok") {
                                             $.toast("事项处理提交成功!");
                                             $.closePopup();
+                                            window.location.reload();
                                         }
                                         else {
                                             $.toast("事项处理失败!");
@@ -249,6 +247,7 @@
 
                                 $.toast("事项处理提交成功!");
                                 $.closePopup();
+                                window.location.reload();
                             }, function () {
                                 //取消操作
                             });

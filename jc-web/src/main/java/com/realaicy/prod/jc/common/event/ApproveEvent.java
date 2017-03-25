@@ -7,4 +7,7 @@ package com.realaicy.prod.jc.common.event;
 public interface ApproveEvent<ID, T> {
 
     ID getApproveEntityID();
+
+    String getApproveType();
+
 }

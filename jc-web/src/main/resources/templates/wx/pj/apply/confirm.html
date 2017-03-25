@@ -112,11 +112,11 @@
          */
 
         var realactiontypeTemp = $("#realactiontype").val();
-        if (realactiontypeTemp == "affirm") {
+        if (realactiontypeTemp === "affirm") {
             $("form input.real_input_affirm").removeAttr("readonly");
         }
 
-        if (realactiontypeTemp == "approve") {
+        if (realactiontypeTemp === "approve") {
             console.log("approve");
             $('#real_div_approve').show();
             $("form input.real_input_approve").removeAttr("readonly");

@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.pj.web;
 import com.realaicy.prod.jc.common.event.ApplianceApproveEvent;
 import com.realaicy.prod.jc.common.event.ApplianceConfirmEvent;
 import com.realaicy.prod.jc.common.event.ApplianceCreatedEvent;
+import com.realaicy.prod.jc.common.event.WorkDoneEvent;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
@@ -115,6 +116,10 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                 po.setStatus(StaticParams.REALSTATUS.PJAPPLY_ERR_IN_INI);
             } else if (btnType.equals(StaticParams.BTNTYPE.PASS)) {
                 po.setStatus(StaticParams.REALSTATUS.PJAPPLY_CONFIRMED);
+                ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
+                applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
+                applianceConfirmEvent.setConfirmType(btnType);
+                publisher.publishEvent(applianceConfirmEvent);
             }
 
             MyWork myWork = myWorkService.findByWorkUri("/pj/apply/confirm?realactiontype=affirm&applyid="
@@ -124,12 +129,10 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                 myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
                 myWork.setProcessDate(new Date());
                 myWorkService.save(myWork);
-            }
 
-            ApplianceConfirmEvent applianceConfirmEvent = new ApplianceConfirmEvent(realmodel.getId());
-            applianceConfirmEvent.setEventKey(StaticParams.TODOWORK.APPLY_CONFIRM_KEY);
-            applianceConfirmEvent.setConfirmType(btnType);
-            this.publisher.publishEvent(applianceConfirmEvent);
+                WorkDoneEvent workDoneEvent = new WorkDoneEvent();
+                publisher.publishEvent(workDoneEvent);
+            }
 
         } else if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_APPROVE)) {
             if (result.hasFieldErrors("approveRemark")) {
@@ -159,6 +162,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
             ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
             applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
+
             this.publisher.publishEvent(applianceApproveEvent);
         }
 

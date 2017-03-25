@@ -2,6 +2,7 @@
 </div>
 <div class="widget-body no-padding">
 
+    <!--/*@thymesVar id="realmodel" type=""*/-->
     <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/confirm}"
           id="realentity" class="form-horizontal"
           xmlns:th="http://www.thymeleaf.org">
@@ -109,7 +110,6 @@
         <div class="form-actions">
 
 
-
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-default" type="button" id="btn_cancel" onclick="realclick(this.id)">
@@ -134,14 +134,14 @@
 <script type="text/javascript">
 
     pageSetUp();
-    
+
     function realclick(data) {
-        console.log("ID: " +data);
-        if(data=="btn_pass"){
+        console.log("ID: " + data);
+        if (data === "btn_pass") {
             $("#btnType").val("pass");
-        }else if(data=="btn_nopass"){
-            $("#btnType").val("nopass");
-        }else if(data == "btn_cancel"){
+        } else if (data === "btn_nopass") {
+            $("#btnType").val("deny");
+        } else if (data === "btn_cancel") {
             $("#realentity").resetForm();
             $('#article_real_entity').hide();
         }
@@ -166,7 +166,7 @@
                 }
             }
         }
-    }).on('success.form.fv', function(e) {
+    }).on('success.form.fv', function (e) {
         // Prevent form submission
         e.preventDefault();
 
@@ -176,7 +176,7 @@
 
         console.log("editedit");
 
-        if($("#btnType").val()=="pass" && ($("#quotation").val() == undefined || $("#quotation").val()=="")){
+        if ($("#btnType").val() === "pass" && ($("#quotation").val() === undefined || $("#quotation").val() === "")) {
             realalert("报价不能为空！");
             $("#btn_nopass").removeClass("disabled");
             $("#btn_nopass").removeAttr("disabled");
@@ -192,8 +192,20 @@
             type: 'POST',
             data: $form.serialize(),
             success: function (response) {
-                if (response.substring(0, 2) == "ok") {
+                if (response.substring(0, 2) === "ok") {
                     real_g_success("请求确认成功！");
+
+                    $.ajax({
+                        url: '/me/work/count',
+                        type: 'GET',
+                        success: function (response) {
+                            console.log("response:"+response);
+                            $(".real-work").children(":first").html(function(i, v) {
+                                return response;
+                            });
+                        }
+                    });
+
                 }
                 else {
                     real_g_fail(response);
@@ -215,14 +227,14 @@
         $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
 //        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
 
-        if($("#realactiontype").val()=="affirm"){
+        if ($("#realactiontype").val() === "affirm") {
             $("#real_div_approve").hide();
         }
 
-        if($("#realactiontype").val()=="approve"){
+        if ($("#realactiontype").val() === "approve") {
             console.log("approve");
-            $("form input.real_input_affirm").attr("readonly","readonly");
-            $("form textarea.real_input_affirm").attr("readonly","readonly");
+            $("form input.real_input_affirm").attr("readonly", "readonly");
+            $("form textarea.real_input_affirm").attr("readonly", "readonly");
 
         }
 

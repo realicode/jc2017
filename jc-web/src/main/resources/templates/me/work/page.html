@@ -312,7 +312,7 @@
                             "render": function (data, type, row) {
 
                                 if (row.workStatus === 1) {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_apply_affirm'>处理工作</a>"
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_dowork'>处理工作</a>"
                                 }
                                 return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
                             },
@@ -355,6 +355,18 @@
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
                 realloadpage(data.viewUri);
+//                $('nav ul li.open').css('border','10px solid red');
+//                realalert("功能实现敬请期待")ss
+
+            });
+
+            $('#dt_basic_real').on('click', '.real_dowork', function () {
+                var data = realtable.row($(this).parents('tr')).data();
+                console.log("data: " + data.id);
+
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                realloadpage(data.workUri);
 //                $('nav ul li.open').css('border','10px solid red');
 //                realalert("功能实现敬请期待")ss
 

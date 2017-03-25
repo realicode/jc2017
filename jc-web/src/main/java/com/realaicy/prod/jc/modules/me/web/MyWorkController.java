@@ -5,6 +5,7 @@ import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.model.vo.MyWorkVO;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
+import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +56,12 @@ public class MyWorkController extends CRUDWithVOController<MyWork, BigInteger, M
         return (workRoot, query, cb) -> cb.like(workRoot.get("user").get("username"), username);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public Long getMyWorkCount(HttpSession httpSession) {
+
+        return myWorkService.todoWorkCountByUserId((BigInteger) httpSession.getAttribute(StaticParams.SESSIONKEY.USERID));
+    }
 
     @Override
     protected List<MyWorkVO> convertFromPOListToVOList(List<MyWork> poList) {
