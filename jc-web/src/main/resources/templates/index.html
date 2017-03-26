@@ -69,8 +69,7 @@
     <div class="login-info">
 				<span> <!-- UserInfo image size is adjusted inside CSS, it should stay as is -->
 					<a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
-                         <img th:src="@{/smartadmin/img/avatars/a1.jpg}"
-                              src="../static/smartadmin/img/avatars/a1.jpg" alt="me" class="online"/>
+                         <img th:attr="src=@{'http://111.30.31.179:32004/'+ ${portraitUrl}}" class="online"/>
                         <span th:text="${usernickname} "></span>
 						<i class="fa fa-angle-down"></i>
 					</a>

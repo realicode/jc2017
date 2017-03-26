@@ -35,6 +35,10 @@ public class UserInfoVO extends BaseVO<BigInteger> {
     @Email
     private String email;
     /**
+     * 用户职位
+     */
+    private String userTitle;
+    /**
      * 用户手机号码
      */
     @NotEmpty
@@ -66,6 +70,22 @@ public class UserInfoVO extends BaseVO<BigInteger> {
      */
     private char sex;
     /**
+     * 用户积分
+     */
+    private BigInteger points;
+    /**
+     * 连续签到天数
+     */
+    private int contiSignDays;
+    /**
+     * 上一次签到日期
+     */
+    private Date lastSignDay;
+    /**
+     * 上一次登录
+     */
+    private BigInteger lastLogin;
+    /**
      * 用户角色名称集合（以，分隔开）
      */
     private String roleNames;
@@ -76,15 +96,53 @@ public class UserInfoVO extends BaseVO<BigInteger> {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date createTime;
-
     public UserInfoVO() {
     }
-
     public UserInfoVO(UserInfo userInfo) {
         this.id = userInfo.getId();
         this.mobile = userInfo.getMobile();
         this.createTime = userInfo.getCreateTime();
 
+    }
+
+    public String getUserTitle() {
+        return userTitle;
+    }
+
+    public void setUserTitle(String userTitle) {
+        this.userTitle = userTitle;
+    }
+
+    public int getContiSignDays() {
+        return contiSignDays;
+    }
+
+    public void setContiSignDays(int contiSignDays) {
+        this.contiSignDays = contiSignDays;
+    }
+
+    public Date getLastSignDay() {
+        return lastSignDay;
+    }
+
+    public void setLastSignDay(Date lastSignDay) {
+        this.lastSignDay = lastSignDay;
+    }
+
+    public BigInteger getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(BigInteger lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public BigInteger getPoints() {
+        return points;
+    }
+
+    public void setPoints(BigInteger points) {
+        this.points = points;
     }
 
     public Date getCreateTime() {

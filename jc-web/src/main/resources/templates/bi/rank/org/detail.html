@@ -1,0 +1,113 @@
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+
+    <!-- this is what the user will see -->
+    <canvas id="radarChart" height="120"></canvas>
+
+
+</div>
+
+<script type="text/javascript">
+
+    pageSetUp();
+
+
+    var RadarConfig;
+
+
+    var pagefunction = function () {
+        // clears the variable if left blank
+
+
+        // reference: http://www.chartjs.org/docs/
+        var randomScalingFactor = function () {
+            return Math.round(Math.random() * 100);
+            //return 0;
+        };
+        var randomColorFactor = function () {
+            return Math.round(Math.random() * 255);
+        };
+        var randomColor = function (opacity) {
+            return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+        };
+
+
+        // radar example
+
+        RadarConfig = {
+            type: 'radar',
+            data: {
+                labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: "rgba(220,220,220,0.2)",
+                    pointBackgroundColor: "rgba(220,220,220,1)",
+                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                }, {
+                    label: "My Second dataset",
+                    backgroundColor: "rgba(151,187,205,0.2)",
+                    pointBackgroundColor: "rgba(151,187,205,1)",
+                    hoverPointBackgroundColor: "#fff",
+                    pointHighlightStroke: "rgba(151,187,205,1)",
+                    data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()]
+                },]
+            },
+            options: {
+                legend: {
+                    position: 'top',
+                },
+
+                scale: {
+                    reverse: false,
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+        myRadar = new Chart(document.getElementById("radarChart"), RadarConfig);
+
+    };
+
+        loadScript("smartadmin/js/plugin/chartjs/chart.min.js", pagefunction);
+
+
+    // end pagefunction
+
+    // destroy generated instances
+    // pagedestroy is called automatically before loading a new page
+    // only usable in AJAX version!
+
+    var pagedestroy = function () {
+
+        //destroy all charts
+        myLine.destroy();
+        LineConfig = null;
+
+        myBar.destroy();
+        barChartData = null;
+
+        myRadar.destroy();
+        RadarConfig = null;
+
+        myDoughnut.destroy();
+        DoughtnutConfig = null;
+
+        myPolarArea.destroy();
+        PolarConfig = null;
+
+        myPie.destroy();
+        PieConfig = null;
+
+        if (debugState) {
+            root.console.log("✔ Chart.js charts destroyed");
+        }
+    }
+
+    // end destroy
+
+</script>
+
+
+</script>

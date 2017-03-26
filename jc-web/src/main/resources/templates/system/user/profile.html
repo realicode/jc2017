@@ -1,0 +1,198 @@
+<div class="row no-margin no-padding" style="height: 40px">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4 no-margin no-padding" style="height: 40px;font-size: 16px">
+        <i class="fa-fw fa fa-home"></i>
+        我的控制面板
+        <span>>
+				我的积分
+			</span>
+    </div>
+</div>
+<!-- end row -->
+
+<!-- row -->
+
+<div class="row">
+
+	<div class="col-sm-12">
+
+
+			<div class="well well-sm">
+
+				<div class="row">
+
+					<div class="col-sm-12 col-md-12 col-lg-6">
+						<div class="well well-light well-sm no-margin no-padding">
+
+							<div class="row">
+
+								<div class="col-sm-12">
+									<div id="myCarousel" class="carousel fade profile-carousel">
+										<div class="air air-bottom-right padding-10">
+											<a href="javascript:void(0);" class="btn txt-color-white bg-color-teal btn-sm"><i class="fa fa-check"></i> Follow</a>&nbsp; <a href="javascript:void(0);" class="btn txt-color-white bg-color-pinkDark btn-sm"><i class="fa fa-link"></i> Connect</a>
+										</div>
+										<div class="air air-top-left padding-10">
+											<h4 class="txt-color-white font-md">Jan 1, 2014</h4>
+										</div>
+										<ol class="carousel-indicators">
+											<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+											<li data-target="#myCarousel" data-slide-to="1" class=""></li>
+											<li data-target="#myCarousel" data-slide-to="2" class=""></li>
+										</ol>
+										<div class="carousel-inner">
+											<!-- Slide 1 -->
+											<div class="item active">
+												<img src="../../../static/smartadmin/img/demo/s1.jpg" alt=""
+													 th:src="@{/smartadmin/img/demo/s1.jpg}" xmlns:th="http://www.thymeleaf.org" >
+											</div>
+											<!-- Slide 2 -->
+											<div class="item">
+												<img src="../../../static/smartadmin/img/demo/s2.jpg" alt=""
+                                                     th:src="@{/smartadmin/img/demo/s2.jpg}" xmlns:th="http://www.thymeleaf.org">
+											</div>
+											<!-- Slide 3 -->
+											<div class="item">
+												<img src="../../../static/smartadmin/img/demo/m3.jpg" alt=""
+                                                     th:src="@{/smartadmin/img/demo/s3.jpg}" xmlns:th="http://www.thymeleaf.org">
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-sm-12">
+
+									<div class="row">
+
+										<div class="col-sm-3 profile-pic">
+											<img th:attr="src=@{'http://111.30.31.179:32004/'+ ${realmodel.portraitUrl}}" class="online" xmlns:th="http://www.thymeleaf.org" />
+
+											<div class="padding-10">
+												<h4 class="font-md"><strong><span th:text="${realmodel.points}"></span></strong>
+												<br>
+												<small>积分</small></h4>
+												<br>
+												<h4 class="font-md"><strong><span th:text="${realmodel.contiSignDays}"></span></strong>
+												<br>
+												<small>连续签到天数</small></h4>
+											</div>
+										</div>
+										<div class="col-sm-6">
+											<h1><span th:text="${realmodel.nickname}"></span></span>
+											<br>
+                                                <small> <span th:text="${realmodel.userTitle}"></span></small></h1>
+
+											<ul class="list-unstyled">
+												<li>
+													<p class="text-muted">
+														<i class="fa fa-phone"></i>&nbsp;&nbsp;> <span th:text="${realmodel.mobile}"></span>
+													</p>
+												</li>
+												<li>
+													<p class="text-muted">
+														<i class="fa fa-envelope"></i>&nbsp;&nbsp;<a href="mailto:s"><span th:text="${realmodel.email}"></span></a>
+													</p>
+												</li>
+
+												<li>
+													<p class="text-muted">
+														<i class="fa fa-calendar"></i>&nbsp;&nbsp;<span class="txt-color-darken">Free after <a href="javascript:void(0);" rel="tooltip" title="" data-placement="top" data-original-title="Create an Appointment">4:30 PM</a></span>
+													</p>
+												</li>
+											</ul>
+											<br>
+											<p class="font-md">
+												<i>A little about me...</i>
+											</p>
+											<p>
+
+
+											</p>
+											<br>
+											<a href="javascript:void(0);" class="btn btn-primary" onclick="real_f_sign()">签    到</a>
+                                            <!--<button class="btn btn-default" type="button" id="btn_cancel" onclick="real_f_sign()">-->
+                                                <!--签到-->
+                                            <!--</button>-->
+											<br>
+											<br>
+
+										</div>
+										<div class="col-sm-3">
+
+										</div>
+
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="row">
+
+								<div class="col-sm-12">
+
+									<hr>
+
+									<div class="padding-10">
+
+										<ul class="nav nav-tabs tabs-pull-right">
+											<li class="active">
+												<a href="#a1" data-toggle="tab">Recent Articles</a>
+											</li>
+											<li>
+												<a href="#a2" data-toggle="tab">New Members</a>
+											</li>
+											<li class="pull-left">
+												<span class="margin-top-10 display-inline"><i class="fa fa-rss text-success"></i> Activity</span>
+											</li>
+										</ul>
+
+										<div class="tab-content padding-top-10">
+											<div class="tab-pane fade in active" id="a1">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- end row -->
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+</div>
+
+<!-- end row -->
+
+</section>
+<!-- end widget grid -->
+
+<script type="text/javascript">
+
+
+    var real_f_sign = function () {
+        console.log("real_f_sign");
+        $.ajax({
+            url: '/system/user/sign',
+            type: 'GET',
+            success: function (response) {
+                console.log("response:"+response);
+                if(response==="error"){
+                    realalert("今日已经签过到了");
+                }else {
+                    realalert("签到成功");
+                }
+            }
+        });
+    };
+
+	var pagefunction = function() {
+	    
+	    
+
+	};
+
+
+
+	pagefunction();
+
+</script>

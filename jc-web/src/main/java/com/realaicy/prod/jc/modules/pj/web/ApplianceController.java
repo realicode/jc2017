@@ -74,7 +74,6 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private static final String AUTH_KEY_FINAL = "final";
 
 
-
     @Autowired
     public ApplianceController(ApplianceService applianceService,
                                UserService userService, ApplicationEventPublisher publisher, MyWorkService myWorkService) {
@@ -224,8 +223,8 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @RequestMapping(value = "/final", method = RequestMethod.GET)
     public String finalPage(Model model,
-                                  @RequestParam(value = "applyid") Long applyid,
-                                  @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+                            @RequestParam(value = "applyid") Long applyid,
+                            @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
 
         if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_FINAL)) {
@@ -364,7 +363,6 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     }
 
 
-
     @Override
     protected List<ApplianceVO> convertFromPOListToVOList(List<Appliance> poList) {
         List<ApplianceVO> applianceVOList = new ArrayList<>();
@@ -433,9 +431,9 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             tempF = true;
         }
 
-        if (!tempF)
+        if (!tempF) {
             model.addAttribute("real_firstfilter", "status:0");
-
+        }
     }
 
     @Override

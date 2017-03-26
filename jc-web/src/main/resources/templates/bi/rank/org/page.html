@@ -1,0 +1,242 @@
+<div class="row no-margin no-padding" style="height: 40px">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4 no-margin no-padding" style="height: 40px;font-size: 16px">
+        <i class="fa-fw fa fa-home"></i>
+        商业智能
+        <span>>
+				评级分析
+			</span>
+    </div>
+</div>
+<div class="row realheight">
+    <section id="widget-grid" class="realheight">
+        <div class="alert alert-success  collapse alert-dismissible" role="alert" id="realalert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+            <strong>操作成功!</strong> <span id="realalertinfo"></span>
+        </div>
+        <div class="row realheight">
+            <article id="article_real_entity" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin" hidden="hidden">
+                <div class="jarviswidget jarviswidget-color-darken widget-realaicy" id="real_entity"
+                     data-widget-editbutton="false"
+                     data-widget-collapsed="false"
+                     data-widget-deletebutton="false"
+                     data-widget-fullscreenbutton="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2> 查询机构 —— 控制面板</h2>
+                    </header>
+                    <div id="realeditdiv">
+                    </div>
+                </div>
+            </article>
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 realheight">
+                <div class="realheight">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 no-margin"
+                         style="min-height: 100%;padding-bottom: 30px;padding-left: 1px;padding-right: 1px">
+                        <div class="jarviswidget jarviswidget-color-darken" id="wid-id-real0" style="min-height: 100%"
+                             data-widget-editbutton="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                                <h2>机构列表</h2>
+                            </header>
+                            <div style="min-height: 100%">
+                                <div class="jarviswidget-editbox">
+                                </div>
+                                <div class="widget-body no-padding" style="min-height: 100%">
+                                    <table id="dt_basic_real" class="table table-striped table-bordered table-hover"
+                                           style="min-height: 100%">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                名称
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                维度1
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                维度2
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                维度3
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                总评
+                                            </th>
+                                            <th class="realaicy_table_header">操作按钮</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript">
+    pageSetUp();
+
+    var pagefunction = function () {
+
+        $("#realbtn-search").on("click", function () {
+            console.log("cccccccccccccccccccccc");
+        });
+        var realtable = $('#dt_basic_real').DataTable(
+                {
+                    sScrollX: true,
+//                    sScrollY: "300px",
+                    scrollCollapse: true,
+                    bcrollCollapse: true,
+                    "pagingType": "full_numbers",
+                    "searching": true,
+                    "language": realaicy_g_var_tableopt_lang,
+                    // "dom": 'rt<"bottom"iflp<"clear">>',
+                    "dom": "<'dt-toolbar'<'col-xs-12 col-sm-10'B><'col-sm-2 col-xs-2 hidden-xs'C>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-sm-6 col-xs-12'p>>",
+                    "autoWidth": true,
+                    buttons: [
+                        {
+                            text: '<i class="glyphicon glyphicon-plus"></i> 新增',
+                            className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realalert("不支持")
+                            }
+                        },
+                        {
+                            text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realalert("不支持")
+                            }
+                        },
+                        {
+                            text: '<i  class="fa fa-trash-o"></i> 删除',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realalert("不支持")
+                            }
+                        },
+                        {
+                            text: '<i  class="fa fa-trash-o"></i> 批量删除',
+                            className: 'btn btn-danger real_datatables_button_class_right btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realalert("不支持")
+                            }
+                        },
+                        {
+                            text: '快速查询',
+                            className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realtable.draw();
+                            }
+                        },
+                        {
+                            text: '自助复杂查询',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realloadpage("/bi/rank/org/search");
+                            }
+                        },
+                        {
+                            text: '刷新数据',
+                            className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
+                            action: function (e, dt, node, config) {
+                                realtable.draw();
+                            }
+                        },
+                        'excel'
+                    ],
+                    ajax: {
+                        url: "/bi/rank/org/list4dt",
+                        type: "POST",
+                        'beforeSend': function (request) {
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            request.setRequestHeader(header, token);
+                        },
+                        "data": function (d) {
+                            // d.custom = $('#myInput').val();
+                            // etc
+                            delete d.columns;
+                            var searchString = "";
+                            d.search = searchString;
+                            console.log("search: "+ d.search);
+
+                        },
+                        error: function (xhr, status, error) {
+                            if (xhr.responseText.indexOf("invalid") == 0) {
+                                location = "http://127.0.0.1:48080/";
+                            }
+                        }
+                    },
+                    processing: true,
+                    serverSide: true,
+                    columns: [
+                        {"data": "id","width":"20px"},
+                        {"data": "name","width":"20px"},
+                        {"data": "weidu1","width":"10%"},
+                        {"data": "weidu2","width":"10%"},
+                        {"data": "weidu3"},
+                        {"data": "rankScore"},
+                        {
+                            "data": null,
+                            "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>",
+                            "width":"20%"
+                        }
+                    ],
+                    columnDefs: [
+                        {
+                            searchable: false,
+                            orderable: false,
+//                                className: 'select-checkbox',
+                            targets: 0,
+                            'checkboxes': {
+                                'selectRow': false
+                            }
+                        }],
+                    select: {
+                        style: 'multi'
+//                            selector: ':not(:last-child)'
+                    },
+                    "order": [[1, 'asc']]
+                });
+
+        $('#dt_basic_real').on('click', '.btn-intable-realaicy', function () {
+            //var data = realtable.row($(this).parents('tr')).data();
+            //console.log("data: " + data.id);
+            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+            realloadpage("/bi/rank/org/detail");
+        });
+    };
+
+    pagefunction();
+</script>

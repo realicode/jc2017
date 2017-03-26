@@ -31,9 +31,11 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.util.*;
 
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.SESSIONKEY.USERID;
 import static com.realaicy.prod.jc.uitl.RealCacheUtil.IPADRESS_CANUSEFUNC_TABLE;
 
 /**
@@ -55,6 +57,8 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     private static final String LIST_ENTITY_URL = "system/user/page";
     private static final String SEARCH_ENTITY_URL = "system/user/search";
     private static final String USER_TO_ROLE_URL = "system/user/user2role";
+    private static final String USER_PROFILE_URL = "system/user/profile";
+
     private static JsonMapper binder = JsonMapper.nonDefaultMapper();
     private final PasswordEncoder bcryptEncoder;
     private final UserRepos userRepos;
@@ -113,6 +117,38 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
             RealCacheUtil.IP_BLACK_LIST.add(clientIP);
         }
         return (Boolean.toString(!userService.checkUsername(username)));
+
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/profile")
+    public String userProfilePage(HttpSession httpSession, Model model) {
+
+        UserInfo userInfo = userInfoService.findOne((BigInteger) httpSession.getAttribute(USERID));
+        model.addAttribute("realmodel", userInfo);
+        return USER_PROFILE_URL;
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/sign")
+    public String userSign(HttpSession httpSession) {
+
+        UserInfo userInfo = userInfoService.findOne((BigInteger) httpSession.getAttribute(USERID));
+        Date lastSignDay = userInfo.getLastSignDay();
+        if (lastSignDay == null) {
+            userInfo.setLastSignDay(new Date());
+            userInfo.setContiSignDays(1);
+        } else if (new Date().getTime() - lastSignDay.getTime() > 86400) {
+            userInfo.setLastSignDay(new Date());
+            if (new Date().getTime() - lastSignDay.getTime() < 172800) {
+                userInfo.setContiSignDays(userInfo.getContiSignDays() + 1);
+            } else {
+                userInfo.setContiSignDays(1);
+            }
+        } else {
+            return "error";
+        }
+        userInfoService.save(userInfo);
+        return "ok";
 
     }
 
@@ -208,7 +244,6 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     }
 
 
-
     @Override
     protected List<UserVO> convertFromPOListToVOList(List<User> poList) {
 
@@ -235,7 +270,8 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
             voList.add(userVO);
         }
-        return voList;    }
+        return voList;
+    }
 
     @Override
     protected void extendShowEdit(User po, UserVO vo) {
@@ -296,6 +332,7 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
     protected String[] getNOEditPropertyNames() {
         return "password,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled,roles".split(",");
     }
+
     @Override
     protected void extendSaveEdit(User po, UserVO realmodel) {
         UserInfo userInfo = new UserInfo();
@@ -312,7 +349,8 @@ public class UserController extends CRUDWithVOController<User, BigInteger, UserV
 
         po.setOrg(orgService.findOne(BigInteger.valueOf(Long.valueOf(realmodel.getOrgID()))));
 
-        userInfoService.save(userInfo);    }
+        userInfoService.save(userInfo);
+    }
 
     @Override
     protected Specification<User> getExtSpec(String str) {

@@ -3,11 +3,8 @@ package com.realaicy.prod.jc.uitl;
 import com.aspose.words.License;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-
-import com.aspose.words.License;
 
 
 /**
@@ -19,11 +16,11 @@ public class OtherUtil {
     private static InputStream license;
 
 
-
     public static int getRandNum(int min, int max) {
         return min + (int) (Math.random() * ((max - min) + 1));
     }
-    public static String  getSixRandSMSCode() {
+
+    public static String getSixRandSMSCode() {
         return String.valueOf(1 + (int) (Math.random() * StaticParams.REALNUM.SMSCODE_N));
     }
 
@@ -32,7 +29,7 @@ public class OtherUtil {
         boolean result = false;
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            license = new FileInputStream("G:\\Realtemp\\tempweb\\license.xml");// 凭证文件
+            license = new FileInputStream("G:\\Realtemp\\tempweb\\license.xml"); // 凭证文件
             License aposeLic = new License();
             aposeLic.setLicense(license);
             result = true;

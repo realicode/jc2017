@@ -1,6 +1,5 @@
 package com.realaicy.prod.jc.modules.pj.service;
 
-import com.alibaba.druid.sql.visitor.functions.Bin;
 import com.realaicy.prod.jc.common.event.*;
 import com.realaicy.prod.jc.common.event.handler.WX;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
@@ -183,7 +182,8 @@ public class ApplianceListener {
                 applianceFinalEvent.getApplyid(), USER_SECRETARY_WYM);
     }
 
-    private void handelDefault(String eventKey, String applicationName, String workUri, String viewUri, BigInteger id, String tmpWorkUserName) {
+    private void handelDefault(String eventKey, String applicationName,
+                               String workUri, String viewUri, BigInteger id, String tmpWorkUserName) {
         for (EventAction ea : eventActionService.findByName(eventKey)) {
             if (ea.getEventAction().equals("WX")) {
                 wxservice.dowork(ea, applicationName);

@@ -7,9 +7,6 @@ package com.realaicy.prod.jc.realglobal.config;
 public class StaticParams {
 
 
-
-
-
     public static final class REALCACHE {
         public static final String DEFAULTTOTALBYTES = "100M";
         public static final String DEFAULTBYTES = "10M";
@@ -32,11 +29,10 @@ public class StaticParams {
 
     public static final class TODOWORK {
 
-        public static final Short WORK_DEFAULT_LEVEL= 5;
-        public static final Short WORK_DEFAULT_STATUS= 1;
-        public static final String WORK_DEFAULT_TYPE= "work";
-        public static final Long WORK_DEFAULT_PERIOD= 2L;
-
+        public static final Short WORK_DEFAULT_LEVEL = 5;
+        public static final Short WORK_DEFAULT_STATUS = 1;
+        public static final String WORK_DEFAULT_TYPE = "work";
+        public static final Long WORK_DEFAULT_PERIOD = 2L;
 
 
         public static final String USER_SUSER_ADMIN = "realaicy";
@@ -102,28 +98,30 @@ public class StaticParams {
 
 
     }
+
     public static final class FUNCMAX {
         public static final int CHECKUSERNAME = 10;
         public static final int CHECKSMSCODE = 5;
         public static final int REGISUSER = 5;
 
     }
+
     public static final class FILEUPLOAD {
         public static final int MAXBYTESPERFILE = 20971520;
 
     }
 
-        public static final class REALNUM {
-        public static final int  N1 = 1;
-        public static final int  N2 = 2;
-        public static final int  N3 = 3;
-        public static final int  N4 = 4;
-        public static final int  N5 = 5;
+    public static final class REALNUM {
+        public static final int N1 = 1;
+        public static final int N2 = 2;
+        public static final int N3 = 3;
+        public static final int N4 = 4;
+        public static final int N5 = 5;
 
         public static final int N20 = 20;
-        public static final int  N10 = 10;
-        public static final int  N200 = 200;
-        public static final int  SMSCODE_N = 999999;
+        public static final int N10 = 10;
+        public static final int N200 = 200;
+        public static final int SMSCODE_N = 999999;
 
     }
 
@@ -132,6 +130,7 @@ public class StaticParams {
         public static final String ROLE_USER = "user";
 
     }
+
     public static final class PATHREGX {
         public static final String NOAUTH = "/smartadmin/noauth/**";
         public static final String CSS = "/smartadmin/css/**";
@@ -155,8 +154,6 @@ public class StaticParams {
 
         public static final String WX_TEST3 = "/temptest/**";
         public static final String WX = "/wx/**";
-
-
 
 
     }

@@ -159,6 +159,14 @@
             <version>2.3.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.fake.realaicy</groupId>
+            <artifactId>aspose</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/reallib/aspose-words-16.5.0-jdk16.jar</systemPath>
+        </dependency>
+
 
         <!-- 微信企业号 -->
         <dependency>
