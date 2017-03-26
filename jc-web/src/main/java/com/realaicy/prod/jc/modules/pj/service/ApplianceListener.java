@@ -145,7 +145,7 @@ public class ApplianceListener {
         String applicationName = applianceService.findOne(applicationApprovedEvent.getApproveEntityID()).getName();
 
         handelDefault(((JCBaseEvent) applicationApprovedEvent).getEventKey(), applicationName,
-                "/pj/apply/confirm?realactiontype=providecontract&applyid=", "/pj/apply/show/",
+                APPLY_PROVIDECONTRACT_WORKURI, APPLY_PROVIDECONTRACT_VIEWURI,
                 applicationApprovedEvent.getApproveEntityID(), USER_SECRETARY_WYM);
     }
 
