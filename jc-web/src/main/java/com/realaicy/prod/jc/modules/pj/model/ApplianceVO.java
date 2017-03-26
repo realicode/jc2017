@@ -97,8 +97,29 @@ public class ApplianceVO extends BaseVO<BigInteger> {
     @Digits(integer = 10000000, fraction = 1)
     private Integer quotation;
 
+    /**
+     * 合同URI
+     */
+    private String contractURI;
+
+    /**
+     * 方案URI
+     */
+    private String trialURI;
+    /**
+     * 临时测试
+     */
+    private String contracttmp1;
+    /**
+     * 临时测试2
+     */
+    private String contracttmp2;
 
 
+    /**
+     * 最终确认意见
+     */
+    private String finalRemark;
 
     public ApplianceVO() {
     }
@@ -116,6 +137,11 @@ public class ApplianceVO extends BaseVO<BigInteger> {
         this.applyDescribe = po.getApplyDescribe();
         this.confirmRemark = po.getConfirmRemark();
         this.approveRemark = po.getApproveRemark();
+        this.contracttmp1 = po.getContracttmp1();
+        this.contractURI = po.getContractURI();
+        this.trialURI  = po.getTrialURI();
+        this.contracttmp2 = po.getContracttmp2();
+        this.finalRemark = po.getFinalRemark();
 
         this.applicantName = po.getUser().getNickname();
         if (po.getConfirmor() != null) {
@@ -130,6 +156,38 @@ public class ApplianceVO extends BaseVO<BigInteger> {
 //        if (SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-ack")) {
 //            this.btnType = "2"; //有确认按钮
 //        }
+    }
+
+    public String getTrialURI() {
+        return trialURI;
+    }
+
+    public void setTrialURI(String trialURI) {
+        this.trialURI = trialURI;
+    }
+
+    public String getContracttmp2() {
+        return contracttmp2;
+    }
+
+    public void setContracttmp2(String contracttmp2) {
+        this.contracttmp2 = contracttmp2;
+    }
+
+    public String getContractURI() {
+        return contractURI;
+    }
+
+    public void setContractURI(String contractURI) {
+        this.contractURI = contractURI;
+    }
+
+    public String getContracttmp1() {
+        return contracttmp1;
+    }
+
+    public void setContracttmp1(String contracttmp1) {
+        this.contracttmp1 = contracttmp1;
     }
 
     public String getApproverName() {

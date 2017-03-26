@@ -54,7 +54,7 @@ public class FileController {
         }
 
         return new ResponseEntity<>(filename, HttpStatus.OK);
-    } // method uploadFile
+    } // method uploadPortrait
 
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
     @ResponseBody

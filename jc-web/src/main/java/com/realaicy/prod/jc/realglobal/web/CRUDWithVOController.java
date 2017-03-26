@@ -51,7 +51,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         ID extends Serializable, V extends BaseVO<ID>> {
 
     protected static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
-    private static final String NO_AUTH_STRING = "NOPrivilege";
+    protected static final String NO_AUTH_STRING = "NOPrivilege";
 
     private static String regEx = "[`~!@#$%^&*()+=|{}':;,\\[\\].<>/?！￥…（）—【】‘；：”“’。，、？]";
     private static Pattern p = Pattern.compile(regEx);

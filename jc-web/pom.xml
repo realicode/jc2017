@@ -159,6 +159,7 @@
             <version>2.3.1</version>
         </dependency>
 
+
         <!-- 微信企业号 -->
         <dependency>
             <groupId>com.foxinmy</groupId>

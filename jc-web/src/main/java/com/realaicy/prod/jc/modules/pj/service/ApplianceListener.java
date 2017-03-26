@@ -1,9 +1,7 @@
 package com.realaicy.prod.jc.modules.pj.service;
 
-import com.realaicy.prod.jc.common.event.ApproveEvent;
-import com.realaicy.prod.jc.common.event.ConfirmEvent;
-import com.realaicy.prod.jc.common.event.CreationEvent;
-import com.realaicy.prod.jc.common.event.JCBaseEvent;
+import com.alibaba.druid.sql.visitor.functions.Bin;
+import com.realaicy.prod.jc.common.event.*;
 import com.realaicy.prod.jc.common.event.handler.WX;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
@@ -23,6 +21,8 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.TODOWORK.*;
 
 /**
  * Created by realaicy on 2017/3/15.
@@ -144,7 +144,47 @@ public class ApplianceListener {
 
         String applicationName = applianceService.findOne(applicationApprovedEvent.getApproveEntityID()).getName();
 
-        for (EventAction ea : eventActionService.findByName(((JCBaseEvent) applicationApprovedEvent).getEventKey())) {
+        handelDefault(((JCBaseEvent) applicationApprovedEvent).getEventKey(), applicationName,
+                "/pj/apply/confirm?realactiontype=providecontract&applyid=", "/pj/apply/show/",
+                applicationApprovedEvent.getApproveEntityID(), USER_SECRETARY_WYM);
+    }
+
+    @EventListener
+    public void handleApplicationProvideContractEvent(ApplianceProvideContractEvent applianceProvideContractEvent) {
+        logger.debug("handleApplicationApprovedEvent");
+
+        String applicationName = applianceService.findOne(applianceProvideContractEvent.getApplyid()).getName();
+
+        handelDefault(applianceProvideContractEvent.getEventKey(), applicationName,
+                APPLY_PROVIDECONTRACT_WORKURI, APPLY_PROVIDECONTRACT_VIEWURI,
+                applianceProvideContractEvent.getApplyid(), null);
+
+    }
+
+    @EventListener
+    public void handleApplicationProvideSolutionEvent(ApplianceProvideSolutionEvent applianceProvideSolutionEvent) {
+        logger.debug("handleApplicationProvideSolutionEvent");
+
+        String applicationName = applianceService.findOne(applianceProvideSolutionEvent.getApplyid()).getName();
+
+        handelDefault(applianceProvideSolutionEvent.getEventKey(), applicationName,
+                APPLY_FINAL_WORKURI, APPLY_FINAL_VIEWURI,
+                applianceProvideSolutionEvent.getApplyid(), USER_DIRECTOR);
+    }
+
+    @EventListener
+    public void handleApplicationFinalEvent(ApplianceFinalEvent applianceFinalEvent) {
+        logger.debug("handleApplicationFinalEvent");
+
+        String applicationName = applianceService.findOne(applianceFinalEvent.getApplyid()).getName();
+
+        handelDefault(applianceFinalEvent.getEventKey(), applicationName,
+                null, null,
+                applianceFinalEvent.getApplyid(), USER_SECRETARY_WYM);
+    }
+
+    private void handelDefault(String eventKey, String applicationName, String workUri, String viewUri, BigInteger id, String tmpWorkUserName) {
+        for (EventAction ea : eventActionService.findByName(eventKey)) {
             if (ea.getEventAction().equals("WX")) {
                 wxservice.dowork(ea, applicationName);
             }
@@ -153,7 +193,7 @@ public class ApplianceListener {
                 String str = eventMsgTemRepos.getOne(ea.getMsgTemID()).getName();
 
                 MyWork work = new MyWork();
-                work.setUser(userService.findByUsername(StaticParams.TODOWORK.USER_SECRETARY_WYM));
+                work.setUser(userService.findByUsername(tmpWorkUserName));
                 work.setCreaterID(BigInteger.ONE);
                 work.setUpdaterID(work.getCreaterID());
                 work.setCreateTime(new Date());
@@ -163,17 +203,16 @@ public class ApplianceListener {
                 work.setSubTitle(tmp1.split("###")[0]);
                 work.setName(work.getSubTitle());
 
-                work.setDeadline(Date.from(LocalDateTime.now().plusDays(2L).atZone(ZoneId.systemDefault()).toInstant()));
-                work.setWorkLevel(Short.valueOf("5"));
-                work.setWorkType("work");
-                work.setStatus(Short.valueOf("1"));
-
-                work.setWorkUri("/pj/apply/confirm?realactiontype=providecontract&applyid=" + applicationApprovedEvent.getApproveEntityID());
-                work.setViewUri("/pj/apply/show/" + applicationApprovedEvent.getApproveEntityID());
+                work.setDeadline(Date.from(LocalDateTime.now().plusDays(WORK_DEFAULT_PERIOD).atZone(ZoneId.systemDefault()).toInstant()));
+                work.setWorkLevel(WORK_DEFAULT_LEVEL);
+                work.setWorkType(WORK_DEFAULT_TYPE);
+                work.setStatus(WORK_DEFAULT_STATUS);
+                work.setWorkUri(workUri + id);
+                work.setViewUri(viewUri + id);
                 myWorkService.save(work);
 
             }
-
         }
     }
+
 }

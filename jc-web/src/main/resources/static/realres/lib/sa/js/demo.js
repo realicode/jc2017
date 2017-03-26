@@ -72,6 +72,8 @@ $("#smart-styles > a")
     });
 
 
+// realaicy
+
 function real_g_success(msg) {
     console.log(msg);
     $('#realalertinfo').text(msg);
@@ -249,6 +251,18 @@ realaicy_g_var_tableopt_lang = {
 
 // realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
 
+function changeWorkCount() {
+    $.ajax({
+        url: '/me/work/count',
+        type: 'GET',
+        success: function (response) {
+            console.log("response:"+response);
+            $(".real-work").children(":first").html(function(i, v) {
+                return response;
+            });
+        }
+    });
+}
 
 // 用户名验证
 jQuery.validator.addMethod("isUsername", function(value, element) {

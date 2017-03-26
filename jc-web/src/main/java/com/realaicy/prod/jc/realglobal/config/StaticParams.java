@@ -8,34 +8,7 @@ public class StaticParams {
 
 
 
-    public static final class PATHREGX {
-        public static final String NOAUTH = "/smartadmin/noauth/**";
-        public static final String CSS = "/smartadmin/css/**";
-        public static final String JS = "/smartadmin/js/**";
-        public static final String SB_ALL = "/smartadmin/**";
-        public static final String REALAICY_ALL = "/realaicy/**";
-        public static final String REALRES = "/realres/**";
-        public static final String IMG = "/smartadmin/img/**";
-        public static final String FONT = "/smartadmin/fonts/**";
-        public static final String STATIC = "/static/**";
-        public static final String AUTHADMIN = "/smartadmin/admin/**";
-        public static final String AUTHUSER = "/smartadmin/user/**";
-        public static final String TEMP_TEST = "/g/realerror/**";
-        public static final String SIGNUP = "/signup";
-        public static final String REGIS = "/regisuser";
 
-        public static final String SIGNUP_CHECKUSERNAME = "/system/user/checkusername";
-        public static final String SIGNUP_SENTMBCODE = "/sms/signup/sentcode";
-        public static final String WX_TEST = "/wx/test";
-        public static final String WX_TEST2 = "/wx/t2";
-
-        public static final String WX_TEST3 = "/temptest/**";
-        public static final String WX = "/wx/**";
-
-
-
-
-    }
 
     public static final class REALCACHE {
         public static final String DEFAULTTOTALBYTES = "100M";
@@ -51,17 +24,39 @@ public class StaticParams {
         public static final Short PJAPPLY_CONFIRMED = Short.valueOf("2");
         public static final Short PJAPPLY_ERR_IN_CONFIRM = Short.valueOf("4201");
         public static final Short PJAPPLY_APPROVED = Short.valueOf("3");
-
+        public static final Short PJAPPLY_PROVIDECONTRACT_DONE = Short.valueOf("4");
+        public static final Short PJAPPLY_PROVIDESOLUTION_DONE = Short.valueOf("5");
+        public static final Short PJAPPLY_FINAL_DONE = Short.valueOf("6");
 
     }
 
     public static final class TODOWORK {
+
+        public static final Short WORK_DEFAULT_LEVEL= 5;
+        public static final Short WORK_DEFAULT_STATUS= 1;
+        public static final String WORK_DEFAULT_TYPE= "work";
+        public static final Long WORK_DEFAULT_PERIOD= 2L;
+
+
+
         public static final String USER_SUSER_ADMIN = "realaicy";
         public static final String USER_SECRETARY_WYM = "wym";
         public static final String USER_DIRECTOR = "zhaoy";
         public static final String APPLY_CONFIRM_KEY = "Appliance_Confirm";
         public static final String APPLY_CREATION_KEY = "Appliance_Creation";
         public static final String APPLY_APPROVE_KEY = "Appliance_Approve";
+        public static final String APPLY_PROVIDECONTRACT_KEY = "Appliance_ProvideContract";
+        public static final String APPLY_PROVIDESOLUTION_KEY = "Appliance_ProvideSolution";
+        public static final String APPLY_FINAL_KEY = "Appliance_Final";
+
+
+        public static final String APPLY_PROVIDECONTRACT_WORKURI = "/pj/apply/providecontract?realactiontype=new&applyid=";
+        public static final String APPLY_PROVIDECONTRACT_VIEWURI = "/pj/apply/show/";
+
+        public static final String APPLY_FINAL_WORKURI = "/pj/apply/final?realactiontype=new&applyid=";
+        public static final String APPLY_FINAL_VIEWURI = "/pj/apply/show/";
+
+
     }
 
     public static final class BTNTYPE {
@@ -72,6 +67,7 @@ public class StaticParams {
     public static final class REALACTIONTYPE {
         public static final String PJ_AFFIRM = "affirm";
         public static final String PJ_APPROVE = "approve";
+        public static final String PJ_BUILDCONTRACT_NEW = "new";
     }
 
 
@@ -91,9 +87,6 @@ public class StaticParams {
 
     }
 
-    public static final class WX {
-        public static final String NEWAPPLYSENTTO = "wym";
-    }
 
     public static final class WS {
         public static final String DEFAULTTOTALBYTES = "100M";
@@ -139,16 +132,32 @@ public class StaticParams {
         public static final String ROLE_USER = "user";
 
     }
+    public static final class PATHREGX {
+        public static final String NOAUTH = "/smartadmin/noauth/**";
+        public static final String CSS = "/smartadmin/css/**";
+        public static final String JS = "/smartadmin/js/**";
+        public static final String SB_ALL = "/smartadmin/**";
+        public static final String REALAICY_ALL = "/realaicy/**";
+        public static final String REALRES = "/realres/**";
+        public static final String IMG = "/smartadmin/img/**";
+        public static final String FONT = "/smartadmin/fonts/**";
+        public static final String STATIC = "/static/**";
+        public static final String AUTHADMIN = "/smartadmin/admin/**";
+        public static final String AUTHUSER = "/smartadmin/user/**";
+        public static final String TEMP_TEST = "/g/realerror/**";
+        public static final String SIGNUP = "/signup";
+        public static final String REGIS = "/regisuser";
 
-    public static final class CONSTVAR {
-        public static final Short DEFAULT_RESWEIGHT = 1000;
+        public static final String SIGNUP_CHECKUSERNAME = "/system/user/checkusername";
+        public static final String SIGNUP_SENTMBCODE = "/sms/signup/sentcode";
+        public static final String WX_TEST = "/wx/test";
+        public static final String WX_TEST2 = "/wx/t2";
+
+        public static final String WX_TEST3 = "/temptest/**";
+        public static final String WX = "/wx/**";
+
+
+
 
     }
-
-    public static final class FILEPATH {
-        public static final String TEMP_USER_PORTRAIT_PATH = "";
-
-
-    }
-
 }

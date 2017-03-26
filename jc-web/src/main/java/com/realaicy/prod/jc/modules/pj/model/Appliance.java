@@ -21,24 +21,28 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
     @Column(name = "APPLYNAME")
     @NotEmpty
     private String name;
+
     /**
      * 申办方机构名称
      */
     @Column(name = "SPONSOR_ORGNAME")
     @NotEmpty
     private String orgName;
+
     /**
      * 方案摘要URI
      */
     @Column(name = "TRIALABSTRACTURI")
     @NotEmpty
     private String trialAbstractURI;
+
     /**
      * 方案摘要Name
      */
     @Column(name = "TRIALABSTRACTNAME")
     @NotEmpty
     private String trialAbstractName;
+
     /**
      * 带稽查试验机构名称
      */
@@ -51,28 +55,33 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
     @NotEmpty
     @Column(name = "APPLY_DESCRIBE")
     private String applyDescribe;
+
     /**
      * 确认人
      */
     @ManyToOne()
     @JoinColumn(name = "CONFIRM_USERID")
     private User confirmor;
+
     /**
      * "确认人"评论
      */
     @Column(name = "CONFIRM_REMARK")
     private String confirmRemark;
+
     /**
      * 审批人
      */
     @ManyToOne()
     @JoinColumn(name = "APPROVE_USERID")
     private User approver;
+
     /**
      * "审批人"评论
      */
     @Column(name = "APPROVE_REMARK")
     private String approveRemark;
+
     /**
      * 报价
      */
@@ -83,18 +92,58 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
      * 合同URI
      */
     @Column(name = "CONTRACTURI")
-    @NotEmpty
     private String contractURI;
 
     /**
      * 研究方案URI
      */
     @Column(name = "TRIALURI")
-    @NotEmpty
     private String trialURI;
+
+    /**
+     * 临时测试
+     */
+    @Column(name = "CONTRACTTMP1")
+    private String contracttmp1;
+
+    /**
+     * 临时测试2
+     */
+    @Column(name = "CONTRACTTMP2")
+    private String contracttmp2;
+    /**
+     * 最终确认意见
+     */
+    @Column(name = "FINALREMARK")
+    private String finalRemark;
+
     @ManyToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User user;
+
+    public String getFinalRemark() {
+        return finalRemark;
+    }
+
+    public void setFinalRemark(String finalRemark) {
+        this.finalRemark = finalRemark;
+    }
+
+    public String getContracttmp2() {
+        return contracttmp2;
+    }
+
+    public void setContracttmp2(String contracttmp2) {
+        this.contracttmp2 = contracttmp2;
+    }
+
+    public String getContracttmp1() {
+        return contracttmp1;
+    }
+
+    public void setContracttmp1(String contracttmp1) {
+        this.contracttmp1 = contracttmp1;
+    }
 
     public String getContractURI() {
         return contractURI;

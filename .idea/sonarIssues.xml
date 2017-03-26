@@ -58,7 +58,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/ApplianceBuildContractEvent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/ApplianceCreatedEvent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/common/event/ApplianceProvideContractEvent.java">
           <value>
             <set />
           </value>
@@ -134,6 +144,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/ApplicationVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/ApplyContractVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/FinalVO.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/modules/pj/model/TrialSolutionVO.java">
           <value>
             <set />
           </value>
@@ -308,7 +333,17 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/realglobal/web/FileController.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/uitl/NetUtil.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/java/com/realaicy/prod/jc/uitl/OtherUtil.java">
           <value>
             <set />
           </value>
@@ -363,6 +398,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realres/lib/sa/css/realaicy.css">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/static/realres/lib/sa/js/demo.js">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/global/errorpage/NOPrivilege.html">
           <value>
             <set />
@@ -378,12 +423,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/affirmcontract.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/detail.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/final.html">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/page.html">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/providecontract.html">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/jc-web/src/main/resources/templates/pj/apply/providesolution.html">
           <value>
             <set />
           </value>

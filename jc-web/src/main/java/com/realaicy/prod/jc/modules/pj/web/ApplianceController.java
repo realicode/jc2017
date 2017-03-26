@@ -1,20 +1,20 @@
 package com.realaicy.prod.jc.modules.pj.web;
 
-import com.realaicy.prod.jc.common.event.ApplianceApproveEvent;
-import com.realaicy.prod.jc.common.event.ApplianceConfirmEvent;
-import com.realaicy.prod.jc.common.event.ApplianceCreatedEvent;
-import com.realaicy.prod.jc.common.event.WorkDoneEvent;
+import com.aspose.words.Document;
+import com.realaicy.prod.jc.common.event.*;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
-import com.realaicy.prod.jc.modules.pj.model.Appliance;
-import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
+import com.realaicy.prod.jc.modules.pj.model.*;
 import com.realaicy.prod.jc.modules.pj.service.ApplianceService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
 import com.realaicy.prod.jc.uitl.SpringSecurityUtil;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.jeecgframework.poi.word.WordExportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
@@ -24,17 +24,25 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALACTIONTYPE.PJ_BUILDCONTRACT_NEW;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_FINAL_DONE;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_PROVIDECONTRACT_DONE;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_PROVIDESOLUTION_DONE;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.TODOWORK.*;
+import static com.realaicy.prod.jc.uitl.OtherUtil.getAsposeLicense;
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy;
 
 @Controller
 @RequestMapping("/pj/apply")
 public class ApplianceController extends CRUDWithVOController<Appliance, BigInteger, ApplianceVO> {
+
+    @Value("${realupload.path.tmp}")
+    private String uploadfiletmppath;
+
     private final UserService userService;
     private final ApplicationEventPublisher publisher;
     private final MyWorkService myWorkService;
@@ -54,12 +62,17 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private static final String SEARCH_ENTITY_URL = "pj/apply/search";
     private static final String APPLY_CONFIRM_URL = "pj/apply/confirm";
     private static final String APPLY_PROVIDECONTRACT_URL = "pj/apply/providecontract";
+    private static final String APPLY_PROVIDESOLUTION_URL = "pj/apply/providesolution";
+    private static final String APPLY_FINAL_URL = "pj/apply/final";
 
 
     private static final String AUTH_PREFIX = "Appliance";
     private static final String AUTH_KEY_ACK = "ack";
     private static final String AUTH_KEY_APPROVE = "approve";
     private static final String AUTH_KEY_PROVIDECONTRACT = "providecontract";
+    private static final String AUTH_KEY_PROVIDESOLUTION = "providesolution";
+    private static final String AUTH_KEY_FINAL = "final";
+
 
 
     @Autowired
@@ -76,8 +89,8 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @RequestMapping(value = "/confirm", method = RequestMethod.GET)
     public String confirm(Model model,
-                           @RequestParam(value = "applyid") Long applyid,
-                           @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+                          @RequestParam(value = "applyid") Long applyid,
+                          @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
 
         if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_ACK, AUTH_KEY_APPROVE)) {
@@ -129,12 +142,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
                     + realmodel.getId());
             if (myWork != null) {
                 //清理代办工作
-                myWork.setStatus(StaticParams.REALSTATUS.MYWORK_DONE);
-                myWork.setProcessDate(new Date());
-                myWorkService.save(myWork);
-
-                WorkDoneEvent workDoneEvent = new WorkDoneEvent();
-                publisher.publishEvent(workDoneEvent);
+                myWorkService.markDone(myWork);
             }
 
         } else if (realactiontype.equals(StaticParams.REALACTIONTYPE.PJ_APPROVE)) {
@@ -164,7 +172,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             }
 
             ApplianceApproveEvent applianceApproveEvent = new ApplianceApproveEvent(realmodel.getId());
-            applianceApproveEvent.setEventKey(StaticParams.TODOWORK.APPLY_APPROVE_KEY);
+            applianceApproveEvent.setEventKey(APPLY_APPROVE_KEY);
 
             this.publisher.publishEvent(applianceApproveEvent);
         }
@@ -177,19 +185,185 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @RequestMapping(value = "/providecontract", method = RequestMethod.GET)
     public String provideContract(Model model,
-                           @RequestParam(value = "applyid") Long applyid,
-                           @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+                                  @RequestParam(value = "applyid") Long applyid,
+                                  @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
 
 
         if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
             return NO_AUTH_VIEW_NAME;
         }
         ApplianceVO applianceVO = new ApplianceVO(applianceService.findOne(BigInteger.valueOf(applyid)));
+        ApplyContractVO applyContractVO = new ApplyContractVO();
+        applyContractVO.setApplyid(applianceVO.getId());
         model.addAttribute("realmodel", applianceVO);
+        model.addAttribute("real_model_contract", applyContractVO);
         model.addAttribute("realactiontype", realactiontype);
         model.addAttribute("updateflag", "editedit");
         return APPLY_PROVIDECONTRACT_URL;
     }
+
+
+    @RequestMapping(value = "/providesolution", method = RequestMethod.GET)
+    public String provideSolution(Model model,
+                                  @RequestParam(value = "applyid") Long applyid,
+                                  @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDESOLUTION)) {
+            return NO_AUTH_VIEW_NAME;
+        }
+        ApplianceVO applianceVO = new ApplianceVO(applianceService.findOne(BigInteger.valueOf(applyid)));
+        TrialSolutionVO trialSolutionVO = new TrialSolutionVO();
+        trialSolutionVO.setApplyid(applianceVO.getId());
+        model.addAttribute("realmodel", applianceVO);
+        model.addAttribute("real_model_trialsolution", trialSolutionVO);
+        model.addAttribute("realactiontype", realactiontype);
+        model.addAttribute("updateflag", "editedit");
+        return APPLY_PROVIDESOLUTION_URL;
+    }
+
+    @RequestMapping(value = "/final", method = RequestMethod.GET)
+    public String finalPage(Model model,
+                                  @RequestParam(value = "applyid") Long applyid,
+                                  @RequestParam(value = "realactiontype") String realactiontype) throws InstantiationException {
+
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_FINAL)) {
+            return NO_AUTH_VIEW_NAME;
+        }
+        ApplianceVO applianceVO = new ApplianceVO(applianceService.findOne(BigInteger.valueOf(applyid)));
+        FinalVO finalVO = new FinalVO();
+        finalVO.setApplyid(applianceVO.getId());
+        model.addAttribute("realmodel", applianceVO);
+        model.addAttribute("real_model_final", finalVO);
+        model.addAttribute("realactiontype", realactiontype);
+        model.addAttribute("updateflag", "editedit");
+        return APPLY_FINAL_URL;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/final", method = RequestMethod.POST)
+    public String finalPost(@ModelAttribute("real_model_final") final FinalVO finalVO) throws InstantiationException {
+
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_FINAL)) {
+            return NO_AUTH_STRING;
+        }
+
+        Appliance appliance = applianceService.findOne(finalVO.getApplyid());
+        appliance.setFinalRemark(finalVO.getFinalRemark());
+        appliance.setStatus(PJAPPLY_FINAL_DONE);
+        applianceService.save(appliance);
+        MyWork myWork = myWorkService.findByWorkUri(APPLY_FINAL_WORKURI
+                + finalVO.getApplyid());
+        if (myWork != null) {
+            //清理代办工作
+            myWorkService.markDone(myWork);
+        }
+
+        ApplianceFinalEvent applianceFinalEvent = new ApplianceFinalEvent();
+        applianceFinalEvent.setEventKey(APPLY_FINAL_KEY);
+        applianceFinalEvent.setApplyid(finalVO.getApplyid());
+        this.publisher.publishEvent(applianceFinalEvent);
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/buildcontract", method = RequestMethod.POST)
+    public String buildcontract(@ModelAttribute("real_model_contract") final ApplyContractVO contractVO) {
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
+            return NO_AUTH_STRING;
+        }
+
+        Appliance appliance = applianceService.findOne(contractVO.getApplyid());
+
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orgname", appliance.getOrgName());
+        map.put("trialname", appliance.getName());
+        map.put("trialprice", appliance.getQuotation());
+        map.put("y", "2017");
+        map.put("m", "3");
+        map.put("d", "26");
+
+        String filename = "realfile_" + System.currentTimeMillis();
+        String fileType = ".docx";
+        try {
+            XWPFDocument doc = WordExportUtil.exportWord07(
+                    "G:\\Realtemp\\doc\\contract9.docx", map);
+
+            FileOutputStream fos = new FileOutputStream(uploadfiletmppath + filename + fileType);
+            doc.write(fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!getAsposeLicense()) {
+            return "";
+        }
+        try {
+            Document doc = new Document(uploadfiletmppath + filename + fileType);
+            doc.save(uploadfiletmppath + filename + ".pdf");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return filename + fileType;
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/providecontract", method = RequestMethod.POST)
+    public String provideContractPost(@ModelAttribute("real_model_contract") final ApplyContractVO contractVO) {
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
+            return NO_AUTH_STRING;
+        }
+
+        Appliance appliance = applianceService.findOne(contractVO.getApplyid());
+        appliance.setContractURI(contractVO.getContractURI());
+        appliance.setContracttmp1(contractVO.getContracttmp1());
+        appliance.setStatus(PJAPPLY_PROVIDECONTRACT_DONE);
+        applianceService.save(appliance);
+        MyWork myWork = myWorkService.findByWorkUri(APPLY_PROVIDECONTRACT_WORKURI
+                + contractVO.getApplyid());
+        if (myWork != null) {
+            //清理代办工作
+            myWorkService.markDone(myWork);
+        }
+
+        ApplianceProvideContractEvent applianceProvideContractEvent = new ApplianceProvideContractEvent();
+        applianceProvideContractEvent.setEventKey(APPLY_PROVIDECONTRACT_KEY);
+        applianceProvideContractEvent.setApplyid(contractVO.getApplyid());
+        applianceProvideContractEvent.setBuildType(PJ_BUILDCONTRACT_NEW);
+        this.publisher.publishEvent(applianceProvideContractEvent);
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/providesolution", method = RequestMethod.POST)
+    public String provideSolutionPost(@ModelAttribute("real_model_trialsolution") final TrialSolutionVO trialSolutionVO) {
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDESOLUTION)) {
+            return NO_AUTH_STRING;
+        }
+
+        Appliance appliance = applianceService.findOne(trialSolutionVO.getApplyid());
+        appliance.setContracttmp2(trialSolutionVO.getContracttmp2());
+        appliance.setTrialURI(trialSolutionVO.getTrialURI());
+        appliance.setStatus(PJAPPLY_PROVIDESOLUTION_DONE);
+        applianceService.save(appliance);
+
+        ApplianceProvideSolutionEvent applianceProvideSolutionEvent = new ApplianceProvideSolutionEvent();
+        applianceProvideSolutionEvent.setEventKey(APPLY_PROVIDESOLUTION_KEY);
+        applianceProvideSolutionEvent.setApplyid(trialSolutionVO.getApplyid());
+        this.publisher.publishEvent(applianceProvideSolutionEvent);
+        return "ok";
+    }
+
+
 
     @Override
     protected List<ApplianceVO> convertFromPOListToVOList(List<Appliance> poList) {
@@ -251,6 +425,11 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDECONTRACT)) {
             model.addAttribute("real_auth_providecontract", "1");
             model.addAttribute("real_firstfilter", "status:1");
+            tempF = true;
+        }
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PROVIDESOLUTION)) {
+            model.addAttribute("real_auth_providesolution", "1");
+            model.addAttribute("real_firstfilter", "status:4");
             tempF = true;
         }
 

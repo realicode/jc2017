@@ -96,6 +96,46 @@
                 </div>
             </div>
 
+            <div id="real_div_contract" th:if="${realmodel.contractURI}">
+                <legend class="real_legend">合同信息</legend>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">测试信息</label>
+                    <div class="col-md-10">
+                        <input class="form-control" placeholder="" type="text" readonly="readonly"
+                               th:value="${realmodel.contracttmp1}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <a id="contractdownlaod">合同下载 </a>
+                        <input class="form-control" placeholder="" type="hidden"
+                               th:field="*{contractURI}" name="contractURI" id="contractURI">
+                    </div>
+                </div>
+            </div>
+
+            <div id="real_div_solution" th:if="${realmodel.trialURI}">
+                <legend class="real_legend">试验方案信息</legend>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">试验方案测试信息</label>
+                    <div class="col-md-10">
+                        <input class="form-control" placeholder="" type="text" readonly="readonly"
+                               th:value="${realmodel.contracttmp2}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <a id="solutiondownlaod">试验方案下载 </a>
+                        <input class="form-control" placeholder="" type="hidden"
+                               th:field="*{trialURI}" name="trialURI" id="trialURI">
+                    </div>
+                </div>
+            </div>
+
 
         </fieldset>
 
@@ -125,6 +165,10 @@
 
     $(document).ready(function () {
         $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+        $("#contractdownlaod").attr("href", realaicy_g_var_dlurl + $("#contractURI").val());
+        $("#solutiondownlaod").attr("href", realaicy_g_var_dlurl + $("#trialURI").val());
+
+
 //        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
 
     });

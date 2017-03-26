@@ -275,6 +275,11 @@ div.dataTables_wrapper span.select-item {
     cursor:pointer;
 }
 
+.real_a_download{
+    padding-top: 10px;
+    margin-top: 20px;
+}
+
 
 
 /*----------------*/

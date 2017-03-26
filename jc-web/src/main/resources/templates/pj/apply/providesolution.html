@@ -98,43 +98,58 @@
                 </div>
             </div>
 
-        </fieldset>
-    </form>
-    <form th:object="${real_model_contract}" method="POST" th:action="@{/pj/apply/providecontract}"
-          id="real_form_model_contract" class="form-horizontal" xmlns:th="http://www.thymeleaf.org">
-
-        <fieldset>
             <div>
                 <legend class="real_legend">协作组秘书长提供合同信息</legend>
                 <div class="form-group">
-                    <label class="col-md-2 control-label">需要输入的信息1：</label>
+                    <label class="col-md-2 control-label">测试信息</label>
                     <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4"
+                    <textarea class="form-control" placeholder="" rows="4" readonly="readonly"
                               th:field="*{contracttmp1}" name="contracttmp1" id="contracttmp1"></textarea>
                     </div>
-                    <input name="applyid" type="hidden" th:field="*{applyid}">
-                    <input name="contractURI" type="hidden" th:field="*{contractURI}">
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">合同文件：</label>
+                    <div class="col-md-10">
+                        <div style="height: 7px"></div>
+                        <a id="contractdownlaod">下载合同</a>
+                        <input name="contractURI" type="hidden" th:field="*{contractURI}">
+                    </div>
+
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-2">
-                    </div>
-                    <div class="col-md-10">
-                        <button class="btn btn-primary" type="button" id="btn_buildcontract"
-                                onclick="real_f_bcontract()">
-                            <i class="fa fa-file-word-o"></i>
-                            生成合同文件
-                        </button>
-                        <a class="btn btn-primary" type="button" id="btn_downcontract" disabled="disabled">
-                            <i class="fa fa-eye"></i>
-                            下载合同文件
-                        </a>
-                    </div>
-
-
                 </div>
             </div>
 
+        </fieldset>
+    </form>
+    <form th:object="${real_model_trialsolution}" method="POST" th:action="@{/pj/apply/providesolution}"
+          id="real_form_model_trialsolution" class="form-horizontal" xmlns:th="http://www.thymeleaf.org">
+
+        <fieldset>
+            <div>
+                <legend class="real_legend">请申办者确认合同，并上传试验方案</legend>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">测试信息</label>
+                    <div class="col-md-10">
+                    <textarea class="form-control" placeholder="" rows="4"
+                              th:field="*{contracttmp2}" name="contracttmp2" id="contracttmp2"></textarea>
+                    </div>
+                    <input name="applyid" type="hidden" th:field="*{applyid}">
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">请上传试验方案</label>
+                    <div class="col-md-10">
+                        <input type="file" class="btn btn-default" name="realfile" id="realfile">
+                        <input type="hidden" id="trialURI" name="trialURI"
+                               th:field="*{trialURI}">
+                        <p class="help-block" id="fileuploadtip">
+                        </p>
+                    </div>
+                </div>
+
+            </div>
 
         </fieldset>
 
@@ -160,56 +175,51 @@
 <script type="text/javascript">
 
     var real_flag_buildcontract = "false";
+    var real_flag_fileok = '0';
+
 
     pageSetUp();
 
+    function uploadsolution() {
+        console.log("In uploadsolution()");
+        $.ajax({
+            'beforeSend': function (request) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                request.setRequestHeader(header, token);
+            },
+            url: "/uploadFile",
+            type: "POST",
+            data: new FormData($("#real_form_model_trialsolution")[0]),
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                $('#fileuploadtip').html("上传成功");
+                real_filename = data;
+                $('#trialURI').val(data);
+                real_flag_fileok = '1';
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                console.log(textStatus);
+                console.log(jqXHR.responseText);
+                $('#fileuploadtip').html("上传失败：" + jqXHR.responseText);
+            }
+        });
+    } // f
+
+
     function real_f_cancel() {
-        $("#real_form_model_contract").resetForm();
+        $("#real_form_model_trialsolution").resetForm();
         $('#article_real_entity').hide();
     }
 
-    function real_f_bcontract() {
-        var $form = $("#real_form_model_contract");
-
-        $("#updateflag").attr("value", 'editedit');
-
-        if($("#contracttmp1").val()===""){
-            realalert("请先填写相关信息");
-            return;
-        }
-
-        $.ajax({
-            url: '/pj/apply/buildcontract',
-            type: 'POST',
-            data: $form.serialize(),
-            success: function (response) {
-                if (response !== 'error') {
-                    $("#btn_downcontract").attr("disabled", false);
-                    $("#btn_buildcontract").attr("disabled", true);
-                    $("#contracttmp1").attr("readonly", "readonly");
-                    $("#btn_submit").removeClass("disabled");
-                    $("#btn_submit").attr("disabled", false);
-
-
-                    $.smallBox({
-                        title: '生成合同成功',
-                        content: "<i class='fa fa-clock-o'></i> <i>2 seconds ago...</i>",
-                        color: "#296191",
-                        iconSmall: "fa fa-thumbs-up bounce animated",
-                        timeout: 4000
-                    });
-                    $("#btn_downcontract").attr("href", realaicy_g_var_dlurl + response);
-                    $("#contractURI").val(response);
-                    real_flag_buildcontract = "true";
-                }
-            }
-        });
-    }
-
-    $('#real_form_model_contract').formValidation({
+    $('#real_form_model_trialsolution').formValidation({
         framework: 'bootstrap',
         fields: {
-            contracttmp1: {
+            contracttmp2: {
                 validators: {
                     notEmpty: {
                         message: '不能为空'
@@ -221,8 +231,8 @@
         e.preventDefault();
         var $form = $(e.target);
 
-        if(real_flag_buildcontract==="false"){
-            realalert("请先生成合同");
+        if(real_flag_fileok==="0"){
+            realalert("请先上传研究方案");
             return;
         }
 
@@ -247,6 +257,10 @@
 
     $(document).ready(function () {
         $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+        $("#contractdownlaod").attr("href", realaicy_g_var_dlurl + $("#contractURI").val());
+
+        $("#realfile").on("change", uploadsolution);
+
 //        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
 
     });
