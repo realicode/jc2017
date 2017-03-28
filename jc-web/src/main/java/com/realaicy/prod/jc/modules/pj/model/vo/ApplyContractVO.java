@@ -1,4 +1,4 @@
-package com.realaicy.prod.jc.modules.pj.model;
+package com.realaicy.prod.jc.modules.pj.model.vo;
 
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
 import org.hibernate.validator.constraints.NotEmpty;

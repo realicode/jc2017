@@ -3,9 +3,10 @@
 <div class="widget-body no-padding">
 
     <!--/*@thymesVar id="realmodel" type=""*/-->
-    <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/providecontract}"
-          id="realentity" class="form-horizontal" xmlns:th="http://www.thymeleaf.org">
-
+    <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/confirm}"
+          id="realentity" class="form-horizontal"
+          xmlns:th="http://www.thymeleaf.org">
+        inspect
         <fieldset>
             <legend>申请方信息</legend>
             <div class="form-group">
@@ -13,9 +14,14 @@
                 <div class="col-md-10">
                     <input class="form-control" placeholder="" type="text" readonly="readonly"
                            th:field="*{name}" name="name" id="name">
+
                     <input name="id" type="hidden" th:field="*{id}">
+
                     <input id="realactiontype" name="realactiontype" type="hidden" th:value="${realactiontype}">
                     <input id="updateflag" name="updateflag" type="hidden" th:value="${updateflag}">
+                    <input id="btnType" name="btnType" type="hidden" th:value="${btnType}">
+
+
                 </div>
             </div>
 
@@ -57,107 +63,47 @@
                 </div>
             </div>
             <legend class="real_legend">协作组秘书长确认信息</legend>
-            <div class="form-group">
+            <div class="form-group" th:if="${realmodel.confirmorName}">
                 <label class="col-md-2 control-label">确认人</label>
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                    <input class="form-control real_input_affirm" placeholder="aaaaaaa" type="text"
                            th:value="${realmodel.confirmorName}">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">确认意见</label>
                 <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4" readonly="readonly"
+                    <textarea class="form-control real_input_affirm" placeholder="" rows="4"
                               th:field="*{confirmRemark}" name="confirmRemark" id="confirmRemark"></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">预报价</label>
                 <div class="col-md-10">
-                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                    <input class="form-control real_input_affirm" placeholder="" type="text"
                            th:field="*{quotation}" name="quotation" id="quotation">
                 </div>
             </div>
 
 
-            <div>
+            <div id="real_div_approve">
                 <legend class="real_legend">协作组主任审批信息</legend>
-                <div class="form-group">
+                <div class="form-group" th:if="${realmodel.approverName}">
                     <label class="col-md-2 control-label">审批人</label>
                     <div class="col-md-10">
-                        <input class="form-control" placeholder="" type="text" readonly="readonly"
+                        <input class="form-control" placeholder="" type="text"
                                th:value="${realmodel.approverName}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label">确认意见</label>
                     <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4" readonly="readonly"
+                    <textarea class="form-control" placeholder="" rows="4"
                               th:field="*{approveRemark}" name="approveRemark" id="approveRemark"></textarea>
                     </div>
                 </div>
             </div>
 
-            <div>
-                <legend class="real_legend">协作组秘书长提供合同信息</legend>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">测试信息</label>
-                    <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4" readonly="readonly"
-                              th:field="*{contracttmp1}" name="contracttmp1" id="contracttmp1"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">合同文件：</label>
-                    <div class="col-md-10">
-                        <div style="height: 7px"></div>
-                        <a id="contractdownlaod">下载合同</a>
-                        <input name="contractURI" type="hidden" th:field="*{contractURI}">
-                    </div>
-
-                </div>
-            </div>
-
-            <div>
-                <legend class="real_legend">试验方案信息</legend>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">测试信息</label>
-                    <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4" readonly="readonly"
-                              th:field="*{contracttmp2}" name="contracttmp2" id="contracttmp2"></textarea>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label"></label>
-                    <div class="col-md-10">
-                        <div style="height: 7px"></div>
-                        <a id="solutiondownlaod">下载方案</a>
-                        <input type="hidden" id="trialURI" name="trialURI" th:field="*{trialURI}">
-                    </div>
-                </div>
-
-            </div>
-
-
-
-        </fieldset>
-    </form>
-    <form th:object="${real_model_final}" method="POST" th:action="@{/pj/apply/final}"
-          id="real_form_model_final" class="form-horizontal" xmlns:th="http://www.thymeleaf.org">
-
-        <fieldset>
-            <div>
-                <legend class="real_legend">协作组主任最终确认</legend>
-                <div class="form-group">
-                    <label class="col-md-2 control-label">确认意见</label>
-                    <div class="col-md-10">
-                    <textarea class="form-control" placeholder="" rows="4"
-                              th:field="*{finalRemark}" name="finalRemark" id="finalRemark"></textarea>
-                    </div>
-                    <input name="applyid" type="hidden" th:field="*{applyid}">
-                </div>
-            </div>
 
         </fieldset>
 
@@ -166,13 +112,18 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <button class="btn btn-default" type="button" id="btn_cancel" onclick="real_f_cancel()">
+                    <button class="btn btn-default" type="button" id="btn_cancel" onclick="realclick(this.id)">
                         取消此次确认操作
                     </button>
 
-                    <button class="btn btn-danger" type="submit" id="btn_submit">
+                    <button class="btn btn-danger" type="submit" id="btn_nopass" onclick="realclick(this.id)">
                         <i class="fa fa-save"></i>
-                        提交信息
+                        不通过
+                    </button>
+
+                    <button class="btn btn-primary" type="submit" id="btn_pass" onclick="realclick(this.id)">
+                        <i class="fa fa-save"></i>
+                        确认通过
                     </button>
                 </div>
             </div>
@@ -182,28 +133,57 @@
 
 <script type="text/javascript">
 
-
     pageSetUp();
 
-    function real_f_cancel() {
-        $("#real_form_model_final").resetForm();
-        $('#article_real_entity').hide();
+    function realclick(data) {
+        console.log("ID: " + data);
+        if (data === "btn_pass") {
+            $("#btnType").val("pass");
+        } else if (data === "btn_nopass") {
+            $("#btnType").val("deny");
+        } else if (data === "btn_cancel") {
+            $("#realentity").resetForm();
+            $('#article_real_entity').hide();
+        }
     }
 
-    $('#real_form_model_final').formValidation({
+
+    $('#realentity').formValidation({
         framework: 'bootstrap',
         fields: {
-            finalRemark: {
+            confirmRemark: {
                 validators: {
                     notEmpty: {
-                        message: '不能为空'
+                        message: 'The availability option is required1111'
+                    }
+                }
+            },
+            approveRemark: {
+                validators: {
+                    notEmpty: {
+                        message: 'The availability option is required1111'
                     }
                 }
             }
         }
     }).on('success.form.fv', function (e) {
+        // Prevent form submission
         e.preventDefault();
+
         var $form = $(e.target);
+        // Use Ajax to submit form data
+
+
+        console.log("editedit");
+
+        if ($("#btnType").val() === "pass" && ($("#quotation").val() === undefined || $("#quotation").val() === "")) {
+            realalert("报价不能为空！");
+            $("#btn_nopass").removeClass("disabled");
+            $("#btn_nopass").removeAttr("disabled");
+            $("#btn_pass").removeClass("disabled");
+            $("#btn_pass").removeAttr("disabled");
+            return;
+        }
 
         $("#updateflag").attr("value", 'editedit');
 
@@ -212,19 +192,51 @@
             type: 'POST',
             data: $form.serialize(),
             success: function (response) {
-                real_g_success("请求确认成功！");
-                changeWorkCount();
+                if (response.substring(0, 2) === "ok") {
+                    real_g_success("请求确认成功！");
+
+                    $.ajax({
+                        url: '/me/work/count',
+                        type: 'GET',
+                        success: function (response) {
+                            console.log("response:"+response);
+                            $(".real-work").children(":first").html(function(i, v) {
+                                return response;
+                            });
+                        }
+                    });
+
+                }
+                else {
+                    real_g_fail(response);
+                }
+                $("#btn_nopass").removeClass("disabled");
+                $("#btn_nopass").removeAttr("disabled");
+                $("#btn_pass").removeClass("disabled");
+                $("#btn_pass").removeAttr("disabled");
             }
         });
     });
 
+
     var pagefunction = function () {
+
     };
 
     $(document).ready(function () {
         $("#realdownlaod").attr("href", realaicy_g_var_dlurl + $("#trialAbstractURI").val());
-        $("#contractdownlaod").attr("href", realaicy_g_var_dlurl + $("#contractURI").val());
-        $("#solutiondownlaod").attr("href", realaicy_g_var_dlurl + $("#trialURI").val());
+//        console.log("href:" + realaicy_g_var_dlurl + $("#trialAbstractURI").val());
+
+        if ($("#realactiontype").val() === "affirm") {
+            $("#real_div_approve").hide();
+        }
+
+        if ($("#realactiontype").val() === "approve") {
+            console.log("approve");
+            $("form input.real_input_affirm").attr("readonly", "readonly");
+            $("form textarea.real_input_affirm").attr("readonly", "readonly");
+
+        }
 
     });
 

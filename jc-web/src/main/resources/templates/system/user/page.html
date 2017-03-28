@@ -141,7 +141,7 @@
                                 url: '/system/user/del/' + rowId,
                                 type: 'GET',
                                 success: function (response) {
-                                    if (response.substring(0, 2) == "ok") {
+                                    if (response.substring(0, 2) === "ok") {
                                         real_g_success("——删除用户成功！");
                                     }
                                     else {
@@ -267,25 +267,25 @@
                             var search_org = $("#real_filter_org").val();
                             var search_role = $("#real_filter_role").val();
 
-                            if (search_username != undefined && search_username != "") {
+                            if (search_username !== undefined && search_username !== "") {
                                 searchString += "username~";
                                 searchString += search_username;
                             }
-                            if (search_nickname != undefined && search_nickname != "") {
+                            if (search_nickname !== undefined && search_nickname !== "") {
                                 searchString += ",nickname~";
                                 searchString += search_nickname;
                             }
-                            if (search_org != undefined && search_org != "") {
+                            if (search_org !== undefined && search_org !== "") {
                                 realSearchString += "orgname=" + search_org+",";
                             }
-                            if (search_role != undefined && search_role != "") {
+                            if (search_role !== undefined && search_role !== "") {
                                 realSearchString += "rolename=" + search_role + ",";
                             }
                                 d.search = searchString;
                                 d.realsearch = realSearchString.substring(0,realSearchString.length-1);
                         },
                         error: function (xhr, status, error) {
-                            if (xhr.responseText.indexOf("invalid") == 0) {
+                            if (xhr.responseText.indexOf("invalid") === 0) {
                                 location = login_url;
                             }
                         }

@@ -2,11 +2,13 @@ package com.realaicy.prod.jc.modules.system.repos;
 
 
 import com.realaicy.prod.jc.lib.core.data.jpa.BaseJPARepository;
+import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionUserVO;
 import com.realaicy.prod.jc.modules.system.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by realaicy on 2016/3/13.
@@ -46,7 +48,21 @@ public interface UserRepos extends BaseJPARepository<User, BigInteger> {
     BigInteger findFirstNoDeletedUserIDByRoleIDNative(@Param("roleID") BigInteger roleID);
 
 
+    /**
+     *
+     * @param roleID xxx
+     * @return xx
+     */
+    @Query(value = "SELECT u.ID, u.USERNAME FROM jc_sys_user_role t, jc_sys_user u "
+            + "WHERE t.USERID = u.ID AND t.ROLEID = :roleID AND u.F_DELETED = 0",
+            nativeQuery = true)
+    List<User> findUsersByRoleIDNative(@Param("roleID") BigInteger roleID);
+
+
     User findByUserinfoWxuserid(String wxUserid);
+
+
+    List<PreInspectionUserVO> getRoleUsers(@Param("roleID") BigInteger roleID);
 
 
 

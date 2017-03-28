@@ -1,17 +1,13 @@
-<!--suppress JSJQueryEfficiency -->
 <title>组织机构</title>
-<link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
-      th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
-      href="../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/realaicy/css/bootstrap-dialog.min.css}"
       href="../../../static/realaicy/css/bootstrap-dialog.min.css"/>
 <div class="row no-margin no-padding" style="height: 40px">
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4 no-margin no-padding" style="height: 40px;font-size: 16px">
         <i class="fa-fw fa fa-home"></i>
-        我的工作台
+        项目管理
         <span>>
-				我的待办工作
+				项目列表
 			</span>
     </div>
 </div>
@@ -31,7 +27,7 @@
                      data-widget-fullscreenbutton="false">
                     <header>
                         <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                        <h2>待办工作处理 —— 控制面板</h2>
+                        <h2><span id="real_controlpanel_span"></span></h2>
                     </header>
                     <div id="realeditdiv">
                     </div>
@@ -45,7 +41,7 @@
                              data-widget-editbutton="false">
                             <header>
                                 <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                                <h2>我的代办工作列表</h2>
+                                <h2>项目列表</h2>
                             </header>
                             <div style="min-height: 100%">
                                 <div class="jarviswidget-editbox">
@@ -58,23 +54,28 @@
                                             <th>
                                             </th>
                                             <th>
-                                                <select id='real_filter_level' class="form-control" title="">
-                                                    <option value="0">所有级别</option>
-                                                    <option value="5">普通</option>
-                                                    <option value="8">紧急</option>
-                                                </select>
-                                            </th>
-                                            <th>
                                                 <select id='real_filter_status' class="form-control" title="">
-                                                    <option value="0">所有状态</option>
-                                                    <option value="1" selected>未开始</option>
-                                                    <option value="2">进行中</option>
-                                                    <option value="3">已完成</option>
+                                                    <option value="0" selected>全部状态</option>
+                                                    <option value="1">启动</option>
+                                                    <option value="2">预稽查</option>
+                                                    <option value="3">稽查</option>
+                                                    <option value="4">合议</option>
+                                                    <option value="5">已初具稽查报告</option>
+                                                    <option value="6">稽查后回访</option>
+                                                    <option value="7">已完成</option>
                                                 </select>
                                             </th>
                                             <th>
-                                                <input type="text" id='real_filter_maintitle' class="form-control"
-                                                       placeholder="过滤工作标题"/>
+                                                <input type="text" id='real_filter_name' class="form-control"
+                                                       placeholder="过滤项目名称"/>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
+                                            </th>
+                                            <th>
                                             </th>
                                             <th>
                                             </th>
@@ -85,24 +86,32 @@
                                             <th>
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                优先级
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                项目状态
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                工作状态
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                项目名称
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                工作标题
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                项目进度
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                最后可执行日期
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                申请机构
                                             </th>
                                             <th data-class="expand" class="realaicy_table_header"><i
-                                                    class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i>
-                                                处理日期
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                待稽查机构
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                稽查合同文件
+                                            </th>
+                                            <th data-class="expand" class="realaicy_table_header"><i
+                                                    class="fa fa-fw fa-userInfo text-muted hidden-md hidden-sm hidden-xs"></i>
+                                                研究方案文件
                                             </th>
                                             <th class="realaicy_table_header">操作按钮</th>
                                         </tr>
@@ -119,17 +128,19 @@
     </section>
 </div>
 
+
 <div>
 
     <!--/*@thymesVar id="real_firstfilter" type=""*/-->
-    <input id="firstfilter" name="firstfilter" type="hidden" th:value="${real_firstfilter}"
+    <input id="auth_pj_pre_conf" name="auth_pj_pre_conf" type="hidden" th:value="${auth_pj_pre_conf}"
            xmlns:th="http://www.thymeleaf.org">
 </div>
 
 <script type="text/javascript">
-    //    pageSetUp();
+
 
     $(document).ready(function () {
+
             var realtable = $('#dt_basic_real').DataTable(
                 {
                     sScrollX: true,
@@ -148,37 +159,22 @@
                         {
                             text: '<i class="glyphicon glyphicon-plus"></i> 新增',
                             className: 'btn btn-info real_datatables_button_class_left btn-realaicy',
-                            action: function (e, dt, node, config) {
-                                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
-                                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                                realloadpage("/pj/apply/new");
+                            action: function () {
+                                realalert("业务不支持，暂时无法新增");
                             }
                         },
                         {
                             text: '<i style="font-size:0.5em;" class="glyphicon glyphicon-pencil"></i> 修改',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function () {
-                                var rows_selected = realtable.column(0).checkboxes.selected();
-                                if (rows_selected.length <= 0 || rows_selected.length > 1) {
-                                    var msg;
-                                    if (rows_selected.length <= 0)
-                                        msg = "请选择一个待修改的申请";
-                                    else
-                                        msg = "请求操作不支持多选，请选择一个并且只选择一个待修改申请！";
-                                    realalert(msg);
-                                } else {
-
-                                    $.each(rows_selected, function (index, rowId) {
-                                        realloadpage("/pj/apply/edit/" + rowId);
-                                    });
-                                }
+                                realalert("业务不支持，暂时无法修改");
                             }
                         },
                         {
                             text: '<i  class="fa fa-trash-o"></i> 删除',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function () {
-                                real_g_del("申请", '/pj/apply/del/');
+                                realalert("业务不支持，暂时无法删除");
                             }
                         },
                         {
@@ -206,17 +202,13 @@
                             text: '刷新数据',
                             className: 'btn btn-info real_datatables_button_class_ingroup btn-realaicy',
                             action: function () {
-
-                                $("#real_filter_maintitle").val("");
-                                $("#real_filter_status").val("0");
-                                $("#real_filter_level").val("0");
                                 realtable.draw();
                             }
                         },
                         'excel'
                     ],
                     ajax: {
-                        url: "/me/work/list4dt",
+                        url: "/pj/facade/list4dt",
                         type: "POST",
                         'beforeSend': function (request) {
                             var token = $("meta[name='_csrf']").attr("content");
@@ -224,38 +216,13 @@
                             request.setRequestHeader(header, token);
                         },
                         "data": function (d) {
-                            delete d.columns;
-                            var searchString = "";
-                            {
-                                var search_maintitle = $("#real_filter_maintitle").val();
-                                var search_status = $("#real_filter_status").val();
-                                var search_level = $("#real_filter_level").val();
-
-                                if (search_maintitle !== undefined && search_maintitle !== "") {
-                                    searchString += "name~";
-                                    searchString += search_maintitle;
-                                }
-                                if (search_status !== undefined && search_status !== "0") {
-                                    searchString += ",status:";
-                                    searchString += search_status;
-
-                                }
-                                if (search_level !== undefined && search_level !== "0") {
-                                    searchString += ",workLevel:";
-                                    searchString += search_level;
-                                }
-                            }
-
-                            d.search = searchString;
-                            console.log("search: " + d.search);
 
                         },
-                        error: function (xhr, status, error) {
+                        error: function (xhr) {
                             if (xhr.responseText.indexOf("invalid") === 0) {
                                 window.location = login_url;
                             }
                         },
-
                         complete: function () {
                             $("[rel=popover-hover]").popover({trigger: "hover"});
 //                            $("[rel=popover]").popover();
@@ -267,56 +234,76 @@
                     columns: [
                         {"data": "id", "width": "20px"},
                         {
-                            "data": "workLevel", "width": "6%",
-                            "render": function (data, type, row) {
-                                if (data === 5) {
-                                    return "<span class='label label-default'>" + "普通" + "</span>"
+                            "data": "projectStatus", "width": "6%",
+                            "render": function (data) {
+                                if (data === 1) {
+                                    return "<span class='label label-default'>" + "已启动" + "</span>"
 
                                 } else if ((data === 2)) {
-                                    return "<span class='label label-primary'>" + "紧急" + "</span>"
-                                }
-
-                            }
-                        },
-                        {
-                            "data": "workStatus",
-                            "width": "10%",
-                            "render": function (data, type, row, meta) {
-                                if (data === 1) {
-                                    return "<span class='label real_label_todo_notstart'>" + "未开始" + "</span>"
-
+                                    return "<span class='label label-primary'>" + "预稽查ing" + "</span>"
                                 } else if ((data === 3)) {
-                                    return "<span class='label label-primary'>" + "已完成" + "</span>"
+                                    return "<span class='label label-info'>" + "稽查ing" + "</span>"
+                                } else if ((data === 4)) {
+                                    return "<span class='label label-info'>" + "合议ing" + "</span>"
                                 }
+                                else if ((data === 5)) {
+                                    return "<span class='label label-info'>" + "已初具稽查报告" + "</span>"
+                                }
+                                else if ((data === 6)) {
+                                    return "<span class='label label-info'>" + "稽查后回访ing" + "</span>"
+                                }
+                                else if ((data === 7)) {
+                                    return "<span class='label label-danger'>" + "已完成" + "</span>"
+                                }
+
                             }
                         },
                         {
                             "data": "name",
-                            "width": "10%",
-                            "render": function (data, type, row, meta) {
-                                if (data.length > 10) {
-                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="名称" data-content="' + data + '" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
+                            "width": "20%",
+                            "render": function (data, type, row) {
+                                if (data.length > 25) {
+                                    return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="' + data + '" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 25) + '...</a>';
                                 } else {
 //                                    return '<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover" class="real_linktodetail">' + data + '</a>';
                                     return '<a href="javascript:void(0);" class="real_linktodetail" >' + data + '</a>';
                                 }
                             }
                         },
-                        {"data": "deadline", "width": "10%"},
                         {
-                            "data": "processDate", "width": "10%"
+                            "data": "projectProcess", "width": "10%",
+                            "render": function (data, type, row) {
+                                return "<div class='progress progress-xs' data-progressbar-value='75'><div class='progress-bar'></div></div>"
+                            }
+                        },
+                        {"data": "orgName"},
+                        {"data": "trialCenterNames"},
+                        {
+                            "data": "contractURI", "width": "10%",
+                            "render": function (data, type, row) {
+                                return "<a href='" + realaicy_g_var_dlurl + row.contractURI + "'>" +"下载合同"+ "</a>"
+                            }
+                        },
+                        {
+                            "data": "trialURI", "width": "10%",
+                            "render": function (data, type, row) {
+                                return "<a href='" + realaicy_g_var_dlurl + row.trialURI + "'>" +"下载方案"+ "</a>"
+                            }
                         },
 
                         {
                             "data": null,
                             "render": function (data, type, row) {
 
-                                if (row.workStatus === 1) {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_dowork'>处理工作</a>"
+                                if (row.projectStatus === 1 && $("#auth_pj_pre_conf").val() === "1") {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_preconf'>配置预稽查</a>"
                                 }
-                                return "<a  class='btn btn-default btn-intable-realaicy  real_apply_view' style='color: #000' disabled='disabled'>功能按钮</a>"
-                            },
-                            "width": "10%"
+
+                            }
+
+//                            return "<a class='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + data + "</a>"
+//                        "defaultContent": "<a  class='btn btn-danger btn-intable-realaicy real-test'>操作按钮</a>",
+
                         }
                     ],
                     columnDefs: [
@@ -331,8 +318,10 @@
                         },
                         {'className': 'real_dt_center', 'targets': 1},
                         {'className': 'real_dt_center', 'targets': 2},
-                        {'className': 'real_dt_center', 'targets': 4}],
-
+                        {'className': 'real_dt_center', 'targets': 4},
+                        {'className': 'real_dt_center', 'targets': 5},
+                        {'className': 'real_dt_center', 'targets': 6},
+                        {'className': 'real_dt_center', 'targets': 7}],
                     select: {
                         style: 'multi'
 //                            selector: ':not(:last-child)'
@@ -340,53 +329,23 @@
                     "order": [[1, 'asc']]
                 });
 
-            $("#realbtn-search").on("click", function () {
-                console.log("cccccccccccccccccccccc");
-            });
 
-            $("#real_filter_status").on("change", function () {
-                realtable.draw();
-            });
-
-            $('#dt_basic_real').on('click', '.real_linktodetail', function () {
-                var data = realtable.row($(this).parents('tr')).data();
-                console.log("data: " + data.id);
+            /**
+             * 配置预稽查
+             */
+            $('#dt_basic_real').on('click', '.real_css_btn_preconf', function () {
 
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                realloadpage(data.viewUri);
-//                $('nav ul li.open').css('border','10px solid red');
-//                realalert("功能实现敬请期待")ss
-
+                realloadpage("/pj/pre/conf?realactiontype=ini&pjid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
-            $('#dt_basic_real').on('click', '.real_dowork', function () {
-                var data = realtable.row($(this).parents('tr')).data();
-                console.log("data: " + data.id);
 
-                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
-                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-                realloadpage(data.workUri);
-//                $('nav ul li.open').css('border','10px solid red');
-//                realalert("功能实现敬请期待")ss
 
-            });
 
-            $('#dt_basic_real').on('mouseover', '.real_long_text', function () {
-                console.log(JSON.stringify($()));
-                layer.tips('' + realtable.row($(this).parents('tr')).data().name, '#reallongtextcell' + realtable.row($(this).parents('tr')).data().id);
-
-            });
-
-        }//end of ready
+        }// end of ready
     );
 
-    var pagefunction = function () {
-
-
-    };
-
-    pagefunction();
 
 
 </script>

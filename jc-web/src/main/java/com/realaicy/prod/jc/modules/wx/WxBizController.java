@@ -5,7 +5,7 @@ import com.realaicy.prod.jc.common.event.ApplianceConfirmEvent;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.pj.model.Appliance;
-import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.ApplianceVO;
 import com.realaicy.prod.jc.modules.pj.service.ApplianceService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;

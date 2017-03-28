@@ -3,7 +3,7 @@ package com.realaicy.prod.jc.modules.pj.service;
 
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
 import com.realaicy.prod.jc.modules.pj.model.Appliance;
-import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.ApplianceVO;
 
 import java.math.BigInteger;
 

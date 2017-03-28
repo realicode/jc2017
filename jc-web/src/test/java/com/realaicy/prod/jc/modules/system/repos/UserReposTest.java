@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * Created by realaicy on 2017/3/19.
@@ -39,9 +38,18 @@ public class UserReposTest  extends JcDataRootTest {
         assertThat(userRepos.findFirstNoDeletedUserIDByRoleIDNative(BigInteger.valueOf(6))).isNotNull();
 
         assertThat(userRepos.findFirstNoDeletedUserIDByRoleIDNative(BigInteger.valueOf(2))).isNull();
-
     }
 
+    @Test
+    public void findUsersByRoleIDNativeTest(){
 
+        assertThat(userRepos.findUsersByRoleIDNative(BigInteger.valueOf(40))).isNotNull();
+    }
+
+    @Test
+    public void getRoleUsersTest(){
+
+        assertThat(userRepos.getRoleUsers(BigInteger.valueOf(40))).isNotNull();
+    }
 
 }

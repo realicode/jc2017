@@ -29,7 +29,7 @@ public class OtherUtil {
         boolean result = false;
         try {
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            license = new FileInputStream("G:\\Realtemp\\tempweb\\license.xml"); // 凭证文件
+            license = new FileInputStream("/Users/realaicy/Realtemp/nginx/license.xml"); // 凭证文件
             License aposeLic = new License();
             aposeLic.setLicense(license);
             result = true;

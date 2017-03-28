@@ -1,0 +1,463 @@
+<div class="jarviswidget-editbox" xmlns:th="http://www.w3.org/1999/xhtml">
+</div>
+<div class="widget-body">
+
+	<div class="row">
+		<form  novalidate="novalidate" 
+			   id="realentity">
+			<div id="bootstrap-wizard-1" class="col-sm-12">
+				<div class="form-bootstrapWizard">
+					<ul class="bootstrapWizard form-wizard">
+						<li class="active" data-target="#step1">
+							<a href="#tab1" data-toggle="tab"> <span class="step">1</span> <span
+									class="title">选择预稽查人员</span> </a>
+						</li>
+						<li data-target="#step2">
+							<a href="#tab2" data-toggle="tab"> <span class="step">2</span> <span
+									class="title">配置预稽查工作项</span> </a>
+						</li>
+						<li data-target="#step3">
+							<a href="#tab3" data-toggle="tab"> <span class="step">3</span> <span
+									class="title">其他信息1</span> </a>
+						</li>
+						<li data-target="#step4">
+							<a href="#tab4" data-toggle="tab"> <span class="step">4</span> <span
+									class="title">其他信息2</span> </a>
+						</li>
+						<li data-target="#step5">
+							<a href="#tab5" data-toggle="tab"> <span class="step">5</span> <span
+									class="title">保存项目</span> </a>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+				</div>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab1">
+						<br>
+						<br>
+						<br>
+						<h4><strong>Step 1 </strong> - 选择预稽查人员</h4>
+						<br>
+						<fieldset>
+							<div class="row">
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<div class="form-group">
+										<label class="col-md-2 control-label"
+											   style="text-align: left ;padding-top: 6px">选择预稽查组长：</label>
+										<div class="col-md-10">
+											<select multiple style="width:50%" class="select2"
+                                                    id="h_id_preleaders" name="h_id_preleaders" title="">
+												<option th:each="leader : ${preleaders}"
+                                                        th:value="${leader.id}"  th:text="${leader.nickname}" ></option>
+											</select>
+											<!--<select class="js-example-basic-multiple" multiple="multiple" title="">
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>-->
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<div class="form-group">
+										<label class="col-md-2 control-label"
+											   style="text-align: left ;padding-top: 6px">选择预稽查人员：</label>
+										<div class="col-md-10">
+                                            <select multiple style="width:50%" class="select2"
+                                                    id="h_id_preleaders2" name="h_id_preleaders2" title="">
+                                                <option th:each="checker : ${precheckers}"
+                                                        th:value="${checker.id}"  th:text="${checker.nickname}" ></option>
+                                            </select>
+                                            <!--<select class="js-example-basic-multiple" multiple="multiple" title="">
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>-->
+										</div>
+									</div>
+								</div>
+
+                                <div class="col-sm-12" style="margin-bottom: 10px">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label"
+                                               style="text-align: left ;padding-top: 6px">请选择项目生命周期起止时间：</label>
+                                        <div class="col-md-10">
+                                        </div>
+                                    </div>
+                                </div>
+
+								<div class="col-sm-12" style="margin-bottom: 10px">
+                                    <div class="form-group">
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input class="form-control" id="from" type="text"
+                                                       placeholder="开始时间">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <input class="form-control" id="to" type="text"
+                                                       placeholder="结束时间">
+                                                <span class="input-group-addon"><i
+                                                        class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+								</div>
+							</div>
+						</fieldset>
+
+					</div>
+					<div class="tab-pane" id="tab2">
+						<br>
+						<br>
+						<br>
+						<h4><strong>Step 2 </strong> - 配置稽查流程</h4>
+						<br>
+						<fieldset>
+
+							<div class="row">
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<img th:src="@{/realimages/process/temp/a1.png}"
+										 src="../../static/realimages/process/temp/a1.png" alt="me"
+										 class="online"/>
+
+								</div>
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<img th:src="@{/realimages/process/temp/a2.png}"
+										 src="../../static/realimages/process/temp/a2.png" alt="me"
+										 class="online"/>
+
+								</div>
+
+
+							</div>
+
+						</fieldset>
+					</div>
+					<div class="tab-pane" id="tab3">
+						<br>
+						<br>
+						<br>
+						<h4><strong>Step 3 </strong> - 分配项目角色及人员</h4>
+						<br>
+						<fieldset>
+							<legend style="font-size: 14px">请从人才库中为此项目分配预稽查人员</legend>
+							<div class="row">
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<div class="form-group">
+										<label class="col-md-2 control-label"
+											   style="text-align: left ;padding-top: 6px">预稽查工作组：</label>
+										<div class="col-md-10">
+											<select multiple style="width:100%" class="select2">
+												<optgroup label="肿瘤科">
+													<option value="AK">预稽查员1</option>
+													<option value="HI">预稽查员2</option>
+													<option value="lb">预稽查员3</option>
+
+												</optgroup>
+												<optgroup label="脑科">
+													<option value="CA">预稽查员4</option>
+													</option>
+													<option value="OR">预稽查员5</option>
+													<option value="WA">预稽查员6</option>
+												</optgroup>
+												<optgroup label="心脏科">
+													<option value="AZ">Arizona</option>
+													<option value="CO">Colorado</option>
+													<option value="ID">Idaho</option>
+													</option>
+													<option value="NE">Nebraska</option>
+													<option value="NM">New Mexico</option>
+													<option value="ND">North Dakota</option>
+													<option value="UT">Utah</option>
+													<option value="WY">Wyoming</option>
+												</optgroup>
+
+											</select>
+
+
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+
+						<fieldset>
+							<legend style="font-size: 14px">请从专家库中为此项目分配稽查人员</legend>
+							<div class="row">
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<div class="form-group">
+										<label class="col-md-2 control-label"
+											   style="text-align: left ;padding-top: 6px">稽查工作组：</label>
+										<div class="col-md-10">
+											<select multiple style="width:100%" class="select2">
+												<optgroup label="肿瘤科">
+													<option value="AK">肿瘤稽查员1</option>
+													<option value="HI">肿瘤稽查员2</option>
+													<option value="lb">肿瘤稽查员3</option>
+
+												</optgroup>
+												<optgroup label="脑科">
+													<option value="CA">肿瘤稽查员4</option>
+													</option>
+													<option value="OR">肿瘤稽查员5</option>
+													<option value="WA">肿瘤稽查员6</option>
+												</optgroup>
+												<optgroup label="心脏科">
+													<option value="AZ">Arizona</option>
+													<option value="CO">Colorado</option>
+													<option value="ID">Idaho</option>
+													</option>
+													<option value="NE">Nebraska</option>
+													<option value="NM">New Mexico</option>
+													<option value="ND">North Dakota</option>
+													<option value="UT">Utah</option>
+													<option value="WY">Wyoming</option>
+												</optgroup>
+												<optgroup label="特聘稽查员">
+													<option value="boss" selected="selected">王雨萌
+													</option>
+												</optgroup>
+											</select>
+
+
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+
+						<fieldset>
+							<legend style="font-size: 14px">请从专家库中为此项目分配专家</legend>
+							<div class="row">
+								<div class="col-sm-12" style="margin-bottom: 10px">
+									<div class="form-group">
+										<label class="col-md-2 control-label"
+											   style="text-align: left ;padding-top: 6px">专家组：</label>
+										<div class="col-md-10">
+											<select multiple style="width:100%" class="select2">
+												<optgroup label="肿瘤科">
+													<option value="AK">肿瘤专家1</option>
+													<option value="HI">肿瘤专家2</option>
+													<option value="lb">刘备</option>
+
+												</optgroup>
+												<optgroup label="脑科">
+													<option value="CA">脑科专家1</option>
+													</option>
+													<option value="OR">脑科专家2</option>
+													<option value="WA">脑科专家3</option>
+												</optgroup>
+												<optgroup label="心脏科">
+													<option value="AZ">Arizona</option>
+													<option value="CO">Colorado</option>
+													<option value="ID">Idaho</option>
+													</option>
+													<option value="NE">Nebraska</option>
+													<option value="NM">New Mexico</option>
+													<option value="ND">North Dakota</option>
+													<option value="UT">Utah</option>
+													<option value="WY">Wyoming</option>
+												</optgroup>
+												<optgroup label="特聘专家">
+													<option value="boss" selected="selected">闫主任
+													</option>
+												</optgroup>
+											</select>
+
+
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+
+					</div>
+					<div class="tab-pane" id="tab4">
+						<br>
+						<br>
+						<br>
+						<h4><strong>Step 4</strong> - 选择稽查项数据库</h4>
+						<div class="row">
+							<article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+								<!-- Widget ID (each widget will need unique ID)-->
+								<div class="jarviswidget" id="wid-id-1">
+
+									<header>
+                                                        <span class="widget-icon"> <i
+																class="fa fa-comments"></i> </span>
+										<h2>稽查项树形列表</h2>
+
+									</header>
+
+									<!-- widget div-->
+									<div>
+
+										<!-- widget edit box -->
+										<div class="jarviswidget-editbox">
+											<!-- This area used as dropdown edit box -->
+										</div>
+										<!-- end widget edit box -->
+
+										<!-- widget content -->
+										<div class="widget-body">
+
+											<div class="row">
+												<div class="col-sm-12">
+
+												</div>
+											</div>
+
+											<div class="row">
+												<div class="col-sm-12">
+													<!-- Add a <table> element where the tree should appear: -->
+													<table id="treetable"
+														   class="table table-striped table-bordered table-hover">
+														<colgroup>
+															<col width="30px"/>
+															<col width="30px"/>
+															<col width="*"/>
+															<col width="50px"/>
+														</colgroup>
+														<thead>
+														<tr>
+															<th></th>
+															<th>#</th>
+															<th>稽查项名称</th>
+															<th>所查文件</th>
+														</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+													<!-- (Irrelevant source removed.) -->
+												</div>
+											</div>
+										</div>
+										<!-- end widget content -->
+									</div>
+									<!-- end widget div -->
+								</div>
+								<!-- end widget -->
+							</article>
+						</div>
+
+
+					</div>
+					<div class="tab-pane" id="tab5">
+						<br>
+						<br>
+						<br>
+						<h4><strong>Step 5</strong> - 确认保存</h4>
+						<br>
+						<div class="input-group">
+							<div class="input-group-btn">
+								<a href="javascript:void(0);" id="btnNew"
+								   class="btn btn-labeled btn-primary"> <span
+										class="btn-label"><i
+										class="glyphicon glyphicon-ok"></i></span>创建项目
+								</a>
+							</div>
+						</div>
+						<br>
+						<br>
+					</div>
+
+					<div class="form-actions">
+						<div class="row">
+							<div class="col-sm-12">
+								<ul class="pager wizard no-margin">
+									<!--<li class="previous first disabled">
+                                    <a href="javascript:void(0);" class="btn btn-lg btn-default"> First </a>
+                                    </li>-->
+									<li class="previous disabled">
+										<a href="javascript:void(0);"
+										   class="btn btn-lg btn-default"> Previous </a>
+									</li>
+									<!--<li class="next last">
+                                    <a href="javascript:void(0);" class="btn btn-lg btn-primary"> Last </a>
+                                    </li>-->
+									<li class="next">
+										<a href="javascript:void(0);"
+										   class="btn btn-lg txt-color-darken"> Next </a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+
+
+    loadScript("smartadmin/js/plugin/bootstrap-wizard/jquery.bootstrap.wizard.min.js", runBootstrapWizard);
+
+    //Bootstrap Wizard Validations
+
+    function runBootstrapWizard() {
+
+        $('#bootstrap-wizard-1').bootstrapWizard({
+
+            'tabClass': 'form-wizard',
+            'onNext': function (tab, navigation, index) {
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).addClass('complete');
+                $('#bootstrap-wizard-1').find('.form-wizard').children('li').eq(index - 1).find('.step').html('<i class="fa fa-check"></i>');
+            }
+        });
+
+    };
+
+    $("#h_id_preleaders").select2({
+//        dropdownCssClass : 'bigdrop'
+//        data: JSON.parse($('#user2roles2').val())
+    });
+
+    $("#h_id_preleaders2").select2({
+//        dropdownCssClass : 'bigdrop'
+//        data: JSON.parse($('#user2roles2').val())
+    });
+
+    // Date Range Picker
+    $("#from").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3,
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        onClose: function (selectedDate) {
+            $("#to").datepicker("option", "maxDate", selectedDate);
+        }
+
+    });
+    $("#to").datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3,
+        prevText: '<i class="fa fa-chevron-left"></i>',
+        nextText: '<i class="fa fa-chevron-right"></i>',
+        onClose: function (selectedDate) {
+            $("#from").datepicker("option", "minDate", selectedDate);
+        }
+    });
+
+    function pageini() {
+        
+    }
+
+
+
+</script>

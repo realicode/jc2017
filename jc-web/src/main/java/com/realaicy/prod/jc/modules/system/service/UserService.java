@@ -2,10 +2,12 @@ package com.realaicy.prod.jc.modules.system.service;
 
 
 import com.realaicy.prod.jc.lib.core.service.BaseServiceWithVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionUserVO;
 import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -32,6 +34,8 @@ public interface UserService  extends BaseServiceWithVO<User, BigInteger, UserVO
     Boolean ifHasNoDelUserByOrgID(BigInteger orgID);
 
     User findByUserinfoWxuserid(String wxUserid);
+
+    List<PreInspectionUserVO> getUserByRole(BigInteger roleID);
 
 
 }

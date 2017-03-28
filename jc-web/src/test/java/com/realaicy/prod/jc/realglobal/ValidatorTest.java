@@ -1,6 +1,6 @@
 package com.realaicy.prod.jc.realglobal;
 
-import com.realaicy.prod.jc.modules.pj.model.ApplianceVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.ApplianceVO;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

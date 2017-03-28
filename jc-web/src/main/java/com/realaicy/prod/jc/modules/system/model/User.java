@@ -3,6 +3,7 @@ package com.realaicy.prod.jc.modules.system.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
+import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionUserVO;
 
 import javax.persistence.*;
 import java.math.BigInteger;
@@ -11,6 +12,23 @@ import java.util.Set;
 /**
  * 用户安全类
  */
+@SqlResultSetMapping(
+        name = "preInspectionUserMapping",
+        classes = {
+                @ConstructorResult(
+                        targetClass = PreInspectionUserVO.class,
+                        columns = {
+                                @ColumnResult(name = "ID"),
+                                @ColumnResult(name = "NICKNAME")
+                        }
+                )
+        }
+)
+
+@NamedNativeQuery(name = "User.getRoleUsers",
+        query = "SELECT u.ID, u.NICKNAME FROM jc_sys_user_role t, jc_sys_user u "
+                + "WHERE t.USERID = u.ID AND t.ROLEID = :roleID AND u.F_DELETED = 0",
+        resultSetMapping = "preInspectionUserMapping")
 @Entity
 @Table(name = "jc_sys_user")
 public class User extends CommonDeletableEntity<BigInteger> {

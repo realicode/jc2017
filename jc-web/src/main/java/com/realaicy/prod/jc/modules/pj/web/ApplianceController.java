@@ -6,6 +6,10 @@ import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.pj.model.*;
+import com.realaicy.prod.jc.modules.pj.model.vo.ApplianceVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.ApplyContractVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.FinalVO;
+import com.realaicy.prod.jc.modules.pj.model.vo.TrialSolutionVO;
 import com.realaicy.prod.jc.modules.pj.service.ApplianceService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
@@ -42,6 +46,9 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
     @Value("${realupload.path.tmp}")
     private String uploadfiletmppath;
+
+    @Value("${realtem.contract.tmp}")
+    private String contractTemPath;
 
     private final UserService userService;
     private final ApplicationEventPublisher publisher;
@@ -290,7 +297,7 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
         String fileType = ".docx";
         try {
             XWPFDocument doc = WordExportUtil.exportWord07(
-                    "G:\\Realtemp\\doc\\contract9.docx", map);
+                    contractTemPath, map);
 
             FileOutputStream fos = new FileOutputStream(uploadfiletmppath + filename + fileType);
             doc.write(fos);

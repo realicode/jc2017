@@ -1,6 +1,7 @@
-package com.realaicy.prod.jc.modules.pj.model;
+package com.realaicy.prod.jc.modules.pj.model.vo;
 
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
+import com.realaicy.prod.jc.modules.pj.model.Appliance;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.Digits;
