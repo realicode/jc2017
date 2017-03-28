@@ -45,12 +45,19 @@ public class StaticParams {
         public static final String APPLY_PROVIDESOLUTION_KEY = "Appliance_ProvideSolution";
         public static final String APPLY_FINAL_KEY = "Appliance_Final";
 
+        public static final String PJ_PRECONF_KEY = "PJ_PRE_CONF";
+
+
 
         public static final String APPLY_PROVIDECONTRACT_WORKURI = "/pj/apply/providecontract?realactiontype=new&applyid=";
         public static final String APPLY_PROVIDECONTRACT_VIEWURI = "/pj/apply/show/";
 
         public static final String APPLY_FINAL_WORKURI = "/pj/apply/final?realactiontype=new&applyid=";
         public static final String APPLY_FINAL_VIEWURI = "/pj/apply/show/";
+
+
+        public static final String APJ_PRECONF_WORKURI = "/pj/pre/docheck?realactiontype=new&checkitemruntimeid=";
+        public static final String PJ_PRECONF_VIEWURI = "/pj/pre/show/?realactiontype=new&checkitemruntimeid=";
 
 
     }

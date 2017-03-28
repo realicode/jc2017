@@ -298,6 +298,10 @@
                                 if (row.projectStatus === 1 && $("#auth_pj_pre_conf").val() === "1") {
                                     return "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_preconf'>配置预稽查</a>"
                                 }
+                                if (row.projectStatus === 2 && $("#auth_pj_pre_conf").val() === "1") {
+                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_viewconf'>查看预稽查</a>"
+                                        + "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_dateprof'>预约专家</a>"
+                                }
 
                             }
 
