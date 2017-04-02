@@ -3,7 +3,6 @@ package com.realaicy.prod.jc.modules.auditdb.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 import com.realaicy.prod.jc.modules.pj.model.PreInspection;
-import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionCheckItemRuntimeVO;
 import com.realaicy.prod.jc.modules.system.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,6 +29,8 @@ public class PreCheckItemRunTime extends CommonDeletableEntity<BigInteger> {
     @Column(name = "SCORE")
     private int score;
 
+    @Column(name = "CHECKREMARK")
+    private String checkRemark;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     @Column(name = "DEADLINE")
@@ -42,6 +43,13 @@ public class PreCheckItemRunTime extends CommonDeletableEntity<BigInteger> {
     @JoinColumn(name = "CHECKER_ID")
     private User checker;
 
+    public String getCheckRemark() {
+        return checkRemark;
+    }
+
+    public void setCheckRemark(String checkRemark) {
+        this.checkRemark = checkRemark;
+    }
 
     public PreInspection getPreInspection() {
         return preInspection;

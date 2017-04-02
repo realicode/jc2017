@@ -59,7 +59,7 @@ public class PJListener {
         String projectName = facadeService.findOne(pjPreConfEvent.getPjid()).getName();
 
         handelDefault(pjPreConfEvent.getEventKey(), projectName,
-                APPLY_PROVIDECONTRACT_WORKURI, APPLY_PROVIDECONTRACT_VIEWURI,
+                PJ_PRE_CHECKITEM_DO_WORKURI, PJ_PRECONF_VIEWURI,
                 pjPreConfEvent.getCheckitemruntimeid(), pjPreConfEvent.getCheckerid());
     }
 

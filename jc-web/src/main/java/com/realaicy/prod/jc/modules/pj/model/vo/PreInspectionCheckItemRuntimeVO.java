@@ -14,6 +14,9 @@ public class PreInspectionCheckItemRuntimeVO extends BaseVO<BigInteger> {
     private BigInteger id;
     private BigInteger preInspectionID;
     private BigInteger checkitemID;
+    /**
+     * 检查项目名称
+     */
     private String name;
     private int score;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -24,15 +27,33 @@ public class PreInspectionCheckItemRuntimeVO extends BaseVO<BigInteger> {
     private Date finishDate;
     private String checkername;
     private BigInteger checker;
+    private String checkRemark;
 
-
+    private Short status;
 
     public PreInspectionCheckItemRuntimeVO() {
     }
+
     public PreInspectionCheckItemRuntimeVO(BigInteger checkitemID, String name, Date deadline) {
         this.checkitemID = checkitemID;
         this.name = name;
         this.deadline = deadline;
+    }
+
+    public Short getStatus() {
+        return status;
+    }
+
+    public void setStatus(Short status) {
+        this.status = status;
+    }
+
+    public String getCheckRemark() {
+        return checkRemark;
+    }
+
+    public void setCheckRemark(String checkRemark) {
+        this.checkRemark = checkRemark;
     }
 
     public BigInteger getCheckitemID() {

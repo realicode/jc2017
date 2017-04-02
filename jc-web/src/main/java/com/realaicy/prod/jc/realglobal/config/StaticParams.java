@@ -16,6 +16,8 @@ public class StaticParams {
         public static final Short MYWORK_NOTSTART = Short.valueOf("1");
         public static final Short MYWORK_DONE = Short.valueOf("3");
 
+        public static final Short CHECKITEM_DONE = Short.valueOf("3");
+
         public static final Short PJAPPLY_INI = Short.valueOf("1");
         public static final Short PJAPPLY_ERR_IN_INI = Short.valueOf("4101");
         public static final Short PJAPPLY_CONFIRMED = Short.valueOf("2");
@@ -56,9 +58,8 @@ public class StaticParams {
         public static final String APPLY_FINAL_VIEWURI = "/pj/apply/show/";
 
 
-        public static final String APJ_PRECONF_WORKURI = "/pj/pre/docheck?realactiontype=new&checkitemruntimeid=";
+        public static final String PJ_PRE_CHECKITEM_DO_WORKURI = "/pj/pre/docheck?realactiontype=new&checkitemruntimeid=";
         public static final String PJ_PRECONF_VIEWURI = "/pj/pre/show/?realactiontype=new&checkitemruntimeid=";
-
 
     }
 
