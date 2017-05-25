@@ -21,91 +21,83 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
     @Column(name = "APPLYNAME")
     @NotEmpty
     private String name;
+    /**
+     * 主要研究者姓名
+     */
+    @Column(name = "PINAME")
+    @NotEmpty
 
+    private String pi;
     /**
      * 申办方机构名称
      */
     @Column(name = "SPONSOR_ORGNAME")
     @NotEmpty
     private String orgName;
-
     /**
      * 方案摘要URI
      */
     @Column(name = "TRIALABSTRACTURI")
     @NotEmpty
     private String trialAbstractURI;
-
     /**
-     * 方案摘要Name
+     * 待稽查试验机构ID
      */
-    @Column(name = "TRIALABSTRACTNAME")
-    @NotEmpty
-    private String trialAbstractName;
-
+    @Column(name = "TRIALCENTERIDS")
+    private String trialCenterIDs;
     /**
-     * 带稽查试验机构名称
+     * 待稽查试验机构名称
      */
     @Column(name = "TRIALCENTERS")
     private String trialCenterNames;
-
     /**
      * 申请的简要描述
      */
     @NotEmpty
     @Column(name = "APPLY_DESCRIBE")
     private String applyDescribe;
-
     /**
      * 确认人
      */
     @ManyToOne()
     @JoinColumn(name = "CONFIRM_USERID")
     private User confirmor;
-
     /**
      * "确认人"评论
      */
     @Column(name = "CONFIRM_REMARK")
     private String confirmRemark;
-
     /**
      * 审批人
      */
     @ManyToOne()
     @JoinColumn(name = "APPROVE_USERID")
     private User approver;
-
     /**
      * "审批人"评论
      */
     @Column(name = "APPROVE_REMARK")
     private String approveRemark;
-
     /**
      * 报价
      */
     @Column(name = "QUOTATION")
     private Integer quotation;
-
     /**
      * 合同URI
      */
     @Column(name = "CONTRACTURI")
     private String contractURI;
-
     /**
      * 研究方案URI
      */
     @Column(name = "TRIALURI")
     private String trialURI;
-
     /**
      * 临时测试
      */
     @Column(name = "CONTRACTTMP1")
     private String contracttmp1;
-
     /**
      * 临时测试2
      */
@@ -116,10 +108,17 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
      */
     @Column(name = "FINALREMARK")
     private String finalRemark;
-
     @ManyToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User user;
+
+    public String getPi() {
+        return pi;
+    }
+
+    public void setPi(String pi) {
+        this.pi = pi;
+    }
 
     public String getFinalRemark() {
         return finalRemark;
@@ -209,12 +208,12 @@ public class Appliance extends CommonDeletableEntity<BigInteger> {
         this.applyDescribe = applyDescribe;
     }
 
-    public String getTrialAbstractName() {
-        return trialAbstractName;
+    public String getTrialCenterIDs() {
+        return trialCenterIDs;
     }
 
-    public void setTrialAbstractName(String trialAbstractName) {
-        this.trialAbstractName = trialAbstractName;
+    public void setTrialCenterIDs(String trialCenterIDs) {
+        this.trialCenterIDs = trialCenterIDs;
     }
 
     public String getName() {

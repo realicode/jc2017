@@ -3,12 +3,7 @@ package com.realaicy.prod.jc.modules.auditdb.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonTreeableDeletableEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

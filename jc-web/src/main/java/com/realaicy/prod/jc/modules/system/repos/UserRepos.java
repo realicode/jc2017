@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -62,7 +63,7 @@ public interface UserRepos extends BaseJPARepository<User, BigInteger> {
     User findByUserinfoWxuserid(String wxUserid);
 
 
-    List<PreInspectionUserVO> getRoleUsers(@Param("roleID") BigInteger roleID);
+    HashSet<PreInspectionUserVO> getRoleUsers(@Param("roleID") BigInteger roleID);
 
 
 

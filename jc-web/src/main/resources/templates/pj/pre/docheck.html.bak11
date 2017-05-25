@@ -1,0 +1,368 @@
+<link href="//cdn.bootcss.com/blueimp-file-upload/9.18.0/css/jquery.fileupload.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/blueimp-file-upload/9.18.0/css/jquery.fileupload-ui.css" rel="stylesheet">
+
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+
+    <!--/*@thymesVar id="realentity" type=""*/-->
+    <form th:object="${checkruntime_model}" method="POST" th:action="@{/pj/pre/docheck}"
+          id="realentity" class="form-horizontal"
+          xmlns:th="http://www.thymeleaf.org">
+
+        <fieldset>
+            <legend>项目信息</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">项目名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:value="${precheck.projectName}">
+                </div>
+                <input class="form-control" placeholder="" type="hidden" readonly="readonly"
+                       th:field="*{id}" name="id" id="id">
+            </div>
+            <legend class="real_legend">其他预稽查员信息</legend>
+            <div class="form-group" th:each="checkitem : ${precheck.checkitems}">
+                <label class="col-md-2 control-label" th:text="${checkitem.name}"></label>
+                <label class="col-md-2 control-label" th:text="${checkitem.score}"></label>
+
+            </div>
+
+            <div id="real_div_approve">
+                <legend class="real_legend">我的预稽查工作</legend>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">检查项目名称</label>
+                    <div class="col-md-10">
+                        <input class="form-control" placeholder="" type="text" readonly="readonly"
+                               th:field="*{name}" name="name" id="name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">子项目1(测试用，非真实数据)</label>
+                    <div class="col-md-9">
+                        <div class="form-group smart-form">
+                            <div class="col-md-4">
+                                <div class="rating">
+                                    <input type="radio" name="stars-rating" id="stars-rating-5">
+                                    <label for="stars-rating-5"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating" id="stars-rating-4">
+                                    <label for="stars-rating-4"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating" id="stars-rating-3">
+                                    <label for="stars-rating-3"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating" id="stars-rating-2">
+                                    <label for="stars-rating-2"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating" id="stars-rating-1">
+                                    <label for="stars-rating-1"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">子项目2</label>
+                    <div class="col-md-9">
+                        <div class="form-group smart-form">
+                            <div class="col-md-4">
+                                <div class="rating">
+                                    <input type="radio" name="stars-rating-b" id="stars-rating-b-5">
+                                    <label for="stars-rating-b-5"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-b" id="stars-rating-b-4">
+                                    <label for="stars-rating-b-4"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-b" id="stars-rating-b-3">
+                                    <label for="stars-rating-b-3"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-b" id="stars-rating-b-2">
+                                    <label for="stars-rating-b-2"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-b" id="stars-rating-b-1">
+                                    <label for="stars-rating-b-1"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">子项目3</label>
+                    <div class="col-md-9">
+                        <div class="form-group smart-form">
+                            <div class="col-md-4">
+                                <div class="rating">
+                                    <input type="radio" name="stars-rating-c" id="stars-rating-c-5">
+                                    <label for="stars-rating-c-5"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-c" id="stars-rating-c-4">
+                                    <label for="stars-rating-c-4"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-c" id="stars-rating-c-3">
+                                    <label for="stars-rating-c-3"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-c" id="stars-rating-c-2">
+                                    <label for="stars-rating-c-2"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-c" id="stars-rating-c-1">
+                                    <label for="stars-rating-c-1"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">子项目4</label>
+                    <div class="col-md-9">
+                        <div class="form-group smart-form">
+                            <div class="col-md-4">
+                                <div class="rating">
+                                    <input type="radio" name="stars-rating-d" id="stars-rating-d-5">
+                                    <label for="stars-rating-d-5"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-d" id="stars-rating-d-4">
+                                    <label for="stars-rating-d-4"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-d" id="stars-rating-d-3">
+                                    <label for="stars-rating-d-3"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-d" id="stars-rating-d-2">
+                                    <label for="stars-rating-d-2"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-d" id="stars-rating-d-1">
+                                    <label for="stars-rating-d-1"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">子项目5</label>
+                    <div class="col-md-9">
+                        <div class="form-group smart-form">
+                            <div class="col-md-4">
+                                <div class="rating">
+                                    <input type="radio" name="stars-rating-e" id="stars-rating-e-5">
+                                    <label for="stars-rating-e-5"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-e" id="stars-rating-e-4">
+                                    <label for="stars-rating-e-4"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-e" id="stars-rating-e-3">
+                                    <label for="stars-rating-e-3"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-e" id="stars-rating-e-2">
+                                    <label for="stars-rating-e-2"><i class="fa fa-star"></i></label>
+                                    <input type="radio" name="stars-rating-e" id="stars-rating-e-1">
+                                    <label for="stars-rating-e-1"><i class="fa fa-star"></i></label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">稽查结论（记录）</label>
+                    <div class="col-md-10">
+                    <textarea class="form-control real_input_affirm" placeholder="" rows="4"
+                              th:field="*{checkRemark}" name="checkRemark" id="checkRemark"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">综合评分</label>
+                    <div class="col-md-10">
+                        <div class="knobs-demo">
+                            <div>
+                                <input class="knob" th:field="*{score}" name="score" id="score"
+                                       data-width="120" data-height="120" data-displayInput=true value="60"
+                                       data-displayPrevious=true data-fgColor="#428BCA" title="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label">附件相关</label>
+                    <div class="col-md-10">
+                        <span class="btn btn-success fileinput-button">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>Add files...</span>
+                            <!-- The file input field used as target for the file upload widget -->
+                            <input id="fileupload" type="file" name="files[]" multiple>
+                        </span>
+                        <br>
+                        <br>
+                        <!-- The global progress bar -->
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
+                        <!-- The container for the uploaded files -->
+                        <div id="files" class="files"></div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+        <div class="form-actions">
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default" type="button" id="btn_cancel" onclick="realclick()">
+                        取消此次操作
+                    </button>
+
+                    <button class="btn btn-primary" type="submit" id="btn_pass">
+                        <i class="fa fa-save"></i>
+                        确认提交
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    function realclick() {
+        $("#realentity").resetForm();
+        $('#article_real_entity').hide();
+    }
+
+    var pagefunction = function () {
+        console.log("bbbb");
+        'use strict';
+        var url = window.location.hostname === 'blueimp.github.io' ?
+                '//jquery-file-upload.appspot.com/' : 'server/php/',
+            uploadButton = $('<button/>')
+                .addClass('btn btn-primary')
+                .prop('disabled', true)
+                .text('Processing...')
+                .on('click', function () {
+                    var $this = $(this),
+                        data = $this.data();
+                    $this
+                        .off('click')
+                        .text('Abort')
+                        .on('click', function () {
+                            $this.remove();
+                            data.abort();
+                        });
+                    data.submit().always(function () {
+                        $this.remove();
+                    });
+                });
+        $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            autoUpload: false,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 999000,
+            // Enable image resizing, except for Android and Opera,
+            // which actually support image resizing, but fail to
+            // send Blob objects via XHR requests:
+            disableImageResize: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
+            previewMaxWidth: 100,
+            previewMaxHeight: 100,
+            previewCrop: true
+        }).on('fileuploadadd', function (e, data) {
+            data.context = $('<div/>').appendTo('#files');
+            $.each(data.files, function (index, file) {
+                var node = $('<p/>')
+                    .append($('<span/>').text(file.name));
+                if (!index) {
+                    node
+                        .append('<br>')
+                        .append(uploadButton.clone(true).data(data));
+                }
+                node.appendTo(data.context);
+            });
+        }).on('fileuploadprocessalways', function (e, data) {
+            var index = data.index,
+                file = data.files[index],
+                node = $(data.context.children()[index]);
+            if (file.preview) {
+                node
+                    .prepend('<br>')
+                    .prepend(file.preview);
+            }
+            if (file.error) {
+                node
+                    .append('<br>')
+                    .append($('<span class="text-danger"/>').text(file.error));
+            }
+            if (index + 1 === data.files.length) {
+                data.context.find('button')
+                    .text('Upload')
+                    .prop('disabled', !!data.files.error);
+            }
+        }).on('fileuploadprogressall', function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }).on('fileuploaddone', function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                if (file.url) {
+                    var link = $('<a>')
+                        .attr('target', '_blank')
+                        .prop('href', file.url);
+                    $(data.context.children()[index])
+                        .wrap(link);
+                } else if (file.error) {
+                    var error = $('<span class="text-danger"/>').text(file.error);
+                    $(data.context.children()[index])
+                        .append('<br>')
+                        .append(error);
+                }
+            });
+        }).on('fileuploadfail', function (e, data) {
+            $.each(data.files, function (index) {
+                var error = $('<span class="text-danger"/>').text('File upload failed.');
+                $(data.context.children()[index])
+                    .append('<br>')
+                    .append(error);
+            });
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+        // Change this to the location of your server-side upload handler:
+
+    };
+
+                    loadScript("realres/lib/fileupload/js/jquery.fileupload-image.js",
+                        loadScript("realres/lib/fileupload/js/jquery.fileupload-validate.js", pagefunction));
+
+
+
+
+   /* $(document).ready(function () {
+
+
+
+        /!*
+         * KNOB
+         *!/
+        loadScript("smartadmin/js/plugin/knob/jquery.knob.min.js", startKnob);
+
+        function startKnob() {
+
+            $('.knob').knob({
+                change: function (value) {
+                    console.log("change22 : " + value);
+                },
+                release: function (value) {
+                    //console.log(this.$.attr('value'));
+                    //console.log("release : " + value);
+                },
+                cancel: function () {
+                    //console.log("cancel : ", this);
+                }
+            });
+        }
+
+    });*/
+
+</script>

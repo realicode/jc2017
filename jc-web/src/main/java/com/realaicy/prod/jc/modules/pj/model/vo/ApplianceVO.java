@@ -26,7 +26,12 @@ public class ApplianceVO extends BaseVO<BigInteger> {
     @NotEmpty
     @Size(min = 5, max = 300)
     private String name;
-
+    /**
+     * 主要研究者姓名
+     */
+    @NotEmpty
+    @Size(min = 2, max = 10)
+    private String pi;
     /**
      * 申办方机构名称
      */
@@ -34,75 +39,58 @@ public class ApplianceVO extends BaseVO<BigInteger> {
     @Size(min = 5, max = 200)
     @Pattern(regexp = "^[a-zA-Z0-9\\u4E00-\\u9FA5]+$", message = "申请名称格式不正确")
     private String orgName;
-
     /**
      * 方案摘要URI
      */
     @NotEmpty
     private String trialAbstractURI;
-
-    @NotEmpty
-    @Size(min = 5, max = 200)
-    @Pattern(regexp = "^[a-zA-Z0-9\\u4E00-\\u9FA5]+$", message = "申请名称格式不正确")
-    private String trialAbstractName;
-
     /**
      * 待稽查试验机构名称
      */
     @NotEmpty
     @Size(max = 2000)
     private String trialCenterNames;
-
     /**
      * 申请状态
      */
     private String applyStatus;
-
     /**
      * 申请的简要描述
      */
     @NotEmpty
     @Size(min = 2, max = 500)
     private String applyDescribe;
-
     /**
      * 申请人
      */
     private String applicantName;
-
     /**
      * 确认人
      */
     private String confirmorName;
-
     /**
      * "审批人"评论
      */
     @Size(min = 2, max = 500)
     private String confirmRemark;
-
     /**
      * 审批人
      */
     private String approverName;
-
     /**
      * "审批人"评论
      */
     @Size(min = 2, max = 500)
     private String approveRemark;
-
     /**
      * 报价
      */
     @Digits(integer = 10000000, fraction = 1)
     private Integer quotation;
-
     /**
      * 合同URI
      */
     private String contractURI;
-
     /**
      * 方案URI
      */
@@ -115,8 +103,6 @@ public class ApplianceVO extends BaseVO<BigInteger> {
      * 临时测试2
      */
     private String contracttmp2;
-
-
     /**
      * 最终确认意见
      */
@@ -130,9 +116,9 @@ public class ApplianceVO extends BaseVO<BigInteger> {
 //        BeanUtils.copyProperties(po, this);
         this.id = po.getId();
         this.name = po.getName();
+        this.pi = po.getPi();
         this.orgName = po.getOrgName();
         this.trialAbstractURI = po.getTrialAbstractURI();
-        this.trialAbstractName = po.getTrialAbstractName();
         this.trialCenterNames = po.getTrialCenterNames();
         this.applyStatus = String.valueOf(po.getStatus());
         this.applyDescribe = po.getApplyDescribe();
@@ -140,7 +126,7 @@ public class ApplianceVO extends BaseVO<BigInteger> {
         this.approveRemark = po.getApproveRemark();
         this.contracttmp1 = po.getContracttmp1();
         this.contractURI = po.getContractURI();
-        this.trialURI  = po.getTrialURI();
+        this.trialURI = po.getTrialURI();
         this.contracttmp2 = po.getContracttmp2();
         this.finalRemark = po.getFinalRemark();
 
@@ -157,6 +143,22 @@ public class ApplianceVO extends BaseVO<BigInteger> {
 //        if (SpringSecurityUtil.hasPrivilege(Appliance.class.getSimpleName() + "-ack")) {
 //            this.btnType = "2"; //有确认按钮
 //        }
+    }
+
+    public String getPi() {
+        return pi;
+    }
+
+    public void setPi(String pi) {
+        this.pi = pi;
+    }
+
+    public String getFinalRemark() {
+        return finalRemark;
+    }
+
+    public void setFinalRemark(String finalRemark) {
+        this.finalRemark = finalRemark;
     }
 
     public String getTrialURI() {
@@ -261,14 +263,6 @@ public class ApplianceVO extends BaseVO<BigInteger> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTrialAbstractName() {
-        return trialAbstractName;
-    }
-
-    public void setTrialAbstractName(String trialAbstractName) {
-        this.trialAbstractName = trialAbstractName;
     }
 
     public String getOrgName() {

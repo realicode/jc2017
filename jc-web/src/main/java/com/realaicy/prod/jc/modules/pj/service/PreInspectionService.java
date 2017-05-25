@@ -13,5 +13,6 @@ import java.math.BigInteger;
  */
 public interface PreInspectionService extends BaseServiceWithVO<PreInspection, BigInteger, PreInspectionVO> {
 
+    PreInspection findByProjectFacadeId(BigInteger projectid);
 
 }

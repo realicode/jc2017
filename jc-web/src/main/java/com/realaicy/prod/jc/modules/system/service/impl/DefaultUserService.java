@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -49,9 +49,10 @@ public class DefaultUserService extends DefaultBaseServiceImpl<User, BigInteger>
     }
 
     @Override
-    public List<PreInspectionUserVO> getUserByRole(BigInteger roleID) {
+    public HashSet<PreInspectionUserVO> getUserByRole(BigInteger roleID) {
         return ((UserRepos) baseRepository).getRoleUsers(roleID);
     }
+
 
     @Override
     public void saveFromVO(User po, UserVO vo) {

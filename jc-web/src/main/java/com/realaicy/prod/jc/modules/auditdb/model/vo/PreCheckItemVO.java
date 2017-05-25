@@ -1,8 +1,8 @@
 package com.realaicy.prod.jc.modules.auditdb.model.vo;
 
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 
 /**
@@ -11,5 +11,26 @@ import java.math.BigInteger;
  * xxs
  */
 public class PreCheckItemVO extends BaseVO<BigInteger> {
+    /**
+     * 检查项名称
+     */
+    @NotNull
+    private String name;
+    private Boolean folder;
 
+    public Boolean getFolder() {
+        return folder;
+    }
+
+    public void setFolder(Boolean folder) {
+        this.folder = folder;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

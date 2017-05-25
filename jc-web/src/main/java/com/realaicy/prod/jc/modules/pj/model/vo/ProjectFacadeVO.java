@@ -51,11 +51,22 @@ public class ProjectFacadeVO extends BaseVO<BigInteger> {
      */
     @NotEmpty
     private Short projectStatus;
+
+    /**
+     * 预稽查人员招募状态
+     */
+    @NotEmpty
+    private Short preRecruitStatus;
+
     /**
      * 项目进度
      */
     @NotEmpty
     private String projectProcess;
+    /**
+     * 招募预稽查人员进度
+     */
+    private Short pubPreStatus;
 
     public ProjectFacadeVO() {
     }
@@ -69,6 +80,15 @@ public class ProjectFacadeVO extends BaseVO<BigInteger> {
         this.trialCenterNames = po.getTrialCenterNames();
         this.contractURI = po.getContractURI();
         this.trialURI = po.getTrialURI();
+        this.pubPreStatus = po.getPubPreStatus();
+    }
+
+    public Short getPubPreStatus() {
+        return pubPreStatus;
+    }
+
+    public void setPubPreStatus(Short pubPreStatus) {
+        this.pubPreStatus = pubPreStatus;
     }
 
     public BigInteger getId() {
@@ -149,5 +169,13 @@ public class ProjectFacadeVO extends BaseVO<BigInteger> {
 
     public void setTrialURI(String trialURI) {
         this.trialURI = trialURI;
+    }
+
+    public Short getPreRecruitStatus() {
+        return preRecruitStatus;
+    }
+
+    public void setPreRecruitStatus(Short preRecruitStatus) {
+        this.preRecruitStatus = preRecruitStatus;
     }
 }

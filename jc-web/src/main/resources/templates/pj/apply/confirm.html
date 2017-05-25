@@ -43,12 +43,8 @@
 
             <div class="form-group">
                 <label class="col-md-2 control-label">试验方案摘要</label>
-                <div class="col-md-6">
-                    <input class="form-control" type="text" name="trialAbstractName" th:field="*{trialAbstractName}"
-                           placeholder="试验方案摘要" readonly="readonly"
-                           data-rule-required="true" data-msg-required="试验方案摘要">
-                </div>
                 <div class="col-md-4">
+                    <div style="height: 7px"></div>
                     <a id="realdownlaod">下载摘要 </a>
                     <input class="form-control" placeholder="" type="hidden"
                            th:field="*{trialAbstractURI}" name="trialAbstractURI" id="trialAbstractURI">

@@ -2,7 +2,7 @@ package com.realaicy.prod.jc.modules.pj.model.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.model.vo.BaseVO;
-import com.realaicy.prod.jc.modules.auditdb.model.PreCheckItemRunTime;
+import com.realaicy.prod.jc.modules.auditdb.model.PreCheckRunTime;
 import com.realaicy.prod.jc.modules.pj.model.PreInspection;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,6 +19,7 @@ import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.CHE
  */
 public class PreInspectionShowVO extends BaseVO<BigInteger> {
 
+    private BigInteger id;
     private String projectName;
     private String leaderName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -28,28 +29,46 @@ public class PreInspectionShowVO extends BaseVO<BigInteger> {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date preFDate;
     private int score;
-    private List<PreInspectionCheckItemRuntimeVO> checkitems = new ArrayList<>();
+    private List<PreInspectionCheckRuntimeVO> checkRuntimeVOList = new ArrayList<>();
 
     public PreInspectionShowVO(PreInspection po) {
 
+
         this.projectName = po.getProjectFacade().getName();
         this.leaderName = po.getLeader().getNickname();
+        this.id = po.getId();
 
-        for (PreCheckItemRunTime preCheckItemRunTime : po.getCheckitem()) {
-            PreInspectionCheckItemRuntimeVO tmp = new PreInspectionCheckItemRuntimeVO();
-            tmp.setName(preCheckItemRunTime.getCheckitem().getName());
-            tmp.setCheckername(preCheckItemRunTime.getChecker().getNickname());
-            tmp.setStatus(preCheckItemRunTime.getStatus());
+        for (PreCheckRunTime preCheckRunTime : po.getCheckmodule()) {
+            PreInspectionCheckRuntimeVO tmp = new PreInspectionCheckRuntimeVO();
+            tmp.setName(preCheckRunTime.getCheckModule().getName());
+            tmp.setCheckername(preCheckRunTime.getChecker().getNickname());
+            tmp.setStatus(preCheckRunTime.getStatus());
             if (Objects.equals(tmp.getStatus(), CHECKITEM_DONE)) {
-                tmp.setFinishDate(preCheckItemRunTime.getFinishDate());
-                tmp.setCheckRemark(preCheckItemRunTime.getCheckRemark());
-                tmp.setScore(preCheckItemRunTime.getScore());
+                tmp.setFinishDate(preCheckRunTime.getFinishDate());
+                tmp.setCheckRemark(preCheckRunTime.getCheckRemark());
+                tmp.setScore(preCheckRunTime.getScore());
             }
-            checkitems.add(tmp);
+            checkRuntimeVOList.add(tmp);
         }
     }
 
     public PreInspectionShowVO() {
+    }
+
+    public List<PreInspectionCheckRuntimeVO> getCheckRuntimeVOList() {
+        return checkRuntimeVOList;
+    }
+
+    public void setCheckRuntimeVOList(List<PreInspectionCheckRuntimeVO> checkRuntimeVOList) {
+        this.checkRuntimeVOList = checkRuntimeVOList;
+    }
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
     }
 
     public String getProjectName() {
@@ -92,11 +111,4 @@ public class PreInspectionShowVO extends BaseVO<BigInteger> {
         this.score = score;
     }
 
-    public List<PreInspectionCheckItemRuntimeVO> getCheckitems() {
-        return checkitems;
-    }
-
-    public void setCheckitems(List<PreInspectionCheckItemRuntimeVO> checkitems) {
-        this.checkitems = checkitems;
-    }
 }

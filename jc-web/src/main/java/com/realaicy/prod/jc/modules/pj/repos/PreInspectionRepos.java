@@ -12,5 +12,7 @@ import java.math.BigInteger;
  */
 public interface PreInspectionRepos extends BaseJPARepository<PreInspection, BigInteger> {
 
+    PreInspection findByProjectFacadeId(BigInteger projectid);
+
 
 }

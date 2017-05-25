@@ -18,8 +18,8 @@ public final class BaseSpecificationsBuilder<T> {
 
     // API
 
-    public  BaseSpecificationsBuilder with(final String key, final String operation,
-                                                final Object value, final String prefix, final String suffix) {
+    public BaseSpecificationsBuilder with(final String key, final String operation,
+                                          final Object value, final String prefix, final String suffix) {
         SearchOperation op = SearchOperation.getSimpleOperation(operation.charAt(0));
         if (op != null) {
             /*if (op == SearchOperation.EQUALITY) { // the operation may be complex operation
@@ -34,6 +34,13 @@ public final class BaseSpecificationsBuilder<T> {
                     op = SearchOperation.STARTS_WITH;
                 }
             }*/
+
+
+            if (op == SearchOperation.LIKE) {
+                if (!prefix.equals("%")) {
+                    op = SearchOperation.STARTS_WITH;
+                }
+            }
             params.add(new SpecSearchCriteria(key, op, value));
         }
         return this;

@@ -7,7 +7,7 @@ import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.model.vo.UserVO;
 
 import java.math.BigInteger;
-import java.util.List;
+import java.util.HashSet;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -35,7 +35,6 @@ public interface UserService  extends BaseServiceWithVO<User, BigInteger, UserVO
 
     User findByUserinfoWxuserid(String wxUserid);
 
-    List<PreInspectionUserVO> getUserByRole(BigInteger roleID);
-
+    HashSet<PreInspectionUserVO> getUserByRole(BigInteger roleID);
 
 }

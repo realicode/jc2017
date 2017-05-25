@@ -132,8 +132,15 @@
 <div>
 
     <!--/*@thymesVar id="real_firstfilter" type=""*/-->
-    <input id="auth_pj_pre_conf" name="auth_pj_pre_conf" type="hidden" th:value="${auth_pj_pre_conf}"
+    <input id="auth_pj_pre_start" name="auth_pj_pre_start" type="hidden" th:value="${auth_pj_pre_start}"
            xmlns:th="http://www.thymeleaf.org">
+    <input id="auth_pj_pre_recruit" name="auth_pj_pre_recruit" type="hidden" th:value="${auth_pj_pre_recruit}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="auth_pj_pre_view" name="auth_pj_pre_view" type="hidden" th:value="${auth_pj_pre_view}"
+           xmlns:th="http://www.thymeleaf.org">
+    <input id="auth_pj_date_pro" name="auth_pj_date_pro" type="hidden" th:value="${auth_pj_date_pro}"
+           xmlns:th="http://www.thymeleaf.org">
+
 </div>
 
 <script type="text/javascript">
@@ -236,10 +243,13 @@
                         {
                             "data": "projectStatus", "width": "6%",
                             "render": function (data) {
-                                if (data === 1) {
-                                    return "<span class='label label-default'>" + "已启动" + "</span>"
+                                if (data === 0) {
+                                    return "<span class='label label-default'>" + "待启动预稽查" + "</span>"
 
-                                } else if ((data === 2)) {
+                                } else if ((data === 1)) {
+                                    return "<span class='label label-primary'>" + "已启动" + "</span>"
+                                }
+                                else if ((data === 2)) {
                                     return "<span class='label label-primary'>" + "预稽查ing" + "</span>"
                                 } else if ((data === 3)) {
                                     return "<span class='label label-info'>" + "稽查ing" + "</span>"
@@ -281,13 +291,13 @@
                         {
                             "data": "contractURI", "width": "10%",
                             "render": function (data, type, row) {
-                                return "<a href='" + realaicy_g_var_dlurl + row.contractURI + "'>" +"下载合同"+ "</a>"
+                                return "<a href='" + realaicy_g_var_dlurl + row.contractURI + "'>" + "下载合同" + "</a>"
                             }
                         },
                         {
                             "data": "trialURI", "width": "10%",
                             "render": function (data, type, row) {
-                                return "<a href='" + realaicy_g_var_dlurl + row.trialURI + "'>" +"下载方案"+ "</a>"
+                                return "<a href='" + realaicy_g_var_dlurl + row.trialURI + "'>" + "下载方案" + "</a>"
                             }
                         },
 
@@ -295,13 +305,25 @@
                             "data": null,
                             "render": function (data, type, row) {
 
-                                if (row.projectStatus === 1 && $("#auth_pj_pre_conf").val() === "1") {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_preconf'>配置预稽查</a>"
+                                var returnStr = '';
+
+                                if (row.projectStatus === 0 && row.pubPreStatus === 0 && $("#auth_pj_pre_recruit").val() === "1") {
+                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_recruit'>招募预稽查员</a>"
                                 }
-                                if (row.projectStatus === 2 && $("#auth_pj_pre_conf").val() === "1") {
-                                    return "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_viewconf'>查看预稽查</a>"
-                                        + "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_dateprof'>预约专家</a>"
+
+                                if (row.projectStatus === 0 && $("#auth_pj_pre_start").val() === "1") {
+                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_prestart'>启动预稽查</a>"
                                 }
+
+                                if (row.projectStatus >= 2 && $("#auth_pj_pre_view").val() === "1") {
+                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_preview'>查看预稽查</a>"
+                                }
+
+                                if (row.projectStatus >= 2 && $("#auth_pj_date_pro").val() === "1") {
+                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_date_pro'>预约专家</a>"
+                                }
+
+                                return returnStr + "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_detail'>查看项目</a>"
 
                             }
 
@@ -337,19 +359,40 @@
             /**
              * 配置预稽查
              */
-            $('#dt_basic_real').on('click', '.real_css_btn_preconf', function () {
+            $('#dt_basic_real').on('click', '.real_css_btn_prestart', function () {
 
                 if ($("#real_entity").hasClass("jarviswidget-collapsed"))
                     $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
                 realloadpage("/pj/pre/conf?realactiontype=ini&pjid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
+            /**
+             * 配置招募
+             */
+            $('#dt_basic_real').on('click', '.real_css_btn_recruit', function () {
+
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                $("#real_controlpanel_span").html('预稽查人员招募');
+                realloadpage("/pj/pre/recruit?realactiontype=ini&pjid=" + realtable.row($(this).parents('tr')).data().id);
+            });
+
+        /**
+         * 配置 '查看预稽查'
+         */
+        $('#dt_basic_real').on('click', '.real_css_btn_preview', function () {
+
+            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+            $("#real_controlpanel_span").html('预稽查详情');
+            realloadpage("/pj/pre/show/" + realtable.row($(this).parents('tr')).data().id);
+        });
+
 
 
 
         }// end of ready
     );
-
 
 
 </script>

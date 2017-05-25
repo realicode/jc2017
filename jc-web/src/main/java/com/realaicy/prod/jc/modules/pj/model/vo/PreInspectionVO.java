@@ -22,9 +22,44 @@ public class PreInspectionVO extends BaseVO<BigInteger> {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     private Date preFDate;
-    private String temptest;
+    private String checkStr;
     private int score;
+    private String projectName;
+    private BigInteger  checkModuleID;
+    private String checkModuleName;
     private List<PreInspectionCheckItemRuntimeVO> checkitems;
+
+    public String getCheckModuleName() {
+        return checkModuleName;
+    }
+
+    public void setCheckModuleName(String checkModuleName) {
+        this.checkModuleName = checkModuleName;
+    }
+
+    public BigInteger getCheckModuleID() {
+        return checkModuleID;
+    }
+
+    public void setCheckModuleID(BigInteger checkModuleID) {
+        this.checkModuleID = checkModuleID;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getCheckStr() {
+        return checkStr;
+    }
+
+    public void setCheckStr(String checkStr) {
+        this.checkStr = checkStr;
+    }
 
     public BigInteger getPjID() {
         return pjID;
@@ -48,14 +83,6 @@ public class PreInspectionVO extends BaseVO<BigInteger> {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public String getTemptest() {
-        return temptest;
-    }
-
-    public void setTemptest(String temptest) {
-        this.temptest = temptest;
     }
 
     public BigInteger getPreleader() {

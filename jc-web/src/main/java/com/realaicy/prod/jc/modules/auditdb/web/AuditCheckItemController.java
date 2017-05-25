@@ -5,7 +5,6 @@ import com.realaicy.prod.jc.common.exception.SaveNewException;
 import com.realaicy.prod.jc.modules.auditdb.model.AuditCheckItem;
 import com.realaicy.prod.jc.modules.auditdb.model.vo.AuditCheckItemVO;
 import com.realaicy.prod.jc.modules.auditdb.service.AuditCheckItemService;
-import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.TreeController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,14 +34,9 @@ public class AuditCheckItemController extends TreeController<AuditCheckItem, Big
 
     @Autowired
     public AuditCheckItemController(AuditCheckItemService auditCheckItemService) {
-        super(auditCheckItemService, "org", NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
+        super(auditCheckItemService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
                 NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
                 AuditCheckItem.class, AuditCheckItemVO.class, BINDING_WHITE_LIST);
-    }
-
-    @Override
-    public BigInteger getRealID() {
-        return BigInteger.valueOf(StaticParams.REALNUM.N3);
     }
 
     @Override

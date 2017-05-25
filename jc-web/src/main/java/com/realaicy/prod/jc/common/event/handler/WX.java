@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.common.event.handler;
 
 import com.realaicy.prod.jc.common.event.JCEventHandler;
+import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionUserVO;
 import com.realaicy.prod.jc.modules.system.model.EventAction;
 import com.realaicy.prod.jc.modules.system.model.User;
 import com.realaicy.prod.jc.modules.system.repos.EventMsgTemRepos;
@@ -34,7 +35,14 @@ public class WX implements JCEventHandler {
             String tmp1 = eventMsgTemRepos.getOne(eventAction.getMsgTemID()).getName().replace("$$$$", user.getUserinfo().getNickname());
             String tmp2 = tmp1.replace("@@@@", extMsg);
             WxUtil.sentMsgToUser(tmp2, user.getUserinfo().getWxuserid());
+        }
 
+        if (eventAction.getSubscriberRoleID() != null) {
+            for (PreInspectionUserVO user : userService.getUserByRole(eventAction.getSubscriberRoleID())) {
+                String tmp1 = eventMsgTemRepos.getOne(eventAction.getMsgTemID()).getName().replace("$$$$", user.getNickname());
+                String tmp2 = tmp1.replace("@@@@", extMsg);
+                WxUtil.sentMsgToUser(tmp2, userService.findOne(user.getId()).getUserinfo().getWxuserid());
+            }
         }
     }
 }

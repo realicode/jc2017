@@ -2,7 +2,8 @@ package com.realaicy.prod.jc.modules.pj.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
-import com.realaicy.prod.jc.modules.auditdb.model.PreCheckItemRunTime;
+import com.realaicy.prod.jc.modules.auditdb.model.PreCheckModule;
+import com.realaicy.prod.jc.modules.auditdb.model.PreCheckRunTime;
 import com.realaicy.prod.jc.modules.system.model.User;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,24 +35,46 @@ public class PreInspection extends CommonDeletableEntity<BigInteger> {
     @ManyToOne
     @JoinColumn(name = "LEADER_ID")
     private User leader;
+
     @OneToOne
     @JoinColumn(name = "PJ_ID")
-
     private ProjectFacade projectFacade;
+    @OneToOne
+    @JoinColumn(name = "CHECKMODULE_ID")
+    private PreCheckModule preCheckModuleRoot;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     @Column(name = "SDATE")
+
     private Date preSDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     @Column(name = "FDATE")
+
     private Date preFDate;
     @ManyToMany
     @JoinTable(name = "jc_pj_r_pre_user", joinColumns = @JoinColumn(name = "PJID"),
             inverseJoinColumns = @JoinColumn(name = "USERID"))
     private Set<User> user;
     @OneToMany(mappedBy = "preInspection")
-    private Set<PreCheckItemRunTime> checkitem;
+    @OrderBy("checkModule")
+    private Set<PreCheckRunTime> checkmodule;
+
+    public PreCheckModule getPreCheckModuleRoot() {
+        return preCheckModuleRoot;
+    }
+
+    public void setPreCheckModuleRoot(PreCheckModule preCheckModuleRoot) {
+        this.preCheckModuleRoot = preCheckModuleRoot;
+    }
+
+    public Set<PreCheckRunTime> getCheckmodule() {
+        return checkmodule;
+    }
+
+    public void setCheckmodule(Set<PreCheckRunTime> checkmodule) {
+        this.checkmodule = checkmodule;
+    }
 
     public Date getPreFDate() {
         return preFDate;
@@ -77,13 +100,6 @@ public class PreInspection extends CommonDeletableEntity<BigInteger> {
         this.projectFacade = projectFacade;
     }
 
-    public Set<PreCheckItemRunTime> getCheckitem() {
-        return checkitem;
-    }
-
-    public void setCheckitem(Set<PreCheckItemRunTime> checkitem) {
-        this.checkitem = checkitem;
-    }
 
     public String getName() {
         return name;
@@ -116,7 +132,6 @@ public class PreInspection extends CommonDeletableEntity<BigInteger> {
     public void setLeader(User leader) {
         this.leader = leader;
     }
-
 
 
 }

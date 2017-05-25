@@ -24,6 +24,10 @@
           href="../static/realres/lib/sa/css/smartadmin-production.css"/>
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/smartadmin-skins.min.css}"
           href="../static/realres/lib/sa/css/smartadmin-skins.min.css"/>
+
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/formvalidation/css/formValidation.min.css}"
+          href="../static/realres/lib/formvalidation/css/formValidation.min.css"/>
+
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/demo.css}"
           href="../static/realres/lib/sa/css/demo.css"/>
     <link rel="stylesheet" type="text/css" media="screen" th:href="@{realres/lib/sa/css/realaicy.css}"
@@ -181,6 +185,7 @@
 <!--<script th:src="@{/smartadmin/js/libs/jquery-2.1.1.min.js}"-->
         <!--src="../static/smartadmin/js/libs/jquery-2.1.1.min.js"></script>-->
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>-->
 
 <!--<script th:src="@{/smartadmin/js/libs/jquery-ui-1.10.3.min.js}"-->
         <!--src="../static/smartadmin/js/libs/jquery-ui-1.10.3.min.js"></script>-->
@@ -206,6 +211,10 @@
         <!--src="../static/smartadmin/js/plugin/jquery-validate/jquery.validate.min.js"></script>-->
 <script src="//cdn.bootcss.com/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 
+<script th:src="@{/realres/lib/formvalidation/js/formValidation.min.js}"
+src="../static/realres/lib/formvalidation/js/formValidation.min.js"></script>
+<script th:src="@{/realres/lib/formvalidation/js/framework/bootstrap.min.js}"
+        src="../static/realres/lib/formvalidation/js/framework/bootstrap.min.js"></script>
 <!--<script th:src="@{/realres/lib/jquery/plugin/validation/bv/bootstrapValidator.min.js}"-->
         <!--src="../static/realres/lib/jquery/plugin/validation/bv/bootstrapValidator.min.js"></script>-->
 
@@ -230,7 +239,7 @@
 <script src="//cdn.bootcss.com/datatables/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <!--<script th:src="@{/realres/lib/sa/js/datatables/dataTables.buttons.min.js}"-->
         <!--src="../static/realres/lib/sa/js/datatables/dataTables.buttons.min.js"></script>-->
-<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
 <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.bootstrap.min.js"></script>
 
 <!--<script th:src="@{/realres/lib/sa/js/datatables/buttons.bootstrap.min.js}"-->
@@ -245,7 +254,7 @@
 <!--<script th:src="@{/realres/lib/sa/js/datatables/datatables.responsive.min.js}"-->
         <!--src="../static/realres/lib/sa/js/datatables/datatables.responsive.min.js"></script>-->
 
-<script src="https://cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.1.1/js/dataTables.responsive.min.js"></script>
 
 <script src="//cdn.bootcss.com/bootstrap-progressbar/0.9.0/bootstrap-progressbar.min.js"></script>
 <script src="//cdn.bootcss.com/select2/4.0.3/js/select2.min.js"></script>
@@ -260,16 +269,21 @@
 <script src="//cdn.bootcss.com/layer/3.0.1/layer.min.js"></script>
 
 <script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/vendor/jquery.ui.widget.min.js"></script>
-<script src="//blueimp.github.io/JavaScript-Templates/js/tmpl.min.js"></script>
-<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
-<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-JavaScript-Templates/3.8.0/js/tmpl.min.js"></script>
+<!--<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>-->
+<script src="//cdn.bootcss.com/blueimp-load-image/2.12.2/load-image.all.min.js"></script>
 
-<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.iframe-transport.min.js"></script>
+
+<script src="//cdn.bootcss.com/javascript-canvas-to-blob/3.7.0/js/canvas-to-blob.min.js"></script>
 <script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload.min.js"></script>
 <script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-process.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-image.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-validate.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-ui.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-gallery/2.25.0/js/jquery.blueimp-gallery.min.js"></script>
+
+<!--<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.iframe-transport.min.js"></script>-->
+<!--<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload.min.js"></script>-->
+<!--<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-image.min.js"></script>-->
+<!--<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-validate.min.js"></script>-->
+<!--<script src="//cdn.bootcss.com/blueimp-file-upload/9.18.0/js/jquery.fileupload-ui.min.js"></script>-->
 
 
 

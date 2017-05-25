@@ -3,14 +3,18 @@ package com.realaicy.prod.jc.modules.pj.web;
 import com.aspose.words.Document;
 import com.realaicy.prod.jc.common.event.*;
 import com.realaicy.prod.jc.common.exception.SaveNewException;
+import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
-import com.realaicy.prod.jc.modules.pj.model.*;
+import com.realaicy.prod.jc.modules.pj.model.Appliance;
 import com.realaicy.prod.jc.modules.pj.model.vo.ApplianceVO;
 import com.realaicy.prod.jc.modules.pj.model.vo.ApplyContractVO;
 import com.realaicy.prod.jc.modules.pj.model.vo.FinalVO;
 import com.realaicy.prod.jc.modules.pj.model.vo.TrialSolutionVO;
 import com.realaicy.prod.jc.modules.pj.service.ApplianceService;
+import com.realaicy.prod.jc.modules.system.model.Org;
+import com.realaicy.prod.jc.modules.system.model.vo.OrgVO4S2;
+import com.realaicy.prod.jc.modules.system.service.OrgService;
 import com.realaicy.prod.jc.modules.system.service.UserService;
 import com.realaicy.prod.jc.realglobal.config.StaticParams;
 import com.realaicy.prod.jc.realglobal.web.CRUDWithVOController;
@@ -33,9 +37,7 @@ import java.math.BigInteger;
 import java.util.*;
 
 import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALACTIONTYPE.PJ_BUILDCONTRACT_NEW;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_FINAL_DONE;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_PROVIDECONTRACT_DONE;
-import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJAPPLY_PROVIDESOLUTION_DONE;
+import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.*;
 import static com.realaicy.prod.jc.realglobal.config.StaticParams.TODOWORK.*;
 import static com.realaicy.prod.jc.uitl.OtherUtil.getAsposeLicense;
 import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFuncByRealaicy;
@@ -51,8 +53,13 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
     private String contractTemPath;
 
     private final UserService userService;
+    private final OrgService orgService;
+
     private final ApplicationEventPublisher publisher;
     private final MyWorkService myWorkService;
+
+    private static JsonMapper binder = JsonMapper.nonDefaultMapper();
+
 
     private static Specification<Appliance> applicaitonByUserName(String userName) {
         return (userRoot, query, cb) -> cb.equal(userRoot.get("user").get("username"), userName);
@@ -82,13 +89,14 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
 
 
     @Autowired
-    public ApplianceController(ApplianceService applianceService,
-                               UserService userService, ApplicationEventPublisher publisher, MyWorkService myWorkService) {
+    public ApplianceController(ApplianceService applianceService, UserService userService,
+                               OrgService orgService, ApplicationEventPublisher publisher, MyWorkService myWorkService) {
         super(applianceService, NAME_DIC, PAGE_URL, SHOW_ENTITY_URL,
                 NEW_ENTITY_URL, EDIT_ENTITY_URL, LIST_ENTITY_URL, SEARCH_ENTITY_URL,
                 Appliance.class, ApplianceVO.class, BINDING_WHITE_LIST);
         this.applianceService = applianceService;
         this.userService = userService;
+        this.orgService = orgService;
         this.publisher = publisher;
         this.myWorkService = myWorkService;
     }
@@ -379,6 +387,19 @@ public class ApplianceController extends CRUDWithVOController<Appliance, BigInte
             applianceVOList.add(applianceVOTemp);
         }
         return applianceVOList;
+    }
+
+    @Override
+    protected void addModelAttrToNew(Model model) {
+
+        List<OrgVO4S2> orgVO4S2List = new ArrayList<>();
+        for (Org org : orgService.findByDeleteFlag(false)) {
+            OrgVO4S2 vo4S2Temp  = new OrgVO4S2();
+            vo4S2Temp.setId(org.getId());
+            vo4S2Temp.setName(org.getName());
+            orgVO4S2List.add(vo4S2Temp);
+        }
+        model.addAttribute("orglist", binder.toJson(orgVO4S2List));
     }
 
     @Override

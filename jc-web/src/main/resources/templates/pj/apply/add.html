@@ -1,105 +1,128 @@
+<link href="//cdn.bootcss.com/blueimp-file-upload/9.18.0/css/jquery.fileupload.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/blueimp-file-upload/9.18.0/css/jquery.fileupload-ui.css" rel="stylesheet">
 <div class="jarviswidget-editbox">
 </div>
 <div class="widget-body no-padding">
     <!--/*@thymesVar id="realmodel" type=""*/-->
     <form th:object="${realmodel}" method="POST" th:action="@{/pj/apply/save}"
-          id="realentity" class="smart-form"
+          id="realentity" class="form-horizontal"
           xmlns:th="http://www.thymeleaf.org">
+
+
         <fieldset>
-            <div class="row">
-                <section class="col col-6">
-                    <label class="input"> <i class="icon-prepend fa fa-userInfo"></i>
-                        <input class="" type="text" id="name" name="name" th:field="*{name}" placeholder="稽查项目名称"
-                               data-rule-required="true" data-msg-required="请输入稽查项目名称">
-                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入稽查项目名称</span></b>
-                        <input id="updateflag" name="updateflag" type="hidden" th:value="${realneworupdate}">
-                        <input id="updateID" name="updateID" type="hidden" th:value="${realUpdateID}">
-                    </label>
-                </section>
-                <section class="col col-6">
-                    <label class="input"> <i class="icon-prepend fa fa-userInfo"></i>
-                        <input class="" type="text" name="orgName" th:field="*{orgName}" placeholder="申请方机构名称"
-                               data-rule-required="true" data-msg-required="请输入申请方机构名称">
-                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入申请方机构名称</span></b>
-                    </label>
-                </section>
+            <legend>
+                请填写如下信息
+            </legend>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">稽查项目名称<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" id="name" name="name" th:field="*{name}"
+                           placeholder="请输入稽查项目名称" title=""/>
+                    <input id="orglist" type="hidden" th:value="${orglist}">
+                    <input id="updateflag" name="updateflag" type="hidden" th:value="${realneworupdate}">
+                    <input id="updateID" name="updateID" type="hidden" th:value="${realUpdateID}">
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
             </div>
-            <div class="row">
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">申请方机构名称<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" name="orgName" th:field="*{orgName}" id="orgName"
+                           placeholder="请输入申请方机构名称"
+                           title=""/>
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
             </div>
-            <div class="row">
-                <section class="col col-10">
-                    <div class="form-group" id="reali">
-                        <label id="reall">请输入待稽查机构名称,按回车键添加</label>
-                        <input type="text" class="form-control tagsinput" name="orgtags" id="orgtags"
-                               value="" data-role="tagsinput" title="">
-                    </div>
-                </section>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">主要研究者<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" id="pi" name="pi" th:field="*{pi}" placeholder="请输入主要研究者姓名"
+                           title=""/>
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">请选择待稽查机构<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <select multiple style="width:100%" class="select2" id="orgids" name="orgids"
+                            title="">
+                    </select>
+                    <input type="hidden" id="trialCenterNames" name="trialCenterNames" th:field="*{trialCenterNames}">
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">请上传研究方案摘要<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <input type="file" class="btn btn-default" id="realfile" name="realfile">
+                    <input type="hidden" id="trialAbstractURI" name="trialAbstractURI" th:field="*{trialAbstractURI}">
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label">稽查项目简要描述<sup>*</sup></label>
+                <div class="col-xs-9">
+                    <textarea class="form-control" rows="5" name="applyDescribe" th:field="*{applyDescribe}"
+                              placeholder="请输入项目简要描述"
+                              data-msg-required="请输入项目简要描述"></textarea>
+                </div>
+                <div class="col-xs-1">
+                    <i class="glyphicon glyphicon-question-sign" style="font-size: 1.5em" rel="popover-hover"
+                       data-container="body" data-placement="left" data-original-title="提示信息"
+                       data-content="帮助信息：帮助用户理解所需填写的内容"></i>
+                </div>
+            </div>
+
         </fieldset>
-        <fieldset>
+
+        <div class="form-actions">
             <div class="row">
-                <section class="col col-5">
-                    <label class="input"> <i class="icon-prepend fa fa-userInfo"></i>
-                        <input class="" type="text" name="trialAbstractName" th:field="*{trialAbstractName}"
-                               placeholder="请输入方案摘要名称"
-                               data-rule-required="true" data-msg-required="请输入方案摘要名称">
-                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入方案摘要名称</span></b>
-                    </label>
-                </section>
-                <section class="col col-5">
-                    <label for="realfile" class="input input-file">
-                        <div class="button"><input type="file" name="realfile" id="realfile">
-                            点击上传
-                        </div>
-                        <input type="text" id="realfilePath" name="realfilePath" placeholder="请上传文件" readonly="">
-                        <input type="hidden" id="trialAbstractURI" name="trialAbstractURI"
-                               th:field="*{trialAbstractURI}">
-                        <input type="hidden" id="trialCenterNames" name="trialCenterNames"
-                               th:field="*{trialCenterNames}">
-
-                    </label>
-                </section>
-                <section class=" col col-1">
-                    <span id="filestatus" style="font-size: 15px;line-height: 30px "></span>
-                </section>
+                <div class="col-md-12">
+                    <button class="btn btn-default" type="submit">
+                        <i class="fa fa-eye"></i>
+                        Validate
+                    </button>
+                    <button type="reset" class="btn btn-primary"
+                            style="height: 32px;width: 80px;font-size: 13px;margin-right: 20px">
+                        重置数据
+                    </button>
+                    <button type="submit" class="btn btn-primary" style="height: 32px;width: 80px">
+                        提交数据
+                    </button>
+                </div>
             </div>
-            <div class="row">
-                <section class="col col-10">
-
-                    <label class="textarea"> <i class="icon-append fa fa-comment"></i>
-                        <textarea rows="5" name="applyDescribe" th:field="*{applyDescribe}" placeholder="请输入项目简要描述"
-                                  data-msg-required="请输入项目简要描述"></textarea>
-                        <b class="tooltip tooltip-bottom-right tooltip-realaicy"><span
-                                class="tooltip-realaicy">请输入项目简要描述</span></b>
-                    </label>
-                </section>
-            </div>
-        </fieldset>
-
-        <fieldset style="padding-top: 2px">
-            <section class="col col-6">
-                <span id="realerrormsg"></span>
-            </section>
-            <section class="col col-6" align="right" style="padding-top: 6px">
-                <button type="reset" class="btn btn-primary"
-                        style="height: 32px;width: 80px;font-size: 13px;margin-right: 20px">
-                    重置数据
-                </button>
-                <button type="submit" class="btn btn-primary" style="height: 32px;width: 80px">
-                    提交数据
-                </button>
-            </section>
-
-
-        </fieldset>
+        </div>
     </form>
 </div>
 
 <script type="text/javascript">
     pageSetUp();
+    $("[rel=popover-hover]").popover({trigger: "hover"});
 
 
     var real_f_fileok = '0';
@@ -138,124 +161,138 @@
         });
     } // f
 
-    $("#realentity").validate({
-        debug: true,
-        invalidHandler: function (event, validator) {
-            var errors = validator.numberOfInvalids();
-            if (errors) {
-                var message = errors === 1
-                    ? 'You missed 1 field. It has been highlighted'
-                    : 'You missed ' + errors + ' fields. They have been highlighted';
-                $("#realerrormsg").html(message);
-            } else {
-                $("div.error").hide();
-            }
+
+    $('#realentity').formValidation({
+        framework: 'bootstrap',
+        excluded: ':disabled',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
         },
-        errorLabelContainer: "#realerrormsg",
-        wrapper: "li",
-        errorClass: "state-error",
-        validClass: "state-success",
-        highlight: function (element, errorClass, validClass) {
-            $(element).parent().parent().addClass(errorClass).removeClass(validClass);
-        },
-        unhighlight: function (element, errorClass, validClass) {
-            $(element).parent().parent().removeClass(errorClass).addClass(validClass);
-        },
-        rules: {
+        fields: {
             name: {
-                required: true,
-                minlength: 5,
-                maxlength: 300
+                validators: {
+                    notEmpty: {
+                        message: '请输入稽查项目名称'
+                    },
+                    stringLength: {
+                        min: 5,
+                        max: 300,
+                        message: '请输入5-300个字符'
+                    }
+                }
             },
             orgName: {
-                required: true,
-                minlength: 5,
-                maxlength: 200,
-                isADCLine: true
-
+                validators: {
+                    notEmpty: {
+                        message: '请输入申办机构名称'
+                    },
+                    stringLength: {
+                        min: 5,
+                        max: 200,
+                        message: '请输入5-200个字符'
+                    },
+                    regexp: {
+                        regexp: /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+                        message: '请不要填写非法字符，只能输入中文（不包含生僻字）、英文字母、数字、下划线")'
+                    }
+                }
             },
-            trialAbstractName: {
-                required: true,
-                minlength: 5,
-                maxlength: 200,
-                isADCLine: true
+            pi: {
+                validators: {
+                    notEmpty: {
+                        message: '请输入主要研究者姓名'
+                    },
+                    stringLength: {
+                        min: 2,
+                        max: 10,
+                        message: '请输入2-10个字符'
+                    },
+                    regexp: {
+                        regexp: /^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/,
+                        message: '请不要填写非法字符，只能输入中文（不包含生僻字）、英文字母、数字、下划线")'
+                    }
+                }
             },
-            orgtags: {
-                required: true,
-                minlength: 5,
-                maxlength: 500,
-                isADCLine: true
+            orgids: {
+                validators: {
+                    callback: {
+                        message: '请选择1-3个待稽查机构',
+                        callback: function(value, validator, $field) {
+                            // Get the selected options
+                            var options = validator.getFieldElements('orgids').val();
+                            return (options !== null && options.length >= 1 && options.length <= 3);
+                        }
+                    }
+                }
             },
             applyDescribe: {
-                required: true,
-                minlength: 5,
-                maxlength: 500
-            }
-        },
-
-        submitHandler: function (form) {
-
-//            console.log("a" + $("input").val());
-//            console.log("b: " + $("#orgtags").val());
-            $("#trialCenterNames").val($("#orgtags").val());
-
-            if ($("#updateflag").val() === "new") {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        if (response.substring(0, 2) === "ok") {
-                            real_g_success("创建申请成功！");
-                        }
-                        else {
-                            real_g_fail(response);
-                        }
+                validators: {
+                    notEmpty: {
+                        message: '请输入描述'
                     }
-                });
-            } else {
-                console.log("editedit");
-                $("#updateflag").attr("value", 'editedit');
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        if (response.substring(0, 2) === "ok") {
-                            real_g_success("修改机构成功！");
-                        }
-                        else {
-                            real_g_fail(response);
-                        }
+                }
+            },
+            realfile: {
+                validators: {
+                    notEmpty: {
+                        message: '请上传研究方案摘要'
                     }
-                });
-
+                }
             }
         }
+    }).on('success.form.fv', function (e) {
+        // Prevent form submission
+        e.preventDefault();
+
+        var $form = $(e.target);
+//            fv = $form.data('formValidation');
+
+        // Use Ajax to submit form data
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'POST',
+            data: $form.serialize(),
+            success: function (response) {
+                if (response.substring(0, 2) === "ok") {
+                    if ($("#updateflag").val() === "new") {
+                        real_g_success("创建申请成功！");
+                    }
+                    else {
+                        real_g_success("修改XX成功！");
+                    }
+                }
+                else {
+                    real_g_fail(response);
+                }
+            }
+        });
     });
 
     var pagefunction = function () {
 
+        $("#realfile").on("change", uploadFile);
 
-        loadScript("realres/lib/sa/js/bootstrap-tags/bootstrap-tagsinput.min.js", function () {
-            $('.tagsinput').tagsinput('refresh');
+        $("#orgids").select2({
+            data: JSON.parse($('#orglist').val())
+        }).on("change", function () {
+            var data = $(this).select2('data');
+            var selectedText = $.map(data, function (selected, i) {
+                return selected.text;
+            }).join();
+            $("#trialCenterNames").val(selectedText);
 
-            $('input').on('itemAdded', function (event) {
-                $('#reall').next().children().removeClass('label');
-                console.log("tags: " + $("input").val());
-//                console.log($("input").tagsinput('items'));
 
-                $('#toBeCheckedOrgs').val($("input").val());
-
-            });
-            $('#reall').next().children().removeClass('label')
+            $('#realentity').formValidation('revalidateField', 'orgids');
+//            console.log("change:" + selectedText);
 
         });
 
-        $("#realfile").on("change", uploadFile);
 
     };
 
-    pagefunction();
+
+    loadScript("realaicy/js/s2/select2.full.min.js", pagefunction);
 
 </script>

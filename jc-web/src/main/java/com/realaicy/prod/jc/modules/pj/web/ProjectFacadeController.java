@@ -48,9 +48,14 @@ public class ProjectFacadeController extends CRUDWithVOController<ProjectFacade,
     private static final String SEARCH_ENTITY_URL = "pj/facade/search";
 
     private static final String PRE_CONF_VIEW = "pj/pre/wizard";
+    private static final String PJ_START_VIEW = "pj/facade/start";
 
     private static final String AUTH_PREFIX = "PJ";
-    private static final String AUTH_KEY_PRECONF = "pre-conf";
+    private static final String AUTH_KEY_PRESTART = "pre-start";
+    private static final String AUTH_KEY_RECRUIT = "pre-recruit";
+    private static final String AUTH_KEY_PRE_VIEW = "pre-view";
+    private static final String AUTH_KEY_DATEPRO = "datepro";
+
     private static final String AUTH_KEY_APPROVE = "approve";
 
 
@@ -66,14 +71,23 @@ public class ProjectFacadeController extends CRUDWithVOController<ProjectFacade,
         this.myWorkService = myWorkService;
     }
 
-
-
-
     @Override
     protected void addAttrToModel(Model model) {
 
-        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PRECONF)) {
-            model.addAttribute("auth_pj_pre_conf", "1");
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PRESTART)) {
+            model.addAttribute("auth_pj_pre_start", "1");
+        }
+
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_RECRUIT)) {
+            model.addAttribute("auth_pj_pre_recruit", "1");
+        }
+
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_PRE_VIEW)) {
+            model.addAttribute("auth_pj_pre_view", "1");
+        }
+
+        if (SpringSecurityUtil.hasPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_DATEPRO)) {
+            model.addAttribute("auth_pj_date_pro", "1");
         }
 
     }

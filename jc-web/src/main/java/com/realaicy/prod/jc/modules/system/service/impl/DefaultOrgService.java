@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * Created by realaicy on 16/3/14.
@@ -36,6 +37,11 @@ public class DefaultOrgService extends DefaultBaseServiceImpl<Org, BigInteger>
     @Override
     public boolean canBeDelete(BigInteger orgID) {
         return !userService.ifHasNoDelUserByOrgID(orgID);
+    }
+
+    @Override
+    public List<Org> findByDeleteFlag(Boolean deleteFlag) {
+        return ((OrgRepos) baseRepository).findByDeleteFlag(deleteFlag);
     }
 
     @Override

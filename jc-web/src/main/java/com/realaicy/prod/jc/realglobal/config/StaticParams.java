@@ -15,9 +15,7 @@ public class StaticParams {
     public static final class REALSTATUS {
         public static final Short MYWORK_NOTSTART = Short.valueOf("1");
         public static final Short MYWORK_DONE = Short.valueOf("3");
-
         public static final Short CHECKITEM_DONE = Short.valueOf("3");
-
         public static final Short PJAPPLY_INI = Short.valueOf("1");
         public static final Short PJAPPLY_ERR_IN_INI = Short.valueOf("4101");
         public static final Short PJAPPLY_CONFIRMED = Short.valueOf("2");
@@ -27,7 +25,28 @@ public class StaticParams {
         public static final Short PJAPPLY_PROVIDESOLUTION_DONE = Short.valueOf("5");
         public static final Short PJAPPLY_FINAL_DONE = Short.valueOf("6");
 
+        public static final Short PJPRE_RECRUIT_START = Short.valueOf("1");
     }
+
+    public static final class RETURNMSG {
+        public static final String SUCCESS = "ok";
+        public static final String CHECK = "check";
+
+    }
+
+
+    public static final class RECRUITTYPE {
+        public static final String PRECHECK = "precheck";
+        public static final String CHECK = "check";
+
+    }
+
+    public static final class EVENTKEY {
+        public static final String PJ_PRE_RECRUIT_KEY = "PJ_PRE_RECRUIT";
+    }
+
+
+
 
     public static final class TODOWORK {
 
@@ -58,8 +77,8 @@ public class StaticParams {
         public static final String APPLY_FINAL_VIEWURI = "/pj/apply/show/";
 
 
-        public static final String PJ_PRE_CHECKITEM_DO_WORKURI = "/pj/pre/docheck?realactiontype=new&checkitemruntimeid=";
-        public static final String PJ_PRECONF_VIEWURI = "/pj/pre/show/?realactiontype=new&checkitemruntimeid=";
+        public static final String PJ_PRE_CHECKITEM_DO_WORKURI = "/pj/pre/docheck?realactiontype=new&checkmoduleruntimeid=";
+        public static final String PJ_PRECONF_VIEWURI = "/pj/pre/show/?realactiontype=new&checkmoduleruntimeid=";
 
     }
 
@@ -88,7 +107,6 @@ public class StaticParams {
     public static final class SESSIONKEY {
         public static final String USERID = "userid";
         public static final String USERNAME = "username";
-
     }
 
 
@@ -116,6 +134,12 @@ public class StaticParams {
 
     public static final class FILEUPLOAD {
         public static final int MAXBYTESPERFILE = 20971520;
+
+    }
+
+    public static final class REALWEIGHT {
+        public static final int DEFAULT_ADD = 1000;
+
 
     }
 

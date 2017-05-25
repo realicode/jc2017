@@ -2,11 +2,9 @@ package com.realaicy.prod.jc.modules.pj.service.impl;
 
 import com.realaicy.prod.jc.lib.core.service.impl.DefaultBaseServiceImpl;
 import com.realaicy.prod.jc.modules.pj.model.PreInspection;
-import com.realaicy.prod.jc.modules.pj.model.ProjectFacade;
 import com.realaicy.prod.jc.modules.pj.model.vo.PreInspectionVO;
-import com.realaicy.prod.jc.modules.pj.model.vo.ProjectFacadeVO;
+import com.realaicy.prod.jc.modules.pj.repos.PreInspectionRepos;
 import com.realaicy.prod.jc.modules.pj.service.PreInspectionService;
-import com.realaicy.prod.jc.modules.pj.service.ProjectFacadeService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +23,10 @@ public class DefaultPreInspectionService extends DefaultBaseServiceImpl<PreInspe
     @Override
     public void saveFromVO(PreInspection po, PreInspectionVO vo) {
 
+    }
+
+    @Override
+    public PreInspection findByProjectFacadeId(BigInteger projectid) {
+        return ((PreInspectionRepos) baseRepository).findByProjectFacadeId(projectid);
     }
 }

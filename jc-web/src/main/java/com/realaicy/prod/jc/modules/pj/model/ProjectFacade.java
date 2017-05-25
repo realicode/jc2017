@@ -14,53 +14,71 @@ import java.math.BigInteger;
 @Table(name = "jc_pj_facade")
 public class ProjectFacade extends CommonDeletableEntity<BigInteger> {
 
-
     /**
      * 稽查名称
      */
     @Column(name = "PJ_NAME")
     @NotEmpty
     private String name;
-
     /**
      * 申办方机构名称
      */
     @Column(name = "PJ_SPONSOR_ORGNAME")
     @NotEmpty
     private String orgName;
-
     /**
      * 带稽查试验机构名称
      */
     @Column(name = "TRIALCENTERS")
     private String trialCenterNames;
-
     /**
      * 项目简要描述
      */
     @NotEmpty
     @Column(name = "PJ_DESCRIBE")
     private String projectDescribe;
-
     /**
      * 合同URI
      */
     @Column(name = "CONTRACTURI")
     private String contractURI;
-
     /**
      * 研究方案URI
      */
     @Column(name = "TRIALURI")
     private String trialURI;
-
+    /**
+     * 招募预稽查人员进度
+     */
+    @Column(name = "F_PUB_PRE")
+    private Short pubPreStatus;
     @OneToOne()
     @JoinColumn(name = "PREINSPECTION_ID")
     private PreInspection preInspection;
-
     @OneToOne()
     @JoinColumn(name = "APPLICANT_ID")
     private User applyUser;
+
+    public ProjectFacade() {
+    }
+
+    public ProjectFacade(Appliance appliance) {
+        this.name = appliance.getName();
+        this.orgName = appliance.getOrgName();
+        this.trialCenterNames = appliance.getTrialCenterNames();
+        this.projectDescribe =  appliance.getApplyDescribe();
+        this.contractURI = appliance.getContractURI();
+        this.trialURI = appliance.getTrialURI();
+        this.applyUser = appliance.getUser();
+    }
+
+    public Short getPubPreStatus() {
+        return pubPreStatus;
+    }
+
+    public void setPubPreStatus(Short pubPreStatus) {
+        this.pubPreStatus = pubPreStatus;
+    }
 
     public User getApplyUser() {
         return applyUser;

@@ -1,0 +1,198 @@
+<link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
+      th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
+      href="../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
+<link rel="stylesheet" type="text/css" media="screen"
+      th:href="@{realres/lib/rating/fontawesome-stars.css}">
+
+<div class="jarviswidget-editbox">
+</div>
+<div class="widget-body no-padding">
+
+    <!--/*@thymesVar id="realentity" type=""*/-->
+    <form th:object="${checkruntime_model}" method="POST" th:action="@{/pj/pre/docheck}"
+          id="realentity" class="form-horizontal"
+          xmlns:th="http://www.thymeleaf.org">
+
+        <fieldset>
+            <legend>项目信息</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">项目名称</label>
+                <div class="col-md-10">
+                    <input class="form-control" placeholder="" type="text" readonly="readonly"
+                           th:value="${preIns.projectName}">
+                </div>
+            </div>
+            <legend class="real_legend">预稽查总体信息</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">预稽查开始时间：</label>
+                <label class="col-md-2 control-label" th:text="${preIns.preSDate}"></label>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">预稽查结束时间：</label>
+                <label class="col-md-2 control-label" th:text="${preIns.preFDate}"></label>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">预稽查评分：</label>
+                <label class="col-md-2 control-label" th:text="${preIns.score}"></label>
+                <input type="hidden" id="checkmodulerootid" th:value="${preIns.checkModuleID}"/>
+            </div>
+
+
+            <legend class="real_legend">预稽查具体检查模块信息</legend>
+            <table id="treetable" class="table table-striped table-bordered table-hover"
+                   style="height: 100%">
+                <colgroup>
+                    <col width="30px"/>
+                    <col width="30px"/>
+                    <col width="*"/>
+                    <col width="100px"/>
+                    <col width="80px"/>
+                    <col width="200px"/>
+
+
+                </colgroup>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>#</th>
+                    <th>预稽查稽查模块名称</th>
+                    <th>评分</th>
+                    <th>稽查人员</th>
+                    <th>评述</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--<tr>-->
+                <!--<td>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--<select style="width:99%" class="select2 real_select2_in_tree"-->
+                <!--title="">-->
+                <!--</select>-->
+                <!--</td>-->
+                <!--<td>-->
+                <!--</td>-->
+                <!--</tr>-->
+
+                </tbody>
+            </table>
+
+        </fieldset>
+
+        <div class="form-actions">
+
+
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default" type="button" id="btn_cancel" onclick="realclick()">
+                        关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+
+    var ratingOBJ={};
+    var ratingStr='';
+
+    function realclick() {
+        $("#realentity").resetForm();
+        $('#article_real_entity').hide();
+    }
+
+    var pagefunction = function () {
+
+    };
+
+    $(document).ready(function () {
+
+        /*
+         * KNOB
+         */
+        loadScript("realres/lib/rating/jquery.barrating.min.js",
+            loadScript("smartadmin/js/plugin/knob/jquery.knob.min.js", startKnob));
+
+        function startKnob() {
+
+            $('.real_rating').barrating({
+                theme: 'fontawesome-stars'
+            });
+
+
+            $('.knob').knob({
+                change: function (value) {
+                    console.log("change22 : " + value);
+                },
+                release: function (value) {
+                    //console.log(this.$.attr('value'));
+                    //console.log("release : " + value);
+                },
+                cancel: function () {
+                    //console.log("cancel : ", this);
+                }
+            });
+        }
+
+
+        var treeOptions = {
+            keyPathSeparator: '$',
+            extensions: ["table", "filter"],
+            checkbox: true,
+            expanded: true,
+            selectMode: 3,
+            table: {
+                indentation: 20,
+                nodeColumnIdx: 2,
+                checkboxColumnIdx: 0
+            },
+            filter: {
+                counter: true,
+                hideExpandedCounter: true,
+                mode: "hide"
+            },
+            source: {
+                url: "/auditdb/pre/chkmodule/list",
+                data: {temid: $("#checkmodulerootid").val()},
+                cache: false
+            },
+            createNode: function (event, data) {
+//                var node = data.node,
+//                    $tdList = $(node.tr).find(">td");
+//
+//                // Span the remaining columns if it's a folder.
+//                // We can do this in createNode instead of renderColumns, because
+//                // the `isFolder` status is unlikely to change later
+//                if (node.isFolder()) {
+//                    $tdList.eq(2)
+//                        .prop("colspan", 3)
+//                        .nextAll().remove();
+//                }
+            },
+            renderColumns: function (event, data) {
+                var node = data.node,
+                    $tdList = $(node.tr).find(">td");
+                $tdList.eq(1).text(node.getIndexHier()).addClass("alignRight");
+//                $tdList.eq(4).text(node.data.resWeight);
+
+            },
+            complete: function () {
+            },
+            activate: function (event, data) {
+            },
+            select: function (event, data) {
+            }
+        }; // initial options
+
+        var sourceTree = $('#treetable').fancytree(treeOptions);
+
+    });
+
+</script>

@@ -3,7 +3,6 @@ package com.realaicy.prod.jc.modules.auditdb.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realaicy.prod.jc.lib.core.data.jpa.entity.CommonDeletableEntity;
 import com.realaicy.prod.jc.modules.pj.model.PreInspection;
-import com.realaicy.prod.jc.modules.system.model.User;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -29,27 +28,10 @@ public class PreCheckItemRunTime extends CommonDeletableEntity<BigInteger> {
     @Column(name = "SCORE")
     private int score;
 
-    @Column(name = "CHECKREMARK")
-    private String checkRemark;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
-    @Column(name = "DEADLINE")
-    private Date deadline;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Shanghai")
     @Column(name = "FDATE")
     private Date finishDate;
-    @OneToOne
-    @JoinColumn(name = "CHECKER_ID")
-    private User checker;
-
-    public String getCheckRemark() {
-        return checkRemark;
-    }
-
-    public void setCheckRemark(String checkRemark) {
-        this.checkRemark = checkRemark;
-    }
 
     public PreInspection getPreInspection() {
         return preInspection;
@@ -83,28 +65,12 @@ public class PreCheckItemRunTime extends CommonDeletableEntity<BigInteger> {
         this.score = score;
     }
 
-    public Date getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(Date deadline) {
-        this.deadline = deadline;
-    }
-
     public Date getFinishDate() {
         return finishDate;
     }
 
     public void setFinishDate(Date finishDate) {
         this.finishDate = finishDate;
-    }
-
-    public User getChecker() {
-        return checker;
-    }
-
-    public void setChecker(User checker) {
-        this.checker = checker;
     }
 
 }

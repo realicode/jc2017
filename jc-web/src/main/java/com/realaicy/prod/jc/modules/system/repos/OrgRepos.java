@@ -17,6 +17,9 @@ public interface OrgRepos extends BaseJPARepository<Org, BigInteger> {
 
     List<Org> findByProvince(String province);
 
+    List<Org> findByDeleteFlag(Boolean deleteFlag);
+
+
     Org findByName(String orgName);
 
     /**

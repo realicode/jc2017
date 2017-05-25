@@ -260,6 +260,8 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             BeanUtils.copyProperties(po, vo);
             extendShowDetail(po, vo);
             model.addAttribute("realmodel", vo);
+            model.addAttribute("realUpdateID", id);
+
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -283,6 +285,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
             e.printStackTrace();
         }
         model.addAttribute("realneworupdate", "new");
+        addModelAttrToNew(model);
         return newEntityUrl;
     }
 
@@ -460,6 +463,14 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
     protected void addAttrToModel(Model model) {
     }
 
+    /**
+     * page 页面添加额外的模型数据
+     *
+     * @param model 模型数据
+     */
+    protected void addModelAttrToNew(Model model) {
+    }
+
     protected boolean needConvertForListDT() {
         return false;
     }
@@ -498,7 +509,7 @@ public abstract class CRUDWithVOController<M extends BaseEntity<ID> & Commonable
         return false;
     }
 
-    protected void addSpec(BaseSpecificationsBuilder<M> mBaseSpecificationsBuilder) {
+    private void addSpec(BaseSpecificationsBuilder<M> mBaseSpecificationsBuilder) {
     }
 
     protected Specification<M> addSpec() {

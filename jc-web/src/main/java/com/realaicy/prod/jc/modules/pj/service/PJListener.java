@@ -1,6 +1,7 @@
 package com.realaicy.prod.jc.modules.pj.service;
 
 import com.realaicy.prod.jc.common.event.PJPreConfEvent;
+import com.realaicy.prod.jc.common.event.PreRecruitPubEvent;
 import com.realaicy.prod.jc.common.event.handler.WX;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
@@ -61,6 +62,17 @@ public class PJListener {
         handelDefault(pjPreConfEvent.getEventKey(), projectName,
                 PJ_PRE_CHECKITEM_DO_WORKURI, PJ_PRECONF_VIEWURI,
                 pjPreConfEvent.getCheckitemruntimeid(), pjPreConfEvent.getCheckerid());
+    }
+
+    @EventListener
+    public void handlePJPreRecruitEvent(PreRecruitPubEvent preRecruitPubEvent) {
+        logger.debug("preRecruitPubEvent");
+
+        String projectName = facadeService.findOne(preRecruitPubEvent.getPjid()).getName();
+
+        handelDefault(preRecruitPubEvent.getEventKey(), projectName,
+                PJ_PRE_CHECKITEM_DO_WORKURI, PJ_PRECONF_VIEWURI,
+                preRecruitPubEvent.getCheckitemruntimeid(), preRecruitPubEvent.getCheckerid());
     }
 
     private void handelDefault(String eventKey, String applicationName,

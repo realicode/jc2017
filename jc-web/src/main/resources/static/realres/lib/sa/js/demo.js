@@ -291,7 +291,7 @@ jQuery.validator.addMethod("isADCLine", function(value, element) {
 realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
 // login_url = "http://111.30.31.179:48080";
 login_url = "http://realaicywxtest1.ngrok.cc";
-realserver_url = "http://realaicywxtest1.ngrok.cc";
+realserver_url = "http://127.0.0.1:48080";
 
 
 

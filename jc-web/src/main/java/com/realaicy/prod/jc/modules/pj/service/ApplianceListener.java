@@ -5,6 +5,7 @@ import com.realaicy.prod.jc.common.event.handler.WX;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.pj.model.Appliance;
+import com.realaicy.prod.jc.modules.pj.model.ProjectFacade;
 import com.realaicy.prod.jc.modules.system.model.EventAction;
 import com.realaicy.prod.jc.modules.system.repos.EventMsgTemRepos;
 import com.realaicy.prod.jc.modules.system.service.EventActionService;
@@ -34,6 +35,7 @@ public class ApplianceListener {
     private final EventActionService eventActionService;
     private final WX wxservice;
     private final UserService userService;
+    private final ProjectFacadeService projectFacadeService;
     private final MyWorkService myWorkService;
     private final ApplianceService applianceService;
     private final EventMsgTemRepos eventMsgTemRepos;
@@ -43,12 +45,13 @@ public class ApplianceListener {
 
     @Autowired
     public ApplianceListener(EventActionService eventActionService, WX wxservice,
-                             UserService userService, MyWorkService myWorkService,
+                             UserService userService, ProjectFacadeService projectFacadeService, MyWorkService myWorkService,
                              ApplianceService applianceService,
                              EventMsgTemRepos eventMsgTemRepos) {
         this.eventActionService = eventActionService;
         this.wxservice = wxservice;
         this.userService = userService;
+        this.projectFacadeService = projectFacadeService;
         this.myWorkService = myWorkService;
         this.applianceService = applianceService;
         this.eventMsgTemRepos = eventMsgTemRepos;
@@ -175,7 +178,11 @@ public class ApplianceListener {
     public void handleApplicationFinalEvent(ApplianceFinalEvent applianceFinalEvent) {
         logger.debug("handleApplicationFinalEvent");
 
-        String applicationName = applianceService.findOne(applianceFinalEvent.getApplyid()).getName();
+        Appliance appliance = applianceService.findOne(applianceFinalEvent.getApplyid());
+        String applicationName = appliance.getName();
+
+        ProjectFacade projectFacade = new ProjectFacade(appliance);
+        projectFacadeService.save(projectFacade);
 
         handelDefault(applianceFinalEvent.getEventKey(), applicationName,
                 null, null,

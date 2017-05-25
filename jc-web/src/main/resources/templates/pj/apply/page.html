@@ -343,7 +343,7 @@
                         },
                         {
                             "data": "name",
-                            "width": "10%",
+                            "width": "20%",
                             "render": function (data, type, row) {
                                 if (data.length > 10) {
                                     return '<a href="javascript:void(0)"  rel="popover-hover" data-container="body" data-placement="left" data-original-title="项目名称" data-content="' + data + '" id=reallongtextcell' + row.id + ' class="real_long_text real_linktodetail">' + data.substr(0, 10) + '...</a>';
@@ -353,14 +353,17 @@
                                 }
                             }
                         },
-                        {"data": "orgName"},
+                        {
+                            "data": "orgName",
+                            "width": "20%"
+                        },
                         {"data": "trialCenterNames"},
                         {
-                            "data": "trialAbstractName", "width": "20%",
+                            "data": "trialAbstractName", "width": "6%",
                             "render": function (data, type, row) {
 //                        console.log(JSON.stringify(row));
 //                            console.log(row.trialAbstractURI);
-                                return "<a href='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + data + "</a>"
+                                return "<a href='" + realaicy_g_var_dlurl + row.trialAbstractURI + "'>" + "下载方案摘要" + "</a>"
                             }
                         },
 
