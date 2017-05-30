@@ -115,6 +115,8 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
             return getNoAuthString();
         }
 
+
+
         Map<String, Object> params = new HashMap<>();
         if (temName != null) {
             params.put("temname", temName);
@@ -124,14 +126,13 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
         }
 
 //        M treeModel = service.findOne(getRealID(params));
-        M treeModel = this.findOne(params);
 
-        FilterProvider filters = new SimpleFilterProvider().addFilter("realFilter",
-                SimpleBeanPropertyFilter.serializeAllExcept("updateTime"));
-        binder.getMapper().setFilterProvider(filters);
-        String s = binder.toJson(treeModel);
-        return "[" + s + "]";
+         return getTreeString(params);
+
+
     }
+
+
 
     @RequestMapping(value = "/treesave", method = RequestMethod.POST)
     @ResponseBody
@@ -198,6 +199,17 @@ public abstract class TreeController<M extends CommonTreeableDeletableEntity<ID,
 
     protected M findOne(Map<String, Object> params) {
         return null;
+    }
+
+    protected  String getTreeString(Map<String, Object> params){
+
+        M treeModel = this.findOne(params);
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("realFilter",
+                SimpleBeanPropertyFilter.serializeAllExcept("updateTime"));
+        binder.getMapper().setFilterProvider(filters);
+        String s = binder.toJson(treeModel);
+        return  "[" + s + "]";
     }
 
     protected Short getResWeight(ID pid) {

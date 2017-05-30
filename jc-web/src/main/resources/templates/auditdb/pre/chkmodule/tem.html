@@ -135,6 +135,28 @@
                                         </a>
                                     </div>
 
+                                    <div class="col-sm-2">
+
+                                        <div class="input-group">
+                                            <input class="form-control" id="real_input_addtem" type="text" placeholder="请输入模版名称">
+
+                                            <div class="input-group-btn" id="real_btn_addtem">
+                                                <button class="btn  btn-primary" type="button">
+                                                    添加模版
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                        <select id='real_filter_tem' class="form-control" title="">
+                                            <option th:each="tem : ${allTems}"
+                                                    th:value="${tem}"
+                                                    th:text="${tem}">
+                                            </option>
+                                        </select>
+                                    </div>
                                 </form>
                             </div>
 
@@ -200,6 +222,7 @@
             },
             source: {
                 url: "/auditdb/pre/chkmodule/list",
+                data: {temid: temid},
                 cache: false
             },
             renderColumns: function (event, data) {
@@ -211,14 +234,35 @@
             activate: function (event, data) {
                 var node = data.node;
                 $("#nowid").text(node.title);
-                console.log(node.key);
-                console.log(node.data.id);
-
+            },
+            select: function(event, data){
+                realselected=[];
+                var selKeys = $.map(data.tree.getSelectedNodes(), function (node) {
+                    //console.log(node.data.id);
+                    if(!node.isFolder()){
+                        realselected.push(node.getKeyPath());
+//                        console.log(node.getKeyPath());
+                    }
+                });
+                console.log(realselected.join('_'));
             }
         }; // initial options
 
         var sourceTree = $('#treetable').fancytree(treeOptions);
 
+        $('#real_filter_tem').change(function () {
+            var temname = $('option:selected', this).val();
+
+            var newSourceOption = {
+                url: "/auditdb/pre/chkmodule/list",
+                data: {temname: temname},
+                cache: false,
+                dataType: 'json'
+            };
+
+            var tree = $('#treetable').fancytree('getTree');
+            tree.reload(newSourceOption);
+        });
 
         $("#btnSearch").click(function () {
             if ($("#real_treesearch").hasClass("jarviswidget-collapsed"))
@@ -243,7 +287,7 @@
             if (node === null || node === undefined || node === '') {
                 realalert("请先选择一个检查模块目录");
             } else {
-                realloadpage("/auditdb/pre/chkmodule/treenew?realtype=new&pid=" + node.key + "&pname=" + encodeURIComponent(node.title));
+                realloadpage("/auditdb/pre/chkmodule/treenew?realtype=new&pid=" + node.data.id + "&pname=" + encodeURIComponent(node.title));
 //                realloadpage("/auditdb/chkitem/new?pid=" + node.data.id + "&pname=" + encodeURIComponent(node.title));
             }
         });
@@ -253,9 +297,37 @@
             if (node === null || node === undefined || node === '') {
                 realalert("请先选择一个检查模块目录");
             } else {
-                realloadpage("/auditdb/pre/chkmodule/show/" + node.key);
+                realloadpage("/auditdb/pre/chkmodule/show/" + node.data.id);
             }
         });
+
+        $("#real_btn_addtem").click(function () {
+            if(realselected.length===0){
+                realalert("请至少选择一个稽查模块！");
+                return;
+            }
+
+            if($('#real_input_addtem').val()===''){
+                realalert("请输入新增稽查模版的名称！");
+                return;
+            }
+
+            $.ajax({
+                url: '/auditdb/pre/chkmodule/addtotem/' + realselected.join('_') +'?name='+$('#real_input_addtem').val(),
+                type: 'GET',
+                success: function (response) {
+                    if (response.substring(0, 2) === "ok") {
+                        real_g_success("增加预稽查检查模块模版成功！");
+                        $("#treetable").fancytree("getTree").clearFilter();
+                        $("#treetable").fancytree("getTree").reload();
+                    }
+                    else {
+                        real_g_fail(response);
+                    }
+                }
+            });
+        });
+
 
 
         $("#real_btn_del").click(function () {

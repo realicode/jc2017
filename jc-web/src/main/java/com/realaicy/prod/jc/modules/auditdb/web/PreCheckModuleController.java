@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
@@ -44,8 +41,13 @@ public class PreCheckModuleController extends TreeController<PreCheckModule, Big
     private static final String LIST_ENTITY_URL = "auditdb/pre/chkmodule/page";
     private static final String SEARCH_ENTITY_URL = "auditdb/pre/chkmodule/search";
 
+    private static final String TEM_URL = "auditdb/pre/chkmodule/tem";
+
+
     private static final String AUTH_PREFIX = "pre";
     private static final String AUTH_KEY_PRECONF = "chkmodule-addtotem";
+    private static final String AUTH_KEY_TEM = "chkmodule-tem";
+
 
     private final PreCheckModuleService preCheckModuleService;
 
@@ -56,6 +58,21 @@ public class PreCheckModuleController extends TreeController<PreCheckModule, Big
                 PreCheckModule.class, PreCheckModuleVO.class, BINDING_WHITE_LIST);
         this.preCheckModuleService = preCheckModuleService;
     }
+
+
+    @RequestMapping(value = "/tem", method = RequestMethod.GET)
+    public String listTemPage(Model model) {
+
+        if (!hasAnyPrivilegeWithFuncByRealaicy(AUTH_PREFIX, AUTH_KEY_TEM)) {
+            return NO_AUTH_STRING;
+        }
+
+        List<String> allTems = preCheckModuleService.getTemNameList();
+        model.addAttribute("allTems", allTems);
+
+        return TEM_URL;
+    }
+
 
     @RequestMapping("/addtotem/{nodestr}")
     @ResponseBody
@@ -124,8 +141,8 @@ public class PreCheckModuleController extends TreeController<PreCheckModule, Big
         if (params.containsKey("temid")) {
 //           Long ltemp =  Long.valueOf(String.valueOf(params.get("temid")));
             BigInteger big1 = new BigInteger(params.get("temid").toString());
-//            return preCheckItemService.findRootByTem(BigInteger.valueOf((Long) params.get("temid")));
-            return preCheckModuleService.findOne(big1);
+            return preCheckModuleService.findRootByTem(big1);
+//            return preCheckModuleService.findOne(big1);
 
         } else if (params.containsKey("temname")) {
             return preCheckModuleService.findRootByTemName(params.get("temname").toString());

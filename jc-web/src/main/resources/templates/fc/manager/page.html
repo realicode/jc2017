@@ -1,19 +1,19 @@
 <title xmlns:th="http://www.w3.org/1999/xhtml">稽查数据库</title>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/realaicy/css/fancytree/ui.fancytree.css}"
-      href="../../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
+      href="../../../static/realaicy/css/fancytree/ui.fancytree.css"/>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/smartadmin/css/realaicy.css}"
-      href="../../../../static/smartadmin/css/realaicy.css"/>
+      href="../../../static/smartadmin/css/realaicy.css"/>
 <link rel="stylesheet" xmlns:th="http://www.thymeleaf.org"
       th:href="@{/realaicy/css/bootstrap-dialog.min.css}"
-      href="../../../../static/realaicy/css/bootstrap-dialog.min.css"/>
+      href="../../../static/realaicy/css/bootstrap-dialog.min.css"/>
 <div class="row no-margin no-padding" style="height: 40px">
     <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4 no-margin no-padding" style="height: 40px;font-size: 16px">
         <i class="fa-fw fa fa-home"></i>
-        稽查数据库管理
+        文档管理
         <span>>
-				预稽查数据库检查模块管理
+				文档管理
 			</span>
     </div>
 </div>
@@ -32,7 +32,7 @@
                  data-widget-fullscreenbutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                    <h2>新增 || 修改 检查模块 —— 控制面板</h2>
+                    <h2>新增 || 修改 文档 —— 控制面板</h2>
                 </header>
                 <div id="realeditdiv">
                 </div>
@@ -46,7 +46,7 @@
                  data-widget-fullscreenbutton="false">
                 <header>
                     <span class="widget-icon"> <i class="fa fa-table"></i> </span>
-                    <h2>查询预检查模块</h2>
+                    <h2>查询文档</h2>
                 </header>
                 <div>
                     <div class="jarviswidget-editbox">
@@ -89,7 +89,7 @@
                      data-widget-togglebutton="false">
                     <header>
                         <span class="widget-icon"> <i class="fa fa-comments"></i> </span>
-                        <h2>预稽查检查模块</h2>
+                        <h2>文档管理</h2>
                     </header>
                     <div>
                         <div class="jarviswidget-editbox">
@@ -102,7 +102,7 @@
                                             <div class="input-group-btn">
                                                 <a href="javascript:void(0);" id="real_btn_new"
                                                    class="btn btn-labeled btn-primary"> <span
-                                                        class="btn-label"><i class="fa fa-pencil"></i></span>新增预稽查检查模块
+                                                        class="btn-label"><i class="fa fa-pencil"></i></span>新增文档/目录
                                                 </a>
                                             </div>
                                         </div>
@@ -113,7 +113,7 @@
                                             <div class="input-group-btn">
                                                 <a href="javascript:void(0);" id="real_btn_edit"
                                                    class="btn btn-labeled btn-info"> <span
-                                                        class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>编辑预稽查检查模块
+                                                        class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>编辑文档/目录
                                                 </a>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@
                                             <div class="input-group-btn">
                                                 <a href="javascript:void(0);" id="btnSearch"
                                                    class="btn btn-labeled btn-primary"> <span
-                                                        class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>查询预稽查检查模块
+                                                        class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>查询文档/目录
                                                 </a>
                                             </div>
                                         </div>
@@ -131,10 +131,9 @@
                                     <div class="col-sm-2">
                                         <a href="javascript:void(0);" id="real_btn_del"
                                            class="btn btn-labeled btn-danger"> <span
-                                                class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>删除预稽查检查模块
+                                                class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>删除文档/目录
                                         </a>
                                     </div>
-
                                 </form>
                             </div>
 
@@ -151,7 +150,7 @@
                                 <tr>
                                     <th></th>
                                     <th>#</th>
-                                    <th>预稽查稽查模块名称</th>
+                                    <th>文件名称</th>
                                     <th>显示权重</th>
                                 </tr>
                                 </thead>
@@ -165,7 +164,6 @@
                 </div>
             </div>
         </article>
-
     </div>
 
 </section>
@@ -180,7 +178,6 @@
     var pagefunction = function () {
 
         var realmsg = "请先选择一个父类检查项";
-
 
 
         var treeOptions = {
@@ -199,7 +196,8 @@
                 mode: "hide"
             },
             source: {
-                url: "/auditdb/pre/chkmodule/list",
+                url: "/fc/manager/list",
+                data: {temid: temid},
                 cache: false
             },
             renderColumns: function (event, data) {
@@ -211,14 +209,35 @@
             activate: function (event, data) {
                 var node = data.node;
                 $("#nowid").text(node.title);
-                console.log(node.key);
-                console.log(node.data.id);
-
+            },
+            select: function(event, data){
+                realselected=[];
+                var selKeys = $.map(data.tree.getSelectedNodes(), function (node) {
+                    //console.log(node.data.id);
+                    if(!node.isFolder()){
+                        realselected.push(node.getKeyPath());
+//                        console.log(node.getKeyPath());
+                    }
+                });
+                console.log(realselected.join('_'));
             }
         }; // initial options
 
         var sourceTree = $('#treetable').fancytree(treeOptions);
 
+        $('#real_filter_tem').change(function () {
+            var temname = $('option:selected', this).val();
+
+            var newSourceOption = {
+                url: "/auditdb/pre/chkmodule/list",
+                data: {temname: temname},
+                cache: false,
+                dataType: 'json'
+            };
+
+            var tree = $('#treetable').fancytree('getTree');
+            tree.reload(newSourceOption);
+        });
 
         $("#btnSearch").click(function () {
             if ($("#real_treesearch").hasClass("jarviswidget-collapsed"))
@@ -241,9 +260,9 @@
         $("#real_btn_new").click(function () {
             var node = $("#treetable").fancytree("getActiveNode");
             if (node === null || node === undefined || node === '') {
-                realalert("请先选择一个检查模块目录");
+                realalert("请先选择一个文件夹目录");
             } else {
-                realloadpage("/auditdb/pre/chkmodule/treenew?realtype=new&pid=" + node.key + "&pname=" + encodeURIComponent(node.title));
+                realloadpage("/fc/manager/treenew?realtype=new&pid=" + node.data.id + "&pname=" + encodeURIComponent(node.title));
 //                realloadpage("/auditdb/chkitem/new?pid=" + node.data.id + "&pname=" + encodeURIComponent(node.title));
             }
         });
@@ -253,9 +272,10 @@
             if (node === null || node === undefined || node === '') {
                 realalert("请先选择一个检查模块目录");
             } else {
-                realloadpage("/auditdb/pre/chkmodule/show/" + node.key);
+                realloadpage("/fc/manager/show/" + node.data.id);
             }
         });
+
 
 
         $("#real_btn_del").click(function () {
@@ -272,7 +292,7 @@
                             dialog.close();
                             $("#updateflag").attr("value", 'deldel');
                             $.ajax({
-                                url: '/auditdb/pre/chkmodule/del/' + node.data.id,
+                                url: '/fc/manager/del/' + node.data.id,
                                 type: 'GET',
                                 success: function (response) {
                                     if (response.substring(0, 2) === "ok") {
