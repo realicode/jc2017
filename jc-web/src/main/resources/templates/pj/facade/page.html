@@ -319,8 +319,8 @@
                                     returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_preview'>查看预稽查</a>"
                                 }
 
-                                if (row.projectStatus >= 2 && $("#auth_pj_date_pro").val() === "1") {
-                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_date_pro'>预约专家</a>"
+                                if (row.projectStatus !== 3 && row.projectStatus >= 2 && $("#auth_pj_date_pro").val() === "1") {
+                                    returnStr += "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_date_expert'>预约专家</a>"
                                 }
 
                                 return returnStr + "<a  class='btn btn-danger btn-intable-realaicy  real_css_btn_detail'>查看项目</a>"
@@ -377,18 +377,27 @@
                 realloadpage("/pj/pre/recruit?realactiontype=ini&pjid=" + realtable.row($(this).parents('tr')).data().id);
             });
 
-        /**
-         * 配置 '查看预稽查'
-         */
-        $('#dt_basic_real').on('click', '.real_css_btn_preview', function () {
+            /**
+             * 预约专家
+             */
+            $('#dt_basic_real').on('click', '.real_css_btn_date_expert', function () {
 
-            if ($("#real_entity").hasClass("jarviswidget-collapsed"))
-                $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
-            $("#real_controlpanel_span").html('预稽查详情');
-            realloadpage("/pj/pre/show/" + realtable.row($(this).parents('tr')).data().id);
-        });
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                $("#real_controlpanel_span").html('预约专家');
+                realloadpage("/pj/audit/dateexpert?realactiontype=ini&pjid=" + realtable.row($(this).parents('tr')).data().id);
+            });
 
+            /**
+             * 配置 '查看预稽查'
+             */
+            $('#dt_basic_real').on('click', '.real_css_btn_preview', function () {
 
+                if ($("#real_entity").hasClass("jarviswidget-collapsed"))
+                    $("#real_entity a.jarviswidget-toggle-btn").trigger("click");
+                $("#real_controlpanel_span").html('预稽查详情');
+                realloadpage("/pj/pre/show/" + realtable.row($(this).parents('tr')).data().id);
+            });
 
 
         }// end of ready

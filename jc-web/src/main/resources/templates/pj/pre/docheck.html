@@ -27,11 +27,11 @@
                        th:field="*{id}" name="id" id="id">
             </div>
             <legend class="real_legend">其他预稽查员信息</legend>
-            <div class="form-group" th:each="checkmodule : ${precheck.checkRuntimeVOList}">
-                <label class="col-md-2 control-label" th:text="${checkmodule.name}"></label>
-                <label class="col-md-2 control-label" th:text="${checkmodule.score}"></label>
+            <!--<div class="form-group" th:each="checkmodule : ${precheck.checkRuntimeVOList}">-->
+                <!--<label class="col-md-2 control-label" th:text="${checkmodule.name}"></label>-->
+                <!--<label class="col-md-2 control-label" th:text="${checkmodule.score}"></label>-->
 
-            </div>
+            <!--</div>-->
 
             <div id="real_div_approve">
                 <legend class="real_legend">我的预稽查工作</legend>
@@ -43,18 +43,23 @@
                     </div>
                 </div>
                 <div class="form-group" th:each="checkitem : ${precheckitems}">
-                    <label class="col-md-3 control-label" th:text="${checkitem.name}"></label>
+                    <label class="col-md-3 control-label"  th:text="${checkitem.name}"></label>
+                    <input class="form-control real_f_checkitemid" placeholder=""  type="hidden"
+                           th:value="${checkitem.id}">
                     <div class="col-md-9">
                         <div class="form-group">
-                            <div class="col-md-4">
-                                <input type="hidden" th:value="${checkitem.id}">
-                                <select class="real_rating">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
+                            <div class="col-md-4 realstars" style="padding-top: 6px;">
+                                <img th:src="@{/realres/img/rate/star_gray.png}"
+                                     src="../../../static/realres/img/rate/star_gray.png" />
+                                <img th:src="@{/realres/img/rate/star_gray.png}"
+                                     src="../../../static/realres/img/rate/star_gray.png" />
+                                <img th:src="@{/realres/img/rate/star_gray.png}"
+                                     src="../../../static/realres/img/rate/star_gray.png" />
+                                <img th:src="@{/realres/img/rate/star_gray.png}"
+                                     src="../../../static/realres/img/rate/star_gray.png" />
+                                <img th:src="@{/realres/img/rate/star_gray.png}"
+                                     src="../../../static/realres/img/rate/star_gray.png" />
+
                             </div>
                             <div class="col-md-5">
                             </div>
@@ -113,6 +118,37 @@
     var ratingOBJ={};
     var ratingStr='';
 
+    var stars = [
+        ['star_hover.png', 'star_gray.png', 'star_gray.png', 'star_gray.png', 'star_gray.png'],
+        ['star_hover.png', 'star_hover.png', 'star_gray.png', 'star_gray.png', 'star_gray.png'],
+        ['star_gold.png', 'star_gold.png', 'star_gold.png', 'star_gray.png', 'star_gray.png'],
+        ['star_gold.png', 'star_gold.png', 'star_gold.png', 'star_gold.png', 'star_gray.png'],
+        ['star_gold.png', 'star_gold.png', 'star_gold.png', 'star_gold.png', 'star_gold.png'],
+    ];
+    var ratingdescdata = [
+        [
+            ['很差', '非常不符合要求'],
+            ['一般', '基本上满足需求'],
+            ['好', '满足需求'],
+            ['很好', '很好很好很好'],
+            ['非常好', '非常好非常好非常好非常好']
+        ],
+        [
+            ['很差', '这家有服务吗！？'],
+            ['一般', '态度较差，不能解决问题'],
+            ['好', '客服反应慢，附加服务较少'],
+            ['很好', '不错，附加服务多多,客服热情'],
+            ['非常好', '附加服务全面，需要的都有']
+        ],
+        [
+            ['很差', '以后不会再来了,商品一般'],
+            ['一般', '价格没优势,还行'],
+            ['好', '特价时能看看,经常买的一家了'],
+            ['很好', '相当不错,目前买同类产品最好的一家了'],
+            ['非常好', '货品全，折扣大，不砍单']
+        ]
+    ];
+
     function realclick() {
         $("#realentity").resetForm();
         $('#article_real_entity').hide();
@@ -131,6 +167,76 @@
             loadScript("smartadmin/js/plugin/knob/jquery.knob.min.js", startKnob));
 
         function startKnob() {
+
+
+            $(".realstars").find("img").hover(function() { //星星悬浮触发
+                    var obj = $(this); //当前对象
+                    var star_area = obj.parent(".realstars"); //当前父级.stars
+                    var star_area_index = star_area.index(); //当前父级.stars索引
+                    var index = obj.parent(".realstars").find("img").index($(this)); //当前星星索引
+                    var left = obj.position().left+200;
+                    var top = obj.position().top + 20;
+                    var comment_title = ratingdescdata[star_area_index][index][0]; //标题
+                    var comment_description = ratingdescdata[star_area_index][index][1]; //描述
+                    $("#tip").css({
+                        "left": left,
+                        "top": top
+                    }).show().html(comment_title); //显示定位提示信息
+                    for (var i = 0; i < 5; i++) {
+                        star_area.find("img").eq(i).attr("src", "realres/img/rate/" + stars[index][i]); //切换每个星星
+                    }
+                    star_area.find(".comment_description").remove(); //星星右侧切换描述
+                    star_area.append("<span class='comment_description'>" + comment_title + "<span class='intro'>" + comment_description + "</span></span>");
+
+                },
+                function() { //鼠标离开星星
+                    $("#tip").hide(); //隐藏提示
+                    var obj = $(this); //当前对象
+                    var star_area = obj.parent(".realstars"); //当前父级.stars
+                    var star_area_index = star_area.index(); //当前父级.stars索引
+                    var index = star_area.attr("data-default-index"); //点击后的索引
+                    if (index >= 0) { //若该行点击后的索引大于等于0，说明该行星星已被点击
+                        var comment_title = ratingdescdata[star_area_index][index][0]; //标题
+                        var comment_description = ratingdescdata[star_area_index][index][1]; //描述
+                        star_area.find(".comment_description").remove(); //显示切换描述
+                        star_area.append("<span class='comment_description'>" + comment_title + "<span class='intro'>" + comment_description + "</span></span>");
+                        for (var i = 0; i < 5; i++) {
+                            star_area.find("img").eq(i).attr("src", "realres/img/rate/" + stars[index][i]); //更新该行星星
+                        }
+                    } else {
+                        var obj = $(this);
+                        var star_area = obj.parent(".realstars");
+                        star_area.find(".comment_description").remove();
+                        for (var i = 0; i < 5; i++) {
+                            star_area.find("img").eq(i).attr("src", "realres/img/rate/star_gray.png"); //更新该行星星都变初始状态
+                        }
+                    }
+                });
+
+            $(".realstars").find("img").click(function() { //当点击每颗星星
+                var obj = $(this); //当前对象
+                var star_area = obj.parent(".realstars"); //当前父级.stars
+                var star_area_index = star_area.index(); //当前父级.stars索引
+                var index = obj.parent(".realstars").find("img").index($(this)); //当前星星索引
+                var comment_title = ratingdescdata[star_area_index][index][0]; //标题
+                var comment_description = ratingdescdata[star_area_index][index][1]; //描述
+                star_area.attr("data-default-index", index); //记录点击后的索引，用来鼠标移出星星后，获取之前点击后的星星索引
+                star_area.find(".comment_description").remove(); //显示切换描述
+                star_area.append("<span class='comment_description'>" + comment_title + "<span class='intro'>" + comment_description + "</span></span>");
+
+
+                ratingOBJ[obj.parent(".realstars").parent().parent().prev().val()] = index+1;
+                console.log(obj.parent(".realstars").parent().parent().prev().val() +":"+
+                    ratingOBJ[obj.parent(".realstars").parent().parent().prev().val()]);
+                ratingStr='';
+                for (var Key in ratingOBJ){
+                    ratingStr+=','+Key+':'+ratingOBJ[Key];
+                }
+//                        console.log(ratingStr);
+                $('#itemgrade').val(ratingStr);
+            });
+
+
 
             $('.real_rating').barrating({
                 theme: 'fontawesome-stars',
@@ -180,6 +286,16 @@
                 success: function (response) {
                     if (response.substring(0, 2) === "ok") {
                         real_g_success("请求确认成功！");
+                        $.ajax({
+                            url: '/me/work/count',
+                            type: 'GET',
+                            success: function (response) {
+                                console.log("response:"+response);
+                                $(".real-work").children(":first").html(function(i, v) {
+                                    return response;
+                                });
+                            }
+                        });
                     }
                     else {
                         real_g_fail(response);

@@ -287,10 +287,10 @@ jQuery.validator.addMethod("isADCLine", function(value, element) {
     return this.optional(element) || (realvalue.test(value));
 }, "请不要填写非法字符，只能输入中文（不包含生僻字）、英文字母、数字、下划线");
 
-// realaicy_g_var_dlurl = "http://111.30.31.179:32003/download/file/";
-realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
-// login_url = "http://111.30.31.179:48080";
-login_url = "http://realaicywxtest1.ngrok.cc";
+realaicy_g_var_dlurl = "http://jcfile.trialonecaca.com/download/file/";
+// realaicy_g_var_dlurl = "http://realtest4jcfile.ngrok.cc/download/file/";
+login_url = "http://jc.trialonecaca.com";
+// login_url = "http://realaicywxtest1.ngrok.cc";
 realserver_url = "http://127.0.0.1:48080";
 
 

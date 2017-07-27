@@ -34,7 +34,7 @@ public class WxUtil {
                     "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=wx9605bfbe1e7c2f1e"
                             + "&corpsecret=nm4gMa4Ri3wQDOttvmxU7TaIILeM7M7SYvNiASmmx5e_Trg6_4g3pTYOxM6A54k2",
                     RealTK.class);
-            if (realTK.getErrmsg().equals("")) {
+            if (realTK.getErrmsg().equals("ok")) {
                 wxToken = realTK.getAccessToken();
                 wxTokenExpire = LocalDateTime.now().plusMinutes(110);
             }
@@ -68,6 +68,12 @@ public class WxUtil {
         WxMsgResp wxMsgResp = getRestTemplate().postForObject(SENTMSGURI + "access_token=" + getWxToken(), wxMsg, WxMsgResp.class);
         System.out.println(wxMsgResp);
 
+    }
+
+
+    public static void main(String[] args) {
+        String a = getWxToken();
+        System.out.println(a);
     }
 
 }

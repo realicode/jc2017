@@ -13,7 +13,7 @@ import java.util.List;
  * <p>
  * xxs
  */
-public class PreCheckModuleVO extends BaseVO<BigInteger> {
+public class PreCheckRunTImeVO extends BaseVO<BigInteger> {
     /**
      * 检查模块名称
      */
@@ -24,7 +24,7 @@ public class PreCheckModuleVO extends BaseVO<BigInteger> {
     private BigInteger id;
     private Boolean folder;
     private Short resWeight;
-    private List<PreCheckModuleVO> children = new ArrayList<>();
+    private List<PreCheckRunTImeVO> children = new ArrayList<>();
     private int score;
     private String comment;
     private String checkerName;
@@ -45,11 +45,11 @@ public class PreCheckModuleVO extends BaseVO<BigInteger> {
         this.id = id;
     }
 
-    public List<PreCheckModuleVO> getChildren() {
+    public List<PreCheckRunTImeVO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<PreCheckModuleVO> children) {
+    public void setChildren(List<PreCheckRunTImeVO> children) {
         this.children = children;
     }
 

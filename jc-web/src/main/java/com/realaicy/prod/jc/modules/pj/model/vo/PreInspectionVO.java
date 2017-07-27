@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class PreInspectionVO extends BaseVO<BigInteger> {
 
+    private BigInteger id;
     private BigInteger pjID;
     private BigInteger preleader;
     private String precheckers;
@@ -24,10 +25,27 @@ public class PreInspectionVO extends BaseVO<BigInteger> {
     private Date preFDate;
     private String checkStr;
     private int score;
+    private short status;
     private String projectName;
-    private BigInteger  checkModuleID;
+    private BigInteger checkModuleID;
     private String checkModuleName;
     private List<PreInspectionCheckItemRuntimeVO> checkitems;
+
+    public BigInteger getId() {
+        return id;
+    }
+
+    public void setId(BigInteger id) {
+        this.id = id;
+    }
+
+    public short getStatus() {
+        return status;
+    }
+
+    public void setStatus(short status) {
+        this.status = status;
+    }
 
     public String getCheckModuleName() {
         return checkModuleName;

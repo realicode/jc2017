@@ -1,5 +1,6 @@
 package com.realaicy.prod.jc.modules.pj.service;
 
+import com.realaicy.prod.jc.common.event.PJDateExpertPubEvent;
 import com.realaicy.prod.jc.common.event.PJPreConfEvent;
 import com.realaicy.prod.jc.common.event.PreRecruitPubEvent;
 import com.realaicy.prod.jc.common.event.handler.WX;
@@ -73,6 +74,17 @@ public class PJListener {
         handelDefault(preRecruitPubEvent.getEventKey(), projectName,
                 PJ_PRE_CHECKITEM_DO_WORKURI, PJ_PRECONF_VIEWURI,
                 preRecruitPubEvent.getCheckitemruntimeid(), preRecruitPubEvent.getCheckerid());
+    }
+
+    @EventListener
+    public void handlePJDateExpertEvent(PJDateExpertPubEvent pjDateExpertPubEvent) {
+        logger.debug("pjDateExpertPubEvent");
+
+        String projectName = facadeService.findOne(pjDateExpertPubEvent.getPjid()).getName();
+
+        handelDefault(pjDateExpertPubEvent.getEventKey(), projectName,
+                PJ_DATE_EXPERT_WORKURI, PJ_DATE_EXPERT_VIEWURI,
+                pjDateExpertPubEvent.getCheckitemruntimeid(), BigInteger.valueOf(6));
     }
 
     private void handelDefault(String eventKey, String applicationName,

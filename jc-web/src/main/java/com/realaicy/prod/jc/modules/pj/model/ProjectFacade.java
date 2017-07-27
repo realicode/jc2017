@@ -70,6 +70,7 @@ public class ProjectFacade extends CommonDeletableEntity<BigInteger> {
         this.contractURI = appliance.getContractURI();
         this.trialURI = appliance.getTrialURI();
         this.applyUser = appliance.getUser();
+        this.setPubPreStatus(Short.valueOf("0"));
     }
 
     public Short getPubPreStatus() {

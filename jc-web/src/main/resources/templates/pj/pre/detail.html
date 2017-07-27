@@ -20,21 +20,31 @@
                 <div class="col-md-10">
                     <input class="form-control" placeholder="" type="text" readonly="readonly"
                            th:value="${preIns.projectName}">
+                    <input class="form-control" type="hidden" id="real_html_preid"
+                           th:value="${preIns.id}">
                 </div>
             </div>
             <legend class="real_legend">预稽查总体信息</legend>
+            <div class="form-group" th:switch="${preIns.status}">
+                <label class="col-md-2 control-label">预稽查状态：</label>
+                <label class="col-md-2 control-label" th:case="'1'">进行中</label>
+                <label class="col-md-2 control-label" th:case="'2'">已完成</label>
+            </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">预稽查开始时间：</label>
-                <label class="col-md-2 control-label" th:text="${preIns.preSDate}"></label>
+                <label class="col-md-2 control-label" th:text="${#dates.format(preIns.preSDate, 'yyyy-MM-dd')}"></label>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">预稽查结束时间：</label>
-                <label class="col-md-2 control-label" th:text="${preIns.preFDate}"></label>
+                <label class="col-md-2 control-label" th:text="${#dates.format(preIns.preFDate, 'yyyy-MM-dd')}"></label>
             </div>
             <div class="form-group">
                 <label class="col-md-2 control-label">预稽查评分：</label>
                 <label class="col-md-2 control-label" th:text="${preIns.score}"></label>
                 <input type="hidden" id="checkmodulerootid" th:value="${preIns.checkModuleID}"/>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">下载预稽查报告：</label>
             </div>
 
 
@@ -100,8 +110,8 @@
 
 <script type="text/javascript">
 
-    var ratingOBJ={};
-    var ratingStr='';
+    var ratingOBJ = {};
+    var ratingStr = '';
 
     function realclick() {
         $("#realentity").resetForm();
@@ -159,8 +169,8 @@
                 mode: "hide"
             },
             source: {
-                url: "/auditdb/pre/chkmodule/list",
-                data: {temid: $("#checkmodulerootid").val()},
+                url: "/pj/pre/chkmodule/result",
+                data: {id: $("#real_html_preid").val()},
                 cache: false
             },
             createNode: function (event, data) {
@@ -180,7 +190,10 @@
                 var node = data.node,
                     $tdList = $(node.tr).find(">td");
                 $tdList.eq(1).text(node.getIndexHier()).addClass("alignRight");
-//                $tdList.eq(4).text(node.data.resWeight);
+                $tdList.eq(3).text(node.data.score);
+                $tdList.eq(4).text(node.data.checkerName);
+                $tdList.eq(5).text(node.data.comment);
+
 
             },
             complete: function () {

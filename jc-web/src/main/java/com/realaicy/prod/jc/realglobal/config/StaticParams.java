@@ -43,6 +43,8 @@ public class StaticParams {
 
     public static final class EVENTKEY {
         public static final String PJ_PRE_RECRUIT_KEY = "PJ_PRE_RECRUIT";
+        public static final String PJ_DATE_EXPERT_KEY = "PJ_DATE_EXPERT";
+
     }
 
 
@@ -79,6 +81,10 @@ public class StaticParams {
 
         public static final String PJ_PRE_CHECKITEM_DO_WORKURI = "/pj/pre/docheck?realactiontype=new&checkmoduleruntimeid=";
         public static final String PJ_PRECONF_VIEWURI = "/pj/pre/show/?realactiontype=new&checkmoduleruntimeid=";
+
+
+        public static final String PJ_DATE_EXPERT_WORKURI = "/pj/audit/dateexpert/date?realactiontype=new&checkmoduleruntimeid=";
+        public static final String PJ_DATE_EXPERT_VIEWURI = "/pj/audit/dateexpert/show/?realactiontype=new&checkmoduleruntimeid=";
 
     }
 

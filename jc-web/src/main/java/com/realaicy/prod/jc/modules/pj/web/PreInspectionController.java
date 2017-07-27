@@ -1,17 +1,23 @@
 package com.realaicy.prod.jc.modules.pj.web;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.realaicy.prod.jc.common.event.PJPreCheckItemDoneEvent;
 import com.realaicy.prod.jc.common.event.PJPreConfEvent;
 import com.realaicy.prod.jc.common.event.PreRecruitPubEvent;
 import com.realaicy.prod.jc.lib.core.mapper.JsonMapper;
 import com.realaicy.prod.jc.modules.auditdb.model.PreCheckItem;
 import com.realaicy.prod.jc.modules.auditdb.model.PreCheckItemRunTime;
+import com.realaicy.prod.jc.modules.auditdb.model.PreCheckModule;
 import com.realaicy.prod.jc.modules.auditdb.model.PreCheckRunTime;
+import com.realaicy.prod.jc.modules.auditdb.model.vo.PreCheckModuleVO;
 import com.realaicy.prod.jc.modules.auditdb.repos.PreCheckItemRunTimeRepos;
 import com.realaicy.prod.jc.modules.auditdb.repos.PreCheckModuleRepos;
 import com.realaicy.prod.jc.modules.auditdb.repos.PreCheckRunTimeRepos;
 import com.realaicy.prod.jc.modules.auditdb.service.PreCheckItemService;
 import com.realaicy.prod.jc.modules.auditdb.service.PreCheckModuleService;
+import com.realaicy.prod.jc.modules.auditdb.service.PreCheckRunTimeService;
 import com.realaicy.prod.jc.modules.me.model.MyWork;
 import com.realaicy.prod.jc.modules.me.service.MyWorkService;
 import com.realaicy.prod.jc.modules.pj.model.PreInspection;
@@ -37,10 +43,7 @@ import javax.validation.Valid;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.CHECKITEM_DONE;
 import static com.realaicy.prod.jc.realglobal.config.StaticParams.REALSTATUS.PJPRE_RECRUIT_START;
@@ -51,41 +54,32 @@ import static com.realaicy.prod.jc.uitl.SpringSecurityUtil.hasAnyPrivilegeWithFu
 @RequestMapping("/pj/pre")
 public class PreInspectionController {
 
-    @Value("${realupload.path.tmp}")
-    private String uploadfiletmppath;
-
     private static final String PRE_CONF_VIEW = "pj/pre/wizard";
     private static final String PRE_DO_VIEW = "pj/pre/docheck";
     private static final String PRE_RECRUIT_VIEW = "pj/pre/recruit";
-
     private static final String PRE_DETAIL_VIEW = "pj/pre/detail";
-
-
     private static final String NO_AUTH_VIEW_NAME = "global/errorpage/NOPrivilege";
     private static final String NO_AUTH_STRING = "NOPrivilege";
-
     private static final String AUTH_PREFIX = "PJ";
     private static final String AUTH_KEY_RECRUIT = "pre-recruit";
     private static final String AUTH_KEY_PRESTART = "pre-start";
     private static final String AUTH_KEY_PRE_DO = "pre-check-do";
-
     private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd");
-
-
+    private static JsonMapper binder = JsonMapper.nonDefaultMapper();
     private final UserService userService;
     private final ProjectFacadeService facadeService;
     private final PreInspectionService preInspectionService;
     private final RecruitSupplyService recruitSupplyService;
     private final PreCheckModuleRepos preCheckModuleRepos;
     private final PreCheckRunTimeRepos preCheckRunTimeRepos;
+    private final PreCheckRunTimeService preCheckRunTimeService;
     private final PreCheckItemRunTimeRepos preCheckItemRunTimeRepos;
     private final PreCheckItemService preCheckItemService;
     private final ApplicationEventPublisher publisher;
     private final MyWorkService myWorkService;
     private final PreCheckModuleService preCheckModuleService;
-
-
-    private static JsonMapper binder = JsonMapper.nonDefaultMapper();
+    @Value("${realupload.path.tmp}")
+    private String uploadfiletmppath;
 
 
     @Autowired
@@ -94,7 +88,7 @@ public class PreInspectionController {
                                    RecruitSupplyService recruitSupplyService,
                                    PreCheckModuleRepos preCheckModuleRepos,
                                    PreCheckRunTimeRepos preCheckRunTimeRepos,
-                                   PreCheckItemRunTimeRepos preCheckItemRunTimeRepos,
+                                   PreCheckRunTimeService preCheckRunTimeService, PreCheckItemRunTimeRepos preCheckItemRunTimeRepos,
                                    PreCheckItemService preCheckItemService, ApplicationEventPublisher publisher,
                                    MyWorkService myWorkService, PreCheckModuleService preCheckModuleService) {
         this.userService = userService;
@@ -103,6 +97,7 @@ public class PreInspectionController {
         this.recruitSupplyService = recruitSupplyService;
         this.preCheckModuleRepos = preCheckModuleRepos;
         this.preCheckRunTimeRepos = preCheckRunTimeRepos;
+        this.preCheckRunTimeService = preCheckRunTimeService;
         this.preCheckItemRunTimeRepos = preCheckItemRunTimeRepos;
         this.preCheckItemService = preCheckItemService;
         this.publisher = publisher;
@@ -180,7 +175,7 @@ public class PreInspectionController {
         HashSet<PreInspectionUserVO> preInspectionCheckers = userService.getUserByRole(BigInteger.valueOf(43));
 
         HashSet<PreInspectionUserVO> preInspectionApplyCheckers = new HashSet<>();
-        HashSet<PreInspectionUserVO> preInspectionOtherCheckers = new HashSet<>();
+        HashSet<PreInspectionUserVO> preInspectionOtherCheckers;
 
         List<User> users = recruitSupplyService.findApplysByPJID(pjid);
 
@@ -251,10 +246,11 @@ public class PreInspectionController {
         preInspectionVO.setScore(po.getScore());
         preInspectionVO.setPreSDate(po.getPreSDate());
         preInspectionVO.setPreFDate(po.getPreFDate());
+        preInspectionVO.setStatus(po.getStatus());
         preInspectionVO.setProjectName(po.getProjectFacade().getName());
         preInspectionVO.setCheckModuleID(po.getPreCheckModuleRoot().getId());
+        preInspectionVO.setId(po.getId());
         model.addAttribute("preIns", preInspectionVO);
-
 
         return PRE_DETAIL_VIEW;
 
@@ -296,14 +292,17 @@ public class PreInspectionController {
         preCheckRunTimeRepos.save(preCheckRunTime);
 
 
-        for (String str : realmodel.getItemgrade().substring(1).split(",")) {
-            PreCheckItemRunTime preCheckItemRunTime = new PreCheckItemRunTime();
-            preCheckItemRunTime.setFinishDate(preCheckRunTime.getFinishDate());
-            preCheckItemRunTime.setPreInspection(preCheckRunTime.getPreInspection());
-            preCheckItemRunTime.setCheckitem(preCheckItemService.findOne(
-                    BigInteger.valueOf(Long.valueOf(str.split(":")[0]))));
-            preCheckItemRunTime.setScore(Integer.valueOf(str.split(":")[1]));
-            preCheckItemRunTimeRepos.save(preCheckItemRunTime);
+        if (!Objects.equals(realmodel.getItemgrade(), "")) {
+            String strtemp = realmodel.getItemgrade().substring(1);
+            for (String str : strtemp.split(",")) {
+                PreCheckItemRunTime preCheckItemRunTime = new PreCheckItemRunTime();
+                preCheckItemRunTime.setFinishDate(preCheckRunTime.getFinishDate());
+                preCheckItemRunTime.setPreInspection(preCheckRunTime.getPreInspection());
+                preCheckItemRunTime.setCheckitem(preCheckItemService.findOne(
+                        BigInteger.valueOf(Long.valueOf(str.split(":")[0]))));
+                preCheckItemRunTime.setScore(Integer.valueOf(str.split(":")[1]));
+                preCheckItemRunTimeRepos.save(preCheckItemRunTime);
+            }
         }
 
 
@@ -382,6 +381,64 @@ public class PreInspectionController {
         facadeService.save(projectFacade);
 
         return "ok";
+    }
+
+
+    @RequestMapping("/chkmodule/result")
+    @ResponseBody
+    public String listTree(@RequestParam(value = "id", required = false) final BigInteger id) {
+
+        PreCheckModule preCheckModuleRoot = preInspectionService.findOne(id).getPreCheckModuleRoot();
+
+        PreCheckModuleVO preCheckModuleVO = new PreCheckModuleVO();
+
+        preCheckModuleVO.setId(preCheckModuleRoot.getId());
+        preCheckModuleVO.setName(preCheckModuleRoot.getName());
+        preCheckModuleVO.setFolder(preCheckModuleRoot.getFolder());
+        preCheckModuleVO.setResWeight(preCheckModuleRoot.getResWeight());
+
+        if (preCheckModuleRoot.getChildren().size() != 0) {
+            visitChildren(preCheckModuleRoot, preCheckModuleVO, id);
+        }
+
+
+//        return "";
+
+        FilterProvider filters = new SimpleFilterProvider().addFilter("realFilter",
+                SimpleBeanPropertyFilter.serializeAllExcept("updateTime"));
+        binder.getMapper().setFilterProvider(filters);
+        String s = binder.toJson(preCheckModuleVO);
+        return "[" + s + "]";
+
+    }
+
+    private void visitChildren(PreCheckModule preCheckModule, PreCheckModuleVO preCheckModuleVO, BigInteger preID) {
+
+        for (PreCheckModule preCheckModuleTemp : preCheckModule.getChildren()) {
+
+            PreCheckModuleVO preCheckModuleVOTemp = new PreCheckModuleVO();
+
+            int itemp = 0;
+            int score = 0;
+
+            preCheckModuleVOTemp.setId(preCheckModuleTemp.getId());
+            preCheckModuleVOTemp.setName(preCheckModuleTemp.getName());
+            preCheckModuleVOTemp.setFolder(preCheckModuleTemp.getFolder());
+            preCheckModuleVOTemp.setResWeight(preCheckModuleTemp.getResWeight());
+            if (preCheckModuleTemp.getChildren().size() == 0) {
+                PreCheckRunTime preCheckRunTime = preCheckRunTimeService.realfind(preID,
+                        preCheckModuleTemp.getId());
+
+                preCheckModuleVOTemp.setScore(preCheckRunTime.getScore());
+                preCheckModuleVOTemp.setComment(preCheckRunTime.getCheckRemark());
+                preCheckModuleVOTemp.setCheckerName(preCheckRunTime.getChecker().getNickname());
+            } else {
+                visitChildren(preCheckModuleTemp, preCheckModuleVOTemp, preID);
+            }
+
+            preCheckModuleVO.getChildren().add(preCheckModuleVOTemp);
+        }
+
     }
 
 }
